@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/statsItem"
+        android:icon="@drawable/stats_white_18dp"
+        android:title="Statistiche"
+        android:contentDescription="Statistiche"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/search_white_18dp"
+        android:title="Cerca"
+        android:contentDescription="Cerca abitudine"
+        app:showAsAction="always"
+        />
+</menu>
