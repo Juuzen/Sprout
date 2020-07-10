@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Sprout</string>
+    <string name="settingsString">Impostazioni</string>
+    <string name="aboutString">Chi siamo</string>
+    <string name="statsContentDescription">Statistiche</string>
+    <string name="statsMenuTitle">Statistiche</string>
+    <string name="searchContentDescription">Cerca abitudine</string>
+    <string name="searchMenuTitle">Cerca</string>
 </resources>

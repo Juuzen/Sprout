@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<item
-    android:title="Impostazioni"
-    android:id="@+id/firstMenuItem"
-    />
-<item
-    android:title="Chi siamo"
-    android:id="@+id/secondMenuItem"
-    />
+    <item
+        android:id="@+id/firstMenuItem"
+        android:icon="@drawable/ic_settings_24"
+        android:title="@string/settingsString"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/secondMenuItem"
+        android:title="@string/aboutString"
+        app:showAsAction="never" />
 
 </menu>
