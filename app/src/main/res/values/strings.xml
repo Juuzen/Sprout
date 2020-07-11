@@ -6,4 +6,20 @@
     <string name="statsMenuTitle">Statistiche</string>
     <string name="searchContentDescription">Cerca abitudine</string>
     <string name="searchMenuTitle">Cerca</string>
+    <string name="saveFabString">Salva l\'abitudine</string>
+    <string name="titleIsEmptyError">Il titolo non può essere vuoto</string>
+    <string name="titleHint">Cosa vuoi monitorare?</string>
+
+    <string name="infoClassicHabit">Quando tieni traccia di un’abitudine classica,
+        dovrai inserire manualmente i tuoi risultati. Più risultati otterrai, più aumenterai il
+        valore della tua serie!</string>
+
+    <string name="infoCounterHabit">Quando tieni traccia di un’abitudine contatore, dovrai
+        completare ogni giorno il numero di azioni che hai previsto (come ad esempio bere 4
+        bicchieri d’acqua al giorno).</string>
+
+    <string-array name="habitType">
+        <item>Classico</item>
+        <item>Contatore</item>
+    </string-array>
 </resources>
