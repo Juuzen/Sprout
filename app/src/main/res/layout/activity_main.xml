@@ -19,11 +19,10 @@
         android:backgroundTint="@color/primaryColor"
         app:fabAlignmentMode="end"
         app:fabCradleRoundedCornerRadius="30dp"
-        app:menu="@menu/bottom_app_bar_menu"
-        app:navigationIcon="@drawable/ic_menu_24" />
+        app:menu="@menu/bottom_app_bar_menu"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabButton"
+        android:id="@+id/fabAddButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add_24"
