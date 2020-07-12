@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/formPadding"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/notifyContentDescription"/>
+
+        <ImageButton
+            android:id="@+id/addReminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+
+            android:layout_gravity="end"
+            android:backgroundTint="@color/whiteColor"
+            android:tint="@color/blackColor"
+            android:src="@drawable/ic_add_24"
+            android:contentDescription="@string/addReminderContentDescription" />
+
+    </LinearLayout>
+
+    <ListView
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/remindersList"
+        android:name="com.hcifedii.sprout.RemindersFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        tools:context=".RemindersFragment"
+        tools:listitem="@layout/fragment_reminders_item" />
+
+</LinearLayout>
+
+

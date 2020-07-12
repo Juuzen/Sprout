@@ -17,9 +17,24 @@
     <string name="infoCounterHabit">Quando tieni traccia di un’abitudine contatore, dovrai
         completare ogni giorno il numero di azioni che hai previsto (come ad esempio bere 4
         bicchieri d’acqua al giorno).</string>
+    <string name="frequencyString">Frequenza</string>
+    <string name="mondayString">L</string>
+    <string name="tuesdayString">M</string>
+    <string name="wednesdayString">M</string>
+    <string name="thursdayString">G</string>
+    <string name="fridayString">V</string>
+    <string name="saturdayString">S</string>
+    <string name="sundayString">D</string>
 
     <string-array name="habitType">
         <item>Classico</item>
         <item>Contatore</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="deleteContentDescription">Elimina</string>
+    <string name="pauseContentDescription">Metti in pausa</string>
+    <string name="addReminderContentDescription">Aggiungi un promemoria</string>
+    <string name="notifyContentDescription">Notifiche</string>
+    <string name="emptyMainActivityMessage">Non hai inserito ancora nessuna abitudine! Crearne una è facile, ti basta cliccare sul tasto in basso per iniziare!</string>
 </resources>

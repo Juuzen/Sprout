@@ -8,7 +8,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,13 +19,30 @@
 
             <include layout="@layout/title_layout"/>
 
-            <include layout="@layout/divider"/>
+            <include layout="@layout/divider_layout"/>
 
-            <include layout="@layout/habit_type_layout"/>
+            <fragment
+                android:id="@+id/habitTypeFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.hcifedii.sprout.HabitTypeFragment"
+                tools:layout="@layout/fragment_habit_type" />
 
+            <include layout="@layout/divider_layout"/>
 
-            <include layout="@layout/divider"/>
+            <include layout="@layout/frequency_layout"/>
 
+            <include layout="@layout/divider_layout"/>
+
+            <!-- <include layout="@layout/reminders_layout"/>-->
+            <fragment
+                android:id="@+id/reminderFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.hcifedii.sprout.RemindersFragment"
+                tools:layout="@layout/fragment_reminders"/>
+
+            <include layout="@layout/divider_layout"/>
 
         </LinearLayout>
 

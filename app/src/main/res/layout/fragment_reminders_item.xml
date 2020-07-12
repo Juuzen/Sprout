@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+
+    <ImageButton
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_margin"
+        android:backgroundTint="@color/whiteColor"
+        android:tint="@color/blackColor"
+        android:src="@drawable/notifications_white_24dp"
+        android:contentDescription="@string/pauseContentDescription" />
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_margin="@dimen/text_margin"
+        android:textAppearance="?attr/textAppearanceListItem" />
+
+    <ImageButton
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/text_margin"
+        android:backgroundTint="@color/whiteColor"
+        android:tint="@color/blackColor"
+
+        android:src="@drawable/clear_white_24dp"
+        android:contentDescription="@string/deleteContentDescription" />
+</LinearLayout>
