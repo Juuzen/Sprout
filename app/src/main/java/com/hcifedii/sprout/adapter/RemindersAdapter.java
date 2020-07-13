@@ -1,35 +1,30 @@
 package com.hcifedii.sprout.adapter;
 
 import android.app.TimePickerDialog;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hcifedii.sprout.R;
-import com.hcifedii.sprout.TimePickerFragment;
 
 import java.util.List;
 
 public class RemindersAdapter
         extends RecyclerView.Adapter<RemindersAdapter.RemindersViewHolder> {
 
-    FragmentManager fragmentManager;
-
     private List<Reminder> reminderList;
-    private static int id = 0;
 
-    public RemindersAdapter(List<Reminder> reminderList, FragmentManager fragmentManager) {
+    private static final int DEFAULT_HOUR = 12;
+    private static final int DEFAULT_MINUTES = 0;
+
+    public RemindersAdapter(List<Reminder> reminderList) {
         this.reminderList = reminderList;
-        this.fragmentManager = fragmentManager;
     }
 
     /**
@@ -57,7 +52,7 @@ public class RemindersAdapter
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_reminders_item, parent, false);
 
-        return new RemindersAdapter.RemindersViewHolder(view, id++);
+        return new RemindersAdapter.RemindersViewHolder(view);
     }
 
     /**
@@ -89,6 +84,9 @@ public class RemindersAdapter
         holder.reminderItem.content = reminder.content;
         holder.reminderItem.deleteButton = reminder.deleteButton;
 
+        holder.reminderItem.hours = reminder.hours;
+        holder.reminderItem.minutes = reminder.minutes;
+
     }
 
     // Return the size of the list
@@ -101,57 +99,52 @@ public class RemindersAdapter
     public class RemindersViewHolder extends RecyclerView.ViewHolder {
 
         View view;
-        int id;
         Reminder reminderItem;
 
-        public RemindersViewHolder(View view, int id) {
+        public RemindersViewHolder(View view) {
             super(view);
 
             this.view = view;
-            // Position inside the RecyclerView
-            this.id = id;
 
             reminderItem = new Reminder(view.findViewById(R.id.contentTextView),
                     view.findViewById(R.id.deleteButton), view.findViewById(R.id.pauseButton));
 
-            //String message = "Id: " + Integer.toString(id);
+            // Set the content field of a reminder
             reminderItem.content.setText(R.string.defaultTimeString);
-
             reminderItem.content.setOnClickListener(view1 -> {
 
-                // TODO: non funziona ancora
+                TimePickerDialog timePickerDialog = new TimePickerDialog(view1.getContext(),
+                        (timePicker, hour, minutes) -> {
 
-                TimePickerFragment timePickerFragment = new TimePickerFragment();
-                TimePickerDialog dialog = (TimePickerDialog) timePickerFragment.onCreateDialog(null);
+                            // Save the time inside a reminderItem, for easy pick later.
+                            reminderItem.setTime(hour, minutes);
+
+                            // Update the time inside the TextView
+                            TextView content = view1.findViewById(R.id.contentTextView);
+
+                            // TODO: migliorare la formattazione per i minuti
+                            String newTime = hour + ":" + minutes;
 
 
+                            content.setText(newTime);
+                        }, DEFAULT_HOUR, DEFAULT_MINUTES, true);
 
-                timePickerFragment.show(fragmentManager, "timePicker");
+                timePickerDialog.show();
 
-                String time = timePickerFragment.getHour() + ":" + timePickerFragment.getMinute();
-
-
-
-                TextView textView = view1.findViewById(R.id.contentTextView);
-                textView.setText(time);
-
-                String message2 = textView.getText().toString();
-
-                Toast.makeText(view1.getContext(), message2, Toast.LENGTH_SHORT).show();
             });
 
-
+            // Set the two buttons
             reminderItem.deleteButton.setOnClickListener(view1 -> {
 
-                // TODO: da togliere queste due linee di codice
-                String message3 = Integer.toString(getAdapterPosition()) + " position";
-                Toast.makeText(view1.getContext(), message3, Toast.LENGTH_SHORT).show();
+                // TODO: rimuovere il reminder dal database
 
                 reminderList.remove(getAdapterPosition());
                 notifyItemRemoved(getAdapterPosition());
             });
 
             reminderItem.pauseButton.setOnClickListener(view1 -> {
+
+                // TODO: salvare il cambiamento sul database
 
                 ImageButton button = view1.findViewById(R.id.pauseButton);
                 // Change the state of the button
@@ -169,11 +162,21 @@ public class RemindersAdapter
         private ImageButton deleteButton;
         private ImageButton pauseButton;
 
+        private int hours = DEFAULT_HOUR;
+        private int minutes = DEFAULT_MINUTES;
+
         public Reminder(TextView content, ImageButton deleteButton, ImageButton pauseButton) {
             this.content = content;
             this.deleteButton = deleteButton;
             this.pauseButton = pauseButton;
         }
+
+        public void setTime(int hours, int minutes) {
+            this.hours = hours;
+            this.minutes = minutes;
+        }
+
+
     }
 
 }

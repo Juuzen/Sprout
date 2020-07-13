@@ -45,7 +45,7 @@ public class RemindersFragment extends Fragment {
         RecyclerView remindersRecyclerView = view.findViewById(R.id.remindersRecyclerView);
         remindersRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        RemindersAdapter adp = new RemindersAdapter(reminderList, getFragmentManager());
+        RemindersAdapter adp = new RemindersAdapter(reminderList);
         remindersRecyclerView.setAdapter(adp);
 
 
