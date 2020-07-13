@@ -13,5 +13,7 @@
     <color name="whiteColor">#FFFFFF</color>
     <color name="grayColor">#EEEEEE</color>
     <color name="blackColor">#000000</color>
+    <color name="yellowColor">#fdc010</color>
+    <color name="redColor">#FF0000</color>
 
 </resources>

@@ -4,24 +4,26 @@ import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.hcifedii.sprout.adapter.RemindersAdapter;
 
-/**
- * A fragment representing a list of Items.
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class RemindersFragment extends Fragment {
 
+    private List<RemindersAdapter.Reminder> reminderList;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public RemindersFragment() {
     }
 
@@ -32,20 +34,37 @@ public class RemindersFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_reminders, container, false);
 
-        ListView reminderList = view.findViewById(R.id.remindersList);
+        // Set up the the arrayList that holds the list of reminders
+        reminderList = new ArrayList<>();
 
-        ImageButton add = view.findViewById(R.id.addReminder);
+        // Set up the RecyclerView with the layout manager and the adapter
+        RecyclerView remindersRecyclerView = view.findViewById(R.id.remindersRecyclerView);
+        remindersRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        add.setOnClickListener(view1 -> {
-            DialogFragment newFragment = new TimePickerFragment();
-            newFragment.show(getFragmentManager(), "timePicker");
+        RemindersAdapter adp = new RemindersAdapter(reminderList, getFragmentManager());
+        remindersRecyclerView.setAdapter(adp);
+
+
+
+        // Set up the + button with a click listener
+        ImageButton addButton = view.findViewById(R.id.addReminder);
+        addButton.setOnClickListener(view1 -> {
+
+
+            TextView content = new TextView(view1.getContext());
+
+            reminderList.add(new RemindersAdapter.Reminder(content, new ImageButton(view1.getContext()), new ImageButton(view1.getContext())));
+            adp.notifyDataSetChanged();
+
 
         });
 
         return view;
     }
+
+
 }

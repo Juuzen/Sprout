@@ -1,36 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
 
     <ImageButton
-
+        android:id="@+id/pauseButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
+        android:layout_marginLeft="@dimen/text_margin"
+        android:layout_marginRight="@dimen/text_margin"
+
+        android:state_selected="true"
+
         android:backgroundTint="@color/whiteColor"
-        android:tint="@color/blackColor"
-        android:src="@drawable/notifications_white_24dp"
+        android:tint="@color/notification_color_selector"
+        android:src="@drawable/notification_icon_selector"
         android:contentDescription="@string/pauseContentDescription" />
 
     <TextView
-        android:id="@+id/content"
+        android:id="@+id/contentTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:clickable="true"
+        android:layout_marginLeft="@dimen/text_margin"
+        android:layout_marginRight="@dimen/text_margin"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:focusable="true" />
 
     <ImageButton
-
+        android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
+        android:layout_marginLeft="@dimen/text_margin"
+        android:layout_marginRight="@dimen/text_margin"
         android:backgroundTint="@color/whiteColor"
-        android:tint="@color/blackColor"
-
+        android:tint="@color/redColor"
         android:src="@drawable/clear_white_24dp"
         android:contentDescription="@string/deleteContentDescription" />
 </LinearLayout>

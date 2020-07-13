@@ -6,10 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".CreateHabitActivity">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="80dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -17,36 +17,36 @@
             android:orientation="vertical">
 
 
-            <include layout="@layout/title_layout"/>
+            <include layout="@layout/title_layout" />
 
-            <include layout="@layout/divider_layout"/>
+            <include layout="@layout/divider_layout" />
 
             <fragment
                 android:id="@+id/habitTypeFragment"
+                android:name="com.hcifedii.sprout.HabitTypeFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.hcifedii.sprout.HabitTypeFragment"
                 tools:layout="@layout/fragment_habit_type" />
 
-            <include layout="@layout/divider_layout"/>
+            <include layout="@layout/divider_layout" />
 
-            <include layout="@layout/frequency_layout"/>
+            <include layout="@layout/frequency_layout" />
 
-            <include layout="@layout/divider_layout"/>
+            <include layout="@layout/divider_layout" />
 
             <!-- <include layout="@layout/reminders_layout"/>-->
             <fragment
                 android:id="@+id/reminderFragment"
+                android:name="com.hcifedii.sprout.RemindersFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.hcifedii.sprout.RemindersFragment"
-                tools:layout="@layout/fragment_reminders"/>
+                tools:layout="@layout/fragment_reminders" />
 
-            <include layout="@layout/divider_layout"/>
+            <include layout="@layout/divider_layout" />
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

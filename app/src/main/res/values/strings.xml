@@ -37,4 +37,5 @@
     <string name="addReminderContentDescription">Aggiungi un promemoria</string>
     <string name="notifyContentDescription">Notifiche</string>
     <string name="emptyMainActivityMessage">Non hai inserito ancora nessuna abitudine! Crearne una è facile, ti basta cliccare sul tasto in basso per iniziare!</string>
+    <string name="defaultTimeString">12:00</string>
 </resources>
