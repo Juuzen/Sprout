@@ -10,12 +10,17 @@ import android.widget.EditText;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.hcifedii.sprout.adapter.RemindersAdapter;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class CreateHabitActivity extends AppCompatActivity {
 
     private static final String logcatTag = "Sprout - CreateHabitActivity";
 
     HabitTypeFragment habitTypeFragment;
+    RemindersFragment remindersFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +48,19 @@ public class CreateHabitActivity extends AppCompatActivity {
             } else {
                 titleLayout.setError(getString(R.string.titleIsEmptyError));
             }
+
+
+
+
         });
 
 
-        // Saving a reference to the fragment
+        // Saving a reference to the fragments
         habitTypeFragment = (HabitTypeFragment) getSupportFragmentManager().findFragmentById(R.id.habitTypeFragment);
+        remindersFragment = (RemindersFragment) getSupportFragmentManager().findFragmentById(R.id.reminderFragment);
+
+
+
 
 
     }
