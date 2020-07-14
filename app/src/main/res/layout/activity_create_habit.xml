@@ -51,8 +51,15 @@
 
             <include layout="@layout/divider_layout" />
 
+            <fragment
+                android:id="@+id/snoozeFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.hcifedii.sprout.fragment.SnoozeFragment"
+                tools:layout="@layout/fragment_snooze"/>
 
-
+            <include layout="@layout/divider_layout" />
+            
             <fragment
                 android:id="@+id/goalFragment"
                 android:name="com.hcifedii.sprout.fragment.GoalFragment"

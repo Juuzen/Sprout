@@ -21,8 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_gravity="center|end"
-        android:orientation="horizontal"
+        android:layout_gravity="center"
         app:np_dividerColor="@color/primaryDarkColor"
         app:np_dividerType="underline"
         app:np_fadingEdgeEnabled="true"
