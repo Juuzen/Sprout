@@ -3,10 +3,14 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven {
+            url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
+            }
+        maven { url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo' }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.0.0"
-        classpath "io.realm:realm-gradle-plugin:6.0.2"
+        classpath "io.realm:realm-gradle-plugin:7.0.0-beta-SNAPSHOT"
     }
 }
 
@@ -14,6 +18,10 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven {
+            url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
+            }
+        maven { url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo' }
     }
 }
 

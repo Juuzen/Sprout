@@ -1,4 +1,12 @@
 package model;
 
-public class Task {
+import java.util.Date;
+
+import io.realm.RealmObject;
+import utils.TaskStatus;
+
+public class Task extends RealmObject {
+    private Date checkedDate;
+    private TaskStatus taskStatus;
+
 }

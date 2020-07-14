@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginEnd="20dp"
-            android:text="Tipologia dell'abitudine"
+            android:text="Tipologia abitudine"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <Spinner
