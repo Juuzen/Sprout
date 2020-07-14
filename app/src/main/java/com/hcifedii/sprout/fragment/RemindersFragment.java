@@ -1,4 +1,4 @@
-package com.hcifedii.sprout;
+package com.hcifedii.sprout.fragment;
 
 import android.os.Bundle;
 
@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.hcifedii.sprout.R;
 import com.hcifedii.sprout.adapter.RemindersAdapter;
 
 import java.util.ArrayList;

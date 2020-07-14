@@ -1,4 +1,4 @@
-package com.hcifedii.sprout;
+package com.hcifedii.sprout.fragment;
 
 import android.os.Bundle;
 
@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.hcifedii.sprout.R;
 import com.shawnlin.numberpicker.NumberPicker;
 
 public class HabitTypeFragment extends Fragment {

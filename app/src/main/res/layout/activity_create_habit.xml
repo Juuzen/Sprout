@@ -16,28 +16,38 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
-            <include layout="@layout/title_layout" />
+            <fragment
+                android:id="@+id/titleFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.hcifedii.sprout.fragment.TitleFragment"
+                tools:layout="@layout/fragment_title"
+                />
 
             <include layout="@layout/divider_layout" />
 
             <fragment
                 android:id="@+id/habitTypeFragment"
-                android:name="com.hcifedii.sprout.HabitTypeFragment"
+                android:name="com.hcifedii.sprout.fragment.HabitTypeFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:layout="@layout/fragment_habit_type" />
 
             <include layout="@layout/divider_layout" />
 
-            <include layout="@layout/frequency_layout" />
+            <fragment
+                android:id="@+id/frequencyFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.hcifedii.sprout.fragment.FrequencyFragment"
+                tools:layout="@layout/fragment_frequency"/>
 
             <include layout="@layout/divider_layout" />
 
             <!-- <include layout="@layout/reminders_layout"/>-->
             <fragment
                 android:id="@+id/reminderFragment"
-                android:name="com.hcifedii.sprout.RemindersFragment"
+                android:name="com.hcifedii.sprout.fragment.RemindersFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:layout="@layout/fragment_reminders" />
