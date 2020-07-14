@@ -6,40 +6,84 @@
     android:layout_height="match_parent"
     tools:context=".CreateHabitActivity">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <fragment
+                android:id="@+id/titleFragment"
+                android:name="com.hcifedii.sprout.fragment.TitleFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_title" />
 
-            <include layout="@layout/title_layout"/>
+            <include layout="@layout/divider_layout" />
 
-            <include layout="@layout/divider"/>
+            <fragment
+                android:id="@+id/habitTypeFragment"
+                android:name="com.hcifedii.sprout.fragment.HabitTypeFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_habit_type" />
 
-            <include layout="@layout/habit_type_layout"/>
+            <include layout="@layout/divider_layout" />
 
+            <fragment
+                android:id="@+id/frequencyFragment"
+                android:name="com.hcifedii.sprout.fragment.FrequencyFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_frequency" />
 
-            <include layout="@layout/divider"/>
+            <include layout="@layout/divider_layout" />
 
+            <fragment
+                android:id="@+id/reminderFragment"
+                android:name="com.hcifedii.sprout.fragment.RemindersFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_reminders" />
+
+            <include layout="@layout/divider_layout" />
+
+            <fragment
+                android:id="@+id/snoozeFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.hcifedii.sprout.fragment.SnoozeFragment"
+                tools:layout="@layout/fragment_snooze"/>
+
+            <include layout="@layout/divider_layout" />
+            
+            <fragment
+                android:id="@+id/goalFragment"
+                android:name="com.hcifedii.sprout.fragment.GoalFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="100dp"
+                tools:layout="@layout/fragment_goal" />
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabSaveButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_margin="16dp"
         android:backgroundTint="@color/primaryColor"
+        android:fitsSystemWindows="true"
         android:padding="16dp"
+        android:layout_margin="16dp"
         android:text="@string/saveFabString"
-        android:textColor="@color/whiteColor" />
+        android:textAlignment="center"
+        android:textColor="@color/whiteColor"
+        android:layout_gravity="end|bottom|center_horizontal"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
