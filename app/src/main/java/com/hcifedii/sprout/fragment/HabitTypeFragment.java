@@ -15,12 +15,14 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.hcifedii.sprout.HabitType;
 import com.hcifedii.sprout.R;
 import com.shawnlin.numberpicker.NumberPicker;
 
 public class HabitTypeFragment extends Fragment {
 
     private static final String logcatTag = "Sprout - HabitTypeFragment";
+    private HabitType habitType = HabitType.Classic;
     private int repetitions = 1;
     View root;
 
@@ -49,6 +51,10 @@ public class HabitTypeFragment extends Fragment {
         return repetitions;
     }
 
+    public HabitType getHabitType(){
+        return habitType;
+    }
+
     private void setUpListener() {
         // Habit type selection - Spinner
         Spinner habitTypeSpinner = root.findViewById(R.id.habitTypeSpinner);
@@ -70,6 +76,7 @@ public class HabitTypeFragment extends Fragment {
                         informationMessage.setText(R.string.infoClassicHabit);
                         counterContainer.setVisibility(View.GONE);
 
+                        habitType = HabitType.Classic;
                         numberPicker.setValue(1);
                         repetitions = 1;
 
@@ -79,6 +86,7 @@ public class HabitTypeFragment extends Fragment {
                         informationMessage.setText(R.string.infoCounterHabit);
                         counterContainer.setVisibility(View.VISIBLE);
 
+                        habitType = HabitType.Counter;
                         numberPicker.setValue(3);
                         repetitions = 3;
 

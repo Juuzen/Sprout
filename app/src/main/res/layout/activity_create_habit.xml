@@ -8,21 +8,19 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="80dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <fragment
                 android:id="@+id/titleFragment"
+                android:name="com.hcifedii.sprout.fragment.TitleFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.hcifedii.sprout.fragment.TitleFragment"
-                tools:layout="@layout/fragment_title"
-                />
+                tools:layout="@layout/fragment_title" />
 
             <include layout="@layout/divider_layout" />
 
@@ -37,14 +35,13 @@
 
             <fragment
                 android:id="@+id/frequencyFragment"
+                android:name="com.hcifedii.sprout.fragment.FrequencyFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.hcifedii.sprout.fragment.FrequencyFragment"
-                tools:layout="@layout/fragment_frequency"/>
+                tools:layout="@layout/fragment_frequency" />
 
             <include layout="@layout/divider_layout" />
 
-            <!-- <include layout="@layout/reminders_layout"/>-->
             <fragment
                 android:id="@+id/reminderFragment"
                 android:name="com.hcifedii.sprout.fragment.RemindersFragment"
@@ -54,6 +51,16 @@
 
             <include layout="@layout/divider_layout" />
 
+
+
+            <fragment
+                android:id="@+id/goalFragment"
+                android:name="com.hcifedii.sprout.fragment.GoalFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="100dp"
+                tools:layout="@layout/fragment_goal" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
@@ -61,13 +68,15 @@
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabSaveButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:layout_margin="16dp"
         android:backgroundTint="@color/primaryColor"
+        android:fitsSystemWindows="true"
         android:padding="16dp"
+        android:layout_margin="16dp"
         android:text="@string/saveFabString"
-        android:textColor="@color/whiteColor" />
+        android:textAlignment="center"
+        android:textColor="@color/whiteColor"
+        android:layout_gravity="end|bottom|center_horizontal"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
