@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.util.Log;
 
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.hcifedii.sprout.fragment.FrequencyFragment;
+import com.hcifedii.sprout.fragment.GoalFragment;
 import com.hcifedii.sprout.fragment.HabitTypeFragment;
 import com.hcifedii.sprout.fragment.RemindersFragment;
 import com.hcifedii.sprout.fragment.SnoozeFragment;
@@ -27,6 +29,7 @@ public class CreateHabitActivity extends AppCompatActivity {
     FrequencyFragment frequencyFragment;
     RemindersFragment remindersFragment;
     SnoozeFragment snoozeFragment;
+    GoalFragment goalFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +41,6 @@ public class CreateHabitActivity extends AppCompatActivity {
         // FAB - Floating Action Button
         ExtendedFloatingActionButton saveFab = findViewById(R.id.fabSaveButton);
         saveFab.setOnClickListener(view -> {
-
-            TextInputLayout titleLayout = findViewById(R.id.titleLayout);
-            EditText titleEditText = findViewById(R.id.titleField);
 
             String title = titleFragment.getTitle();
 
@@ -54,7 +54,9 @@ public class CreateHabitActivity extends AppCompatActivity {
                 titleFragment.setErrorMessage(getString(R.string.titleIsEmptyErrorString));
             }
 
+            String message = goalFragment.getGoalType().name();
 
+            Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
         });
 
 
@@ -65,7 +67,7 @@ public class CreateHabitActivity extends AppCompatActivity {
         frequencyFragment = (FrequencyFragment) fragmentManager.findFragmentById(R.id.frequencyFragment);
         remindersFragment = (RemindersFragment) fragmentManager.findFragmentById(R.id.reminderFragment);
         snoozeFragment = (SnoozeFragment) fragmentManager.findFragmentById(R.id.snoozeFragment);
-
+        goalFragment = (GoalFragment) fragmentManager.findFragmentById(R.id.goalFragment);
 
     }
 

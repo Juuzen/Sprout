@@ -67,5 +67,19 @@
 
     <string name="maxSnoozesString">Rinvii massimi</string>
     <string name="numberOfRepetitionsString">Numero ripetizioni</string>
+    <string name="goalTitleString">Tipo di obiettivo</string>
+    <string name="habitTypeString">Tipologia dell\'abitudine</string>
+
+    <string-array name="goalTypeString">
+        <item>Nessuno</item>
+        <item>Azioni</item>
+        <item>Scadenza</item>
+        <item>Serie</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="actionToCompleteString">Azioni da completare</string>
+    <string name="goalActionInfoString">L’abitudine viene archiviata quando raggiungi il numero di azioni previste.</string>
+    <string name="actionToCompleteSubtitle">Azioni</string>
 
 </resources>
