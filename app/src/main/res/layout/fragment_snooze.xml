@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,11 +9,11 @@
     android:padding="@dimen/formPadding"
     tools:context=".fragment.SnoozeFragment">
 
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -21,22 +22,49 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/snoozeSwitch"
+            android:checked="false"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/snoozeTextView"/>
+        android:text="@string/snoozeInfoTextView" />
+
+    <LinearLayout
+
+        android:id="@+id/snoozePickerContainer"
+        android:visibility="gone"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/maxSnoozesString" />
+
+        <com.shawnlin.numberpicker.NumberPicker
+            android:id="@+id/snoozePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            app:np_dividerType="underline"
+            app:np_fadingEdgeEnabled="true"
+            app:np_height="@dimen/number_picker_height"
+            app:np_max="4"
+            app:np_min="1"
+            app:np_orientation="horizontal"
+            app:np_value="2"
+            app:np_width="@dimen/number_picker_width" />
+
+    </LinearLayout>
 
 </LinearLayout>

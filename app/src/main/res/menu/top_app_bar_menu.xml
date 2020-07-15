@@ -5,11 +5,11 @@
     <item
         android:id="@+id/firstMenuItem"
         android:icon="@drawable/ic_settings_24"
-        android:title="@string/settingsString"
+        android:title="@string/settingsMenuString"
         app:showAsAction="never" />
     <item
         android:id="@+id/secondMenuItem"
-        android:title="@string/aboutString"
+        android:title="@string/aboutMenuString"
         app:showAsAction="never" />
 
 </menu>

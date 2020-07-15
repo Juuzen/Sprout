@@ -19,13 +19,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Set the title inside the top bar for this activity.
+        // I'm not doing it inside the Manifest because it changes the app's name
+        setTitle(R.string.MainActivityTitle);
+
         FloatingActionButton fab = findViewById(R.id.fabAddButton);
         fab.setOnClickListener(view -> {
             Intent intent = new Intent(getBaseContext(), CreateHabitActivity.class);
 
             startActivity(intent);
         });
-
 
     }
 

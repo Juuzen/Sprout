@@ -4,7 +4,7 @@
     android:id="@+id/titleLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:hint="@string/titleHint"
+    android:hint="@string/titleHintString"
     android:padding="@dimen/formPadding"
     app:counterEnabled="true"
     app:counterMaxLength="30"

@@ -14,10 +14,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.hcifedii.sprout.fragment.FrequencyFragment;
 import com.hcifedii.sprout.fragment.HabitTypeFragment;
 import com.hcifedii.sprout.fragment.RemindersFragment;
+import com.hcifedii.sprout.fragment.SnoozeFragment;
 import com.hcifedii.sprout.fragment.TitleFragment;
-
-import java.util.Iterator;
-import java.util.List;
 
 public class CreateHabitActivity extends AppCompatActivity {
 
@@ -28,6 +26,7 @@ public class CreateHabitActivity extends AppCompatActivity {
     HabitTypeFragment habitTypeFragment;
     FrequencyFragment frequencyFragment;
     RemindersFragment remindersFragment;
+    SnoozeFragment snoozeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +51,8 @@ public class CreateHabitActivity extends AppCompatActivity {
                 // Save habit
 
             } else {
-                titleFragment.setErrorMessage(getString(R.string.titleIsEmptyError));
+                titleFragment.setErrorMessage(getString(R.string.titleIsEmptyErrorString));
             }
-
 
 
         });
@@ -66,6 +64,7 @@ public class CreateHabitActivity extends AppCompatActivity {
         habitTypeFragment = (HabitTypeFragment) fragmentManager.findFragmentById(R.id.habitTypeFragment);
         frequencyFragment = (FrequencyFragment) fragmentManager.findFragmentById(R.id.frequencyFragment);
         remindersFragment = (RemindersFragment) fragmentManager.findFragmentById(R.id.reminderFragment);
+        snoozeFragment = (SnoozeFragment) fragmentManager.findFragmentById(R.id.snoozeFragment);
 
 
     }
