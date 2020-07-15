@@ -17,7 +17,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/goalTitleString"
+            android:text="@string/goalString"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <Spinner
@@ -32,7 +32,7 @@
 
 
     <FrameLayout
-        android:id="@+id/goalContainer"
+        android:id="@+id/goalFragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

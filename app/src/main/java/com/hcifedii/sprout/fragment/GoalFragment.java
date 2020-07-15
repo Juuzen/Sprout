@@ -1,20 +1,15 @@
 package com.hcifedii.sprout.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.hcifedii.sprout.GoalType;
 import com.hcifedii.sprout.R;
@@ -47,8 +42,6 @@ public class GoalFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                TextView infoTextView;
-
                 FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 
@@ -61,18 +54,21 @@ public class GoalFragment extends Fragment {
                         break;
                     case 1:
                         // ACTION
-                        transaction.replace(R.id.goalContainer, new GoalActionFragment()).commit();
+                        transaction.replace(R.id.goalFragmentContainer, new GoalActionFragment()).commit();
 
                         goalType = GoalType.ACTION;
                         break;
                     case 2:
                         // DEADLINE
+                        //date
 
                         goalType = GoalType.DEADLINE;
                         break;
                     case 3:
-                        // SERIES
-                        goalType = GoalType.SERIES;
+                        // STREAK
+                        goalType = GoalType.STREAK;
+
+                        // Nel layout, mettere sotto il picker "giorni"
                         break;
                     default:
 

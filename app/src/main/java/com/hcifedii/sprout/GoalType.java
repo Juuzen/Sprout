@@ -3,6 +3,6 @@ package com.hcifedii.sprout;
 public enum GoalType {
     NONE,
     ACTION,
-    SERIES,
+    STREAK,
     DEADLINE
 }

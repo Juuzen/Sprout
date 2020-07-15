@@ -18,7 +18,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/snoozeTitleTextView"
+            android:text="@string/snoozeString"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
@@ -32,7 +32,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/snoozeInfoTextView" />
+        android:text="@string/snoozeInfoString" />
 
     <LinearLayout
 

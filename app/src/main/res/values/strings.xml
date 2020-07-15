@@ -38,6 +38,7 @@
     <string name="saturdayString">S</string>
     <string name="sundayString">D</string>
 
+    <string name="habitTypeString">Tipologia dell\'abitudine</string>
     <string-array name="habitTypeString">
         <item>Classico</item>
         <item>Contatore</item>
@@ -59,25 +60,22 @@
     <string name="MainActivityTitle">Le mie abitudini</string>
 
 
-    <string name="snoozeTitleTextView">Rinvii</string>
-
-    <string name="snoozeInfoTextView">
+    <string name="snoozeString">Rinvii</string>
+    <string name="snoozeInfoString">
         I rinvii ti permettono di non segnare come completata l’abitudine, mantenendo però la serie.
     </string>
 
     <string name="maxSnoozesString">Rinvii massimi</string>
     <string name="numberOfRepetitionsString">Numero ripetizioni</string>
-    <string name="goalTitleString">Tipo di obiettivo</string>
-    <string name="habitTypeString">Tipologia dell\'abitudine</string>
 
+    <string name="goalString">Tipo di obiettivo</string>
     <string-array name="goalTypeString">
         <item>Nessuno</item>
         <item>Azioni</item>
         <item>Scadenza</item>
-        <item>Serie</item>
+        <item>Streak</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="actionToCompleteString">Azioni da completare</string>
     <string name="goalActionInfoString">L’abitudine viene archiviata quando raggiungi il numero di azioni previste.</string>
     <string name="actionToCompleteSubtitle">Azioni</string>

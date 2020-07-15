@@ -20,34 +20,19 @@
             android:layout_weight="1"
             android:text="@string/actionToCompleteString" />
 
-        <LinearLayout
+        <com.shawnlin.numberpicker.NumberPicker
+            android:id="@+id/goalMaxActionPicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <com.shawnlin.numberpicker.NumberPicker
-                android:id="@+id/goalMaxActionPicker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:np_dividerColor="@color/primaryDarkColor"
-                app:np_dividerType="underline"
-                app:np_fadingEdgeEnabled="true"
-                app:np_height="@dimen/number_picker_height"
-                app:np_max="99"
-                app:np_min="1"
-                app:np_orientation="horizontal"
-                app:np_value="15"
-                app:np_width="@dimen/number_picker_width" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/actionToCompleteSubtitle"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
-
-        </LinearLayout>
-
+            app:np_dividerColor="@color/primaryDarkColor"
+            app:np_dividerType="underline"
+            app:np_fadingEdgeEnabled="true"
+            app:np_height="@dimen/number_picker_height"
+            app:np_max="99"
+            app:np_min="1"
+            app:np_orientation="horizontal"
+            app:np_value="15"
+            app:np_width="@dimen/number_picker_width" />
 
     </LinearLayout>
 
