@@ -5,12 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="@dimen/formPadding">
+    android:paddingTop="6dp"
+    android:paddingBottom="@dimen/formPadding"
+    android:paddingLeft="@dimen/formPadding"
+    android:paddingRight="@dimen/formPadding">
+
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <TextView
@@ -26,8 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
 
-            android:background="@drawable/rounded_corner"
-            android:backgroundTint="@color/whiteColor"
+            android:background="?attr/selectableItemBackground"
+            android:padding="10dp"
             android:contentDescription="@string/addReminderContentDescription"
             android:src="@drawable/ic_add_24"
             android:tint="@color/blackColor" />
