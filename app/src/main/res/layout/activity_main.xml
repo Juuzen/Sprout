@@ -53,7 +53,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add_24"
-        app:backgroundTint="@color/secondaryColor"
         app:layout_anchor="@id/bottomAppBar"
         app:maxImageSize="35dp"
         app:tint="@color/whiteColor" />

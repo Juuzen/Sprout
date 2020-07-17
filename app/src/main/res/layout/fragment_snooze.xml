@@ -35,10 +35,8 @@
         android:text="@string/snoozeInfoString" />
 
     <LinearLayout
-
         android:id="@+id/snoozePickerContainer"
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="center"
@@ -53,18 +51,11 @@
 
         <com.shawnlin.numberpicker.NumberPicker
             android:id="@+id/snoozePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/SproutNumberPicker"
 
-            app:np_dividerColor="@color/primaryDarkColor"
-            app:np_dividerType="underline"
-            app:np_fadingEdgeEnabled="true"
-            app:np_height="@dimen/number_picker_height"
             app:np_max="4"
             app:np_min="1"
-            app:np_orientation="horizontal"
-            app:np_value="2"
-            app:np_width="@dimen/number_picker_width" />
+            app:np_value="2"/>
 
     </LinearLayout>
 

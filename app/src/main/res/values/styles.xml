@@ -4,7 +4,29 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorSecondary">@color/secondaryColor</item>
         <item name="colorAccent">@color/secondaryColor</item>
+        <item name="colorError">@color/redColor</item>
+
+    </style>
+
+    <style name="SproutChip" parent="Widget.MaterialComponents.Chip.Entry">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:checkable">true</item>
+        <item name="chipBackgroundColor">@color/chip_background_color_selector</item>
+    </style>
+
+    <style name="SproutNumberPicker" parent="AppTheme">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="np_dividerColor">@color/primaryDarkColor</item>
+        <item name="np_dividerType">underline</item>
+        <item name="np_fadingEdgeEnabled">true</item>
+        <item name="np_width">@dimen/number_picker_width</item>
+        <item name="np_height">@dimen/number_picker_height</item>
+        <item name="np_orientation">horizontal</item>
 
     </style>
 

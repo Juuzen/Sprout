@@ -29,81 +29,52 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/mondayChip"
-                style="@style/Widget.MaterialComponents.Chip.Entry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checkable="true"
-                android:checked="false"
+                style="@style/SproutChip"
+                android:checked="true"
                 android:text="@string/mondayString"
-                android:textAlignment="center"
                 app:checkedIconEnabled="false"
-                app:chipBackgroundColor="@color/chip_color_bg"
                 app:closeIconEnabled="false" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/tuesdayChip"
-                style="@style/Widget.MaterialComponents.Chip.Entry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/SproutChip"
                 android:text="@string/tuesdayString"
-                android:textAlignment="center"
                 app:checkedIconEnabled="false"
-                app:chipBackgroundColor="@color/chip_color_bg"
                 app:closeIconEnabled="false" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/wednesdayChip"
-                style="@style/Widget.MaterialComponents.Chip.Entry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/SproutChip"
                 android:text="@string/wednesdayString"
-                android:textAlignment="center"
                 app:checkedIconEnabled="false"
-                app:chipBackgroundColor="@color/chip_color_bg"
                 app:closeIconEnabled="false" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/thursdayChip"
-                style="@style/Widget.MaterialComponents.Chip.Entry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/SproutChip"
                 android:text="@string/thursdayString"
-                android:textAlignment="center"
                 app:checkedIconEnabled="false"
-                app:chipBackgroundColor="@color/chip_color_bg"
                 app:closeIconEnabled="false" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/fridayChip"
-                style="@style/Widget.MaterialComponents.Chip.Entry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/SproutChip"
                 android:text="@string/fridayString"
-                android:textAlignment="center"
                 app:checkedIconEnabled="false"
-                app:chipBackgroundColor="@color/chip_color_bg"
                 app:closeIconEnabled="false" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/saturdayChip"
-                style="@style/Widget.MaterialComponents.Chip.Entry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/SproutChip"
                 android:text="@string/saturdayString"
-                android:textAlignment="center"
                 app:checkedIconEnabled="false"
-                app:chipBackgroundColor="@color/chip_color_bg"
                 app:closeIconEnabled="false" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/sundayChip"
-                style="@style/Widget.MaterialComponents.Chip.Entry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/SproutChip"
                 android:text="@string/sundayString"
-                android:textAlignment="center"
                 app:checkedIconEnabled="false"
-                app:chipBackgroundColor="@color/chip_color_bg"
                 app:closeIconEnabled="false" />
 
         </com.google.android.material.chip.ChipGroup>
