@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -38,10 +37,29 @@
         android:text="@string/infoClassicHabit"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
 
+    <LinearLayout
+        android:id="@+id/counterContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="visible">
 
-    <!-- Number Picker -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/numberOfRepetitionsString" />
 
-    <include layout="@layout/counter_layout" />
+        <com.shawnlin.numberpicker.NumberPicker
+            android:id="@+id/repetitionsPicker"
+            style="@style/SproutNumberPicker"
 
-    <!--               -->
+            app:np_max="59"
+            app:np_min="1"
+            app:np_value="3" />
+
+    </LinearLayout>
+
 </LinearLayout>

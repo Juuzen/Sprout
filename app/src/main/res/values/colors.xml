@@ -10,10 +10,11 @@
     <color name="secondaryTextColor">#000000</color>
 
 
+    <color name="transparentColor">@android:color/transparent</color>
     <color name="whiteColor">#FFFFFF</color>
     <color name="grayColor">#EEEEEE</color>
     <color name="blackColor">#000000</color>
     <color name="yellowColor">#fdc010</color>
-    <color name="redColor">#FF0000</color>
+    <color name="redColor">@color/design_default_color_error</color>
 
 </resources>
