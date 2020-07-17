@@ -2,44 +2,47 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:gravity="center"
     android:orientation="horizontal">
-
-
+    
     <ImageButton
         android:id="@+id/pauseButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/text_margin"
-        android:layout_marginRight="@dimen/text_margin"
+        android:background="?attr/selectableItemBackground"
 
-        android:state_selected="true"
+        android:contentDescription="@string/pauseContentDescription"
+        android:padding="10dp"
 
-        android:backgroundTint="@color/whiteColor"
-        android:tint="@color/notification_color_selector"
         android:src="@drawable/notification_icon_selector"
-        android:contentDescription="@string/pauseContentDescription" />
+        android:state_selected="true"
+        android:tint="@color/notification_color_selector" />
 
     <TextView
         android:id="@+id/contentTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:clickable="true"
         android:layout_marginLeft="@dimen/text_margin"
         android:layout_marginRight="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:focusable="true" />
+
+        android:layout_weight="1"
+        android:background="@drawable/reminders_box"
+        android:clickable="true"
+
+        android:focusable="true"
+        android:gravity="center"
+        android:padding="10dp"
+        android:textAppearance="?attr/textAppearanceListItem" />
 
     <ImageButton
         android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/text_margin"
-        android:layout_marginRight="@dimen/text_margin"
-        android:backgroundTint="@color/whiteColor"
-        android:tint="@color/redColor"
+        android:background="?attr/selectableItemBackground"
+        android:contentDescription="@string/deleteContentDescription"
+        android:padding="10dp"
+
         android:src="@drawable/clear_white_24dp"
-        android:contentDescription="@string/deleteContentDescription" />
+        android:tint="@color/redColor" />
 </LinearLayout>
