@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:orientation="vertical"
-    android:padding="@dimen/formPadding"
     tools:context=".fragment.SnoozeFragment">
 
     <LinearLayout
@@ -15,11 +14,8 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/snoozeString"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            style="@style/SproutTitleHorizontal"
+            android:text="@string/snoozeString"/>
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/snoozeSwitch"
@@ -30,8 +26,7 @@
     </LinearLayout>
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/SproutInfo"
         android:text="@string/snoozeInfoString" />
 
     <LinearLayout
