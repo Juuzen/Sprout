@@ -42,19 +42,20 @@
         android:id="@+id/bottomAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:backgroundTint="@color/primaryColor"
+        style="@style/SproutBottomAppBar"
         app:fabAlignmentMode="end"
-        app:fabCradleRoundedCornerRadius="30dp"
+        app:fabCradleRoundedCornerRadius="0dp"
+        app:fabCradleMargin="10dp"
+        app:hideOnScroll="true"
         app:menu="@menu/bottom_app_bar_menu"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:shapeAppearance="@style/FabDiamondOverlay"
         android:src="@drawable/ic_add_24"
         app:layout_anchor="@id/bottomAppBar"
-        app:maxImageSize="35dp"
         app:tint="@color/whiteColor" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
