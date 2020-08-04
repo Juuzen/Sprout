@@ -7,7 +7,28 @@
         <item name="colorSecondary">@color/secondaryColor</item>
         <item name="colorAccent">@color/secondaryColor</item>
         <item name="colorError">@color/redColor</item>
+        <item name="iconTint">@color/whiteColor</item>
 
+
+    </style>
+
+    <style name="SproutTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+    </style>
+
+    <style name="SproutTitleHorizontal" parent="SproutTitle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="SproutInfo">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Caption</item>
     </style>
 
     <style name="SproutChip" parent="Widget.MaterialComponents.Chip.Entry">
@@ -29,5 +50,20 @@
         <item name="np_orientation">horizontal</item>
 
     </style>
+
+
+    <style name="SproutBottomAppBar" parent="Widget.MaterialComponents.BottomAppBar">
+
+        <item name="android:layout_gravity">bottom</item>
+        <item name="android:backgroundTint">@color/primaryColor</item>
+        <item name="android:foregroundTint">@color/whiteColor</item>
+
+    </style>
+
+    <style name="FabDiamondOverlay" parent="">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
 
 </resources>

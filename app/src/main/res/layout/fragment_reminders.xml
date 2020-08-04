@@ -4,11 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingTop="6dp"
-    android:paddingBottom="@dimen/formPadding"
-    android:paddingLeft="@dimen/formPadding"
-    android:paddingRight="@dimen/formPadding">
+    android:orientation="vertical">
 
 
 
@@ -19,11 +15,8 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/notifyContentDescription"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            style="@style/SproutTitleHorizontal"
+            android:text="@string/notifyContentDescription" />
 
         <ImageButton
             android:id="@+id/addReminder"
@@ -35,7 +28,7 @@
             android:padding="10dp"
             android:contentDescription="@string/addReminderContentDescription"
             android:src="@drawable/ic_add_24"
-            android:tint="@color/blackColor" />
+            android:tint="@color/secondaryColor" />
 
     </LinearLayout>
 

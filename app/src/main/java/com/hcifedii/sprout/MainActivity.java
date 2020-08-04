@@ -10,9 +10,14 @@ import android.view.MenuItem;
 
 import android.widget.Toast;
 
+import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.shape.MaterialShapeDrawable;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String logcatTag = "Sprout - MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +34,11 @@ public class MainActivity extends AppCompatActivity {
 
             startActivity(intent);
         });
+
+
+        BottomAppBar bar = findViewById(R.id.bottomAppBar);
+        cutBottomAppEdge(bar);
+
 
     }
 
@@ -53,4 +63,24 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
+    /**
+     * @param bar
+     */
+    private void cutBottomAppEdge(BottomAppBar bar) {
+        BottomAppBarTopEdgeTreatment topEdge = new SproutBottomAppBarCutCornersTopEdge(
+                bar.getFabCradleMargin(),
+                bar.getFabCradleRoundedCornerRadius(),
+                bar.getCradleVerticalOffset());
+        MaterialShapeDrawable babBackground = (MaterialShapeDrawable) bar.getBackground();
+        //It requires 1.1.0-alpha10
+        babBackground.setShapeAppearanceModel(
+                babBackground.getShapeAppearanceModel()
+                        .toBuilder()
+                        .setTopEdge(topEdge)
+                        .build());
+    }
+
+
 }
