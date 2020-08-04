@@ -54,6 +54,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:shapeAppearance="@style/FabDiamondOverlay"
+        app:fabCustomSize="70dp"
+        app:maxImageSize="35dp"
         android:src="@drawable/ic_add_24"
         app:layout_anchor="@id/bottomAppBar"
         app:tint="@color/whiteColor" />
