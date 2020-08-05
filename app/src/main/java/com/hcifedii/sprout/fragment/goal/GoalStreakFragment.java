@@ -9,13 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hcifedii.sprout.R;
-import com.shawnlin.numberpicker.NumberPicker;
 
-public class GoalActionFragment extends Fragment implements GoalInterface {
+public class GoalStreakFragment extends Fragment implements GoalInterface {
 
-    NumberPicker actionPicker;
-
-    public GoalActionFragment() {
+    public GoalStreakFragment() {
         // Required empty public constructor
     }
 
@@ -28,15 +25,6 @@ public class GoalActionFragment extends Fragment implements GoalInterface {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_goal_action, container, false);
-
-        actionPicker = view.findViewById(R.id.goalMaxActionPicker);
-
-        return view;
-    }
-
-    @Override
-    public int getInt() {
-        return actionPicker.getValue();
+        return inflater.inflate(R.layout.fragment_goal_streak, container, false);
     }
 }

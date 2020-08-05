@@ -31,6 +31,7 @@ public class CreateHabitActivity extends AppCompatActivity {
     SnoozeFragment snoozeFragment;
     GoalFragment goalFragment;
 
+    // TODO: salvare lo stato di ogni fragment
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +56,10 @@ public class CreateHabitActivity extends AppCompatActivity {
             }
 
             String message = goalFragment.getGoalType().name();
+            //int data = goalFragment.getInt();
+            //message = message + data;
+
+            //goalFragment.getString();
 
             Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
         });
