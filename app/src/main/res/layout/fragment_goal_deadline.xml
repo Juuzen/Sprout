@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.goal.GoalDeadlineFragment">
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        style="@style/SproutTitle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Obiettivo - Data di scadenza" />
 
-</FrameLayout>
+    <TextView
+        style="@style/SproutInfo"
+        android:text="L'abitudine viene archiviata automaticamente quando viene superata la seguente data:" />
+
+
+</LinearLayout>

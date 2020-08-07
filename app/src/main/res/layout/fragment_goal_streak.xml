@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.goal.GoalStreakFragment">
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        style="@style/SproutTitle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Obiettivo - Serie da completare" />
 
-</FrameLayout>
+    <TextView
+        style="@style/SproutInfo"
+        android:text="Quando completi l'abitudine per un certo numero di giorni di fila, questa viene archiviata." />
+
+    <com.shawnlin.numberpicker.NumberPicker
+        android:id="@+id/goalStreakPicker"
+        style="@style/SproutNumberPicker"
+        android:layout_width="match_parent"
+        app:np_max="99"
+        app:np_min="1"
+        app:np_value="15"
+        app:np_wheelItemCount="5" />
+
+</LinearLayout>

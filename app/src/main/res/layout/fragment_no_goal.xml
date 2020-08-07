@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -11,19 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="Obiettivo - Azioni da completare" />
+        android:text="Nessun Obiettivo" />
 
     <TextView
         style="@style/SproutInfo"
-        android:text="@string/goalActionInfoString" />
-
-    <com.shawnlin.numberpicker.NumberPicker
-        android:id="@+id/goalMaxActionPicker"
-        style="@style/SproutNumberPicker"
-        android:layout_width="match_parent"
-        app:np_max="99"
-        app:np_min="1"
-        app:np_value="15"
-        app:np_wheelItemCount="5" />
+        android:text="L'abitudine non verrà mai archiviata." />
 
 </LinearLayout>
