@@ -43,21 +43,21 @@ public class CreateHabitActivity extends AppCompatActivity {
         ExtendedFloatingActionButton saveFab = findViewById(R.id.fabSaveButton);
         saveFab.setOnClickListener(view -> {
 
-            String title = titleFragment.getTitle();
+            //String title = titleFragment.getTitle();
 
-            if (title.length() > 0) {
+           // if (title.length() > 0) {
                 // Clear error message
-                titleFragment.setErrorMessage(null);
+             //   titleFragment.setErrorMessage(null);
 
                 // Save habit
 
-            } else {
-                titleFragment.setErrorMessage(getString(R.string.titleIsEmptyErrorString));
-            }
+            //} else {
+             //   titleFragment.setErrorMessage(getString(R.string.titleIsEmptyErrorString));
+            //}
 
-            String message = goalFragment.getGoalType().name();
-            //int data = goalFragment.getInt();
-            //message = message + data;
+            String message = ""; //goalFragment.getGoalType().name();
+            int data = goalFragment.getInt();
+            message = message + data;
 
             //goalFragment.getString();
 
@@ -71,7 +71,7 @@ public class CreateHabitActivity extends AppCompatActivity {
         //habitTypeFragment = (HabitTypeFragment) fragmentManager.findFragmentById(R.id.habitTypeFragment);
         //frequencyFragment = (FrequencyFragment) fragmentManager.findFragmentById(R.id.frequencyFragment);
         //remindersFragment = (RemindersFragment) fragmentManager.findFragmentById(R.id.reminderFragment);
-        snoozeFragment = (SnoozeFragment) fragmentManager.findFragmentById(R.id.snoozeFragment);
+        //snoozeFragment = (SnoozeFragment) fragmentManager.findFragmentById(R.id.snoozeFragment);
         goalFragment = (GoalFragment) fragmentManager.findFragmentById(R.id.goalFragment);
 
     }
