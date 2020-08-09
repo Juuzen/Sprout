@@ -11,8 +11,16 @@
         android:text="Deadline" />
 
     <TextView
+        android:layout_marginBottom="16dp"
         style="@style/SproutInfo"
         android:text="L'abitudine viene archiviata automaticamente quando viene superata la seguente data:" />
 
-
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/dateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:elevation="1dp"
+        android:text="Aggiungi una data"
+        android:textAllCaps="false" />
 </LinearLayout>

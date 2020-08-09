@@ -78,13 +78,14 @@
         android:id="@+id/fabSaveButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom|center_horizontal"
+        android:layout_margin="16dp"
         android:backgroundTint="@color/primaryColor"
         android:fitsSystemWindows="true"
         android:padding="16dp"
-        android:layout_margin="16dp"
         android:text="@string/saveFabString"
         android:textAlignment="center"
-        android:textColor="@color/whiteColor"
-        android:layout_gravity="end|bottom|center_horizontal"/>
+        android:textAllCaps="false"
+        android:textColor="@color/whiteColor" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

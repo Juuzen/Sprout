@@ -80,5 +80,6 @@
     <string name="goalActionInfoString">L’abitudine viene archiviata quando raggiungi il numero di azioni previste.</string>
     <string name="actionToCompleteSubtitle">Azioni</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="datePickerString">Seleziona una data</string>
 
 </resources>

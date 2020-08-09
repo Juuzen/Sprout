@@ -39,6 +39,8 @@ public class CreateHabitActivity extends AppCompatActivity {
 
         enableTopBackButton();
 
+        // TODO: il titolo non può contenere una stringa vuota
+
         // FAB - Floating Action Button
         ExtendedFloatingActionButton saveFab = findViewById(R.id.fabSaveButton);
         saveFab.setOnClickListener(view -> {
@@ -55,9 +57,9 @@ public class CreateHabitActivity extends AppCompatActivity {
              //   titleFragment.setErrorMessage(getString(R.string.titleIsEmptyErrorString));
             //}
 
-            String message = ""; //goalFragment.getGoalType().name();
+            String message = goalFragment.getGoalType().name();
             int data = goalFragment.getInt();
-            message = message + data;
+            message = message + " " + data;
 
             //goalFragment.getString();
 
