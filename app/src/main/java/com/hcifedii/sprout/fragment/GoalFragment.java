@@ -2,23 +2,34 @@ package com.hcifedii.sprout.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.lifecycle.Lifecycle;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Spinner;
 
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.hcifedii.sprout.GoalType;
+
 import com.hcifedii.sprout.R;
 import com.hcifedii.sprout.fragment.goal.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class GoalFragment extends Fragment {
 
-    GoalInterface goalInterface;
-    GoalType goalType = GoalType.NONE;
+    ViewPager2 cardViewPager;
+    ViewPagerFragmentAdapter adapter;
+
+    // Container for the fragment's references
+    Map<GoalType, GoalInterface> goalFragmentMap = new HashMap<>();
 
     public GoalFragment() {
         // Required empty public constructor
@@ -29,95 +40,157 @@ public class GoalFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * This method retrieves the data of this fragment, if there is some.
+     *
+     * @param savedInstanceState Bundle with the data.
+     */
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null) {
+
+            FragmentManager manager = getChildFragmentManager();
+
+            for (GoalType key : GoalType.values()) {
+                Fragment fragment = manager.getFragment(savedInstanceState, key.name());
+
+                // If there is an actual fragment saved with that name, then put it inside the map.
+                if (fragment != null)
+                    goalFragmentMap.put(key, (GoalInterface) fragment);
+            }
+        }
+    }
+
+    /**
+     * This method saves the data of this fragment.
+     *
+     * @param outState Bundle used to save the data.
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        FragmentManager manager = getChildFragmentManager();
+
+        // For each fragment inside the map, save it inside the outState
+        for (GoalType key : goalFragmentMap.keySet()) {
+            Fragment fragment = (Fragment) goalFragmentMap.get(key);
+
+            if (fragment != null && fragment.isAdded())
+                manager.putFragment(outState, key.name(), fragment);
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_goal, container, false);
 
-        Spinner goalSpinner = view.findViewById(R.id.goalSpinner);
-        goalSpinner.setOnItemSelectedListener(new GoalSpinnerListener());
+        // ViewPager2 set up
+        cardViewPager = view.findViewById(R.id.cardViewPager);
+        adapter = new ViewPagerFragmentAdapter(getChildFragmentManager(), getLifecycle());
+
+        cardViewPager.setAdapter(adapter);
+        cardViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+
+        TabLayout dots = view.findViewById(R.id.viewPagerDots);
+        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(dots, cardViewPager, true,
+                (tab, position) -> {
+                    // position of the current tab and that tab
+                });
+        tabLayoutMediator.attach();
 
         return view;
     }
 
     public GoalType getGoalType() {
-        return goalType;
+        return getGoalTypeByPosition(cardViewPager.getCurrentItem());
+    }
+
+    private GoalType getGoalTypeByPosition(int position) {
+        switch (position) {
+            case 0:
+                return GoalType.NONE;
+            case 1:
+                return GoalType.ACTION;
+            case 2:
+                return GoalType.DEADLINE;
+            case 3:
+                return GoalType.STREAK;
+        }
+        return GoalType.NONE;
     }
 
     // Return the data from the fragments
-    public int getInt(){
-        if(goalInterface != null)
-            return goalInterface.getInt();
+    public int getInt() {
+
+        GoalType goalType = getGoalTypeByPosition(cardViewPager.getCurrentItem());
+        GoalInterface fragment = goalFragmentMap.get(goalType);
+
+        if (fragment != null)
+            return fragment.getInt();
 
         return -1;
     }
 
-    public String getString(){
-        if(goalInterface != null)
-            return goalInterface.getString();
+    public String getString() {
+
+        GoalType goalType = getGoalTypeByPosition(cardViewPager.getCurrentItem());
+        GoalInterface fragment = goalFragmentMap.get(goalType);
+
+        if (fragment != null)
+            return fragment.getString();
 
         return null;
     }
 
-    
-    private class GoalSpinnerListener implements AdapterView.OnItemSelectedListener {
 
+    private class ViewPagerFragmentAdapter extends FragmentStateAdapter {
+
+        public ViewPagerFragmentAdapter(@NonNull FragmentManager fragmentManager,
+                                        @NonNull Lifecycle lifecycle) {
+            super(fragmentManager, lifecycle);
+        }
+
+        /**
+         * This method create a new Fragment or, if it already exists, recycle the old one.
+         *
+         * @param position Position of the fragment inside the ViewPager2.
+         * @return Fragment The fragment that the ViewPager2 has to show.
+         */
+        @NonNull
         @Override
-        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        public Fragment createFragment(int position) {
 
-            Fragment fragment = null;
+            Fragment goalFragment = null;
 
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-
-            switch (i) {
+            switch (position) {
                 case 0:
-                    // NONE. No layout is shown
-                    if(goalInterface != null){
-                        // Delete the fragment, if there is one
-                        transaction.remove((Fragment) goalInterface);
-                    }
-
-                    goalType = GoalType.NONE;
+                    goalFragment = new NoGoalFragment();
+                    goalFragmentMap.put(GoalType.NONE, (GoalInterface) goalFragment);
                     break;
                 case 1:
-                    // ACTION
-                    fragment = new GoalActionFragment();
-                    transaction.replace(R.id.goalFragmentContainer, fragment);
-
-                    goalType = GoalType.ACTION;
-
+                    goalFragment = new GoalActionFragment();
+                    goalFragmentMap.put(GoalType.ACTION, (GoalInterface) goalFragment);
                     break;
                 case 2:
-                    // DEADLINE
-                    fragment = new GoalDeadlineFragment();
-                    transaction.replace(R.id.goalFragmentContainer, fragment);
-
-                    //date
-                    goalType = GoalType.DEADLINE;
-
+                    goalFragment = new GoalDeadlineFragment();
+                    goalFragmentMap.put(GoalType.DEADLINE, (GoalInterface) goalFragment);
                     break;
                 case 3:
-                    // STREAK
-                    fragment = new GoalStreakFragment();
-                    transaction.replace(R.id.goalFragmentContainer, fragment);
-
-                    goalType = GoalType.STREAK;
-
-                    // Nel layout, mettere sotto il picker "giorni"
-                    break;
-                default:
+                    goalFragment = new GoalStreakFragment();
+                    goalFragmentMap.put(GoalType.STREAK, (GoalInterface) goalFragment);
                     break;
             }
-            // Apply changes
-            transaction.commit();
-            goalInterface = (GoalInterface) fragment;
+            return goalFragment;
         }
 
         @Override
-        public void onNothingSelected(AdapterView<?> adapterView) {
-            // Do nothing
+        public int getItemCount() {
+            return 4;
         }
     }
 
