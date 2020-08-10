@@ -2,6 +2,8 @@ package com.hcifedii.sprout.fragment.goal;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -15,6 +17,8 @@ public class GoalActionFragment extends Fragment implements GoalInterface {
 
     NumberPicker actionPicker;
 
+    private static final String ACTION_PICKER_VALUE_KEY = "actionVal";
+
     public GoalActionFragment() {
         // Required empty public constructor
     }
@@ -22,6 +26,23 @@ public class GoalActionFragment extends Fragment implements GoalInterface {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            int value = savedInstanceState.getInt(ACTION_PICKER_VALUE_KEY);
+            actionPicker.setValue(value);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(ACTION_PICKER_VALUE_KEY, actionPicker.getValue());
     }
 
     @Override

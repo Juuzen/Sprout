@@ -42,6 +42,7 @@ public class GoalFragment extends Fragment {
 
     /**
      * This method retrieves the data of this fragment, if there is some.
+     *
      * @param savedInstanceState Bundle with the data.
      */
     @Override
@@ -64,6 +65,7 @@ public class GoalFragment extends Fragment {
 
     /**
      * This method saves the data of this fragment.
+     *
      * @param outState Bundle used to save the data.
      */
     @Override
@@ -100,9 +102,6 @@ public class GoalFragment extends Fragment {
                     // position of the current tab and that tab
                 });
         tabLayoutMediator.attach();
-
-
-
 
         return view;
     }
@@ -158,6 +157,7 @@ public class GoalFragment extends Fragment {
 
         /**
          * This method create a new Fragment or, if it already exists, recycle the old one.
+         *
          * @param position Position of the fragment inside the ViewPager2.
          * @return Fragment The fragment that the ViewPager2 has to show.
          */

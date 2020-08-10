@@ -2,6 +2,7 @@ package com.hcifedii.sprout.fragment.goal;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -22,16 +23,42 @@ import javax.annotation.Nullable;
 
 public class GoalDeadlineFragment extends Fragment implements GoalInterface {
 
+    private long timeInMills;
+    private String timeString;
+
+    private static final String TIME_IN_MILLS_KEY = "mills";
+    private static final String TIME_STRING_KEY = "millsString";
+
+    private MaterialButton dateButton;
+
     public GoalDeadlineFragment() {
         // Required empty public constructor
     }
 
-    private long timeInMills;
-    private String timeString;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onActivityCreated(@androidx.annotation.Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            timeInMills = savedInstanceState.getLong(TIME_IN_MILLS_KEY);
+            timeString = savedInstanceState.getString(TIME_STRING_KEY);
+
+            if(timeString != null)
+                dateButton.setText(timeString);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putLong(TIME_IN_MILLS_KEY, timeInMills);
+        outState.putString(TIME_STRING_KEY, timeString);
     }
 
     @Override
@@ -40,7 +67,7 @@ public class GoalDeadlineFragment extends Fragment implements GoalInterface {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_goal_deadline, container, false);
 
-        MaterialButton dateButton = view.findViewById(R.id.dateButton);
+        dateButton = view.findViewById(R.id.dateButton);
 
         dateButton.setOnClickListener(view1 -> {
             MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
@@ -79,7 +106,8 @@ public class GoalDeadlineFragment extends Fragment implements GoalInterface {
     }
 
     @Override
-    public @Nullable String getString() {
+    public @Nullable
+    String getString() {
         return timeString;
     }
 }

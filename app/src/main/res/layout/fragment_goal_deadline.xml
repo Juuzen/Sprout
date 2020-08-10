@@ -21,6 +21,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:elevation="1dp"
-        android:text="Aggiungi una data"
+        android:text="@string/goal_button_picker_string"
         android:textAllCaps="false" />
 </LinearLayout>

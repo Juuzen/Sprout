@@ -2,6 +2,8 @@ package com.hcifedii.sprout.fragment.goal;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -13,7 +15,10 @@ import com.shawnlin.numberpicker.NumberPicker;
 
 public class GoalStreakFragment extends Fragment implements GoalInterface {
 
-    NumberPicker streakPicker;
+    private NumberPicker streakPicker;
+
+    private static final String STREAK_PICKER_VALUE_KEY = "streakVal";
+
     public GoalStreakFragment() {
         // Required empty public constructor
     }
@@ -22,6 +27,24 @@ public class GoalStreakFragment extends Fragment implements GoalInterface {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            int value = savedInstanceState.getInt(STREAK_PICKER_VALUE_KEY);
+            streakPicker.setValue(value);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(STREAK_PICKER_VALUE_KEY, streakPicker.getValue());
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
