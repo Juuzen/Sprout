@@ -45,7 +45,12 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textAlignment">center</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:checkable">true</item>
+        <item name="textStartPadding">6dp</item>
+        <item name="textEndPadding">6dp</item>
+        <item name="elevation">2dp</item>
+        <item name="textAllCaps">true</item>
         <item name="chipBackgroundColor">@color/chip_background_color_selector</item>
     </style>
 

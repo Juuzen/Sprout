@@ -2,6 +2,8 @@ package com.hcifedii.sprout.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -19,6 +21,9 @@ public class SnoozeFragment extends Fragment {
     SwitchMaterial switchMaterial;
     NumberPicker snoozePicker;
 
+    private static final String IS_SWITCH_ENABLED_KEY = "switchMaterial";
+    private static final String SNOOZE_PICKER_VALUE_KEY = "snoozeVal";
+
     public SnoozeFragment() {
         // Required empty public constructor
     }
@@ -26,7 +31,31 @@ public class SnoozeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            boolean isEnabled = savedInstanceState.getBoolean(IS_SWITCH_ENABLED_KEY);
+            int value = savedInstanceState.getInt(SNOOZE_PICKER_VALUE_KEY);
+
+            switchMaterial.setSelected(isEnabled);
+            snoozePicker.setValue(value);
+
+            LinearLayout container = view.findViewById(R.id.snoozePickerContainer);
+
+            container.setVisibility(isEnabled ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putBoolean(IS_SWITCH_ENABLED_KEY, switchMaterial.isSelected());
+        outState.putInt(SNOOZE_PICKER_VALUE_KEY, snoozePicker.getValue());
     }
 
     @Override

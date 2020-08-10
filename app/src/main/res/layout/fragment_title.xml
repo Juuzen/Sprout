@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:hint="@string/titleHintString"
+    android:paddingTop="16dp"
+    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
     app:counterEnabled="true"
     app:counterMaxLength="30"
     app:endIconMode="clear_text"
@@ -14,7 +16,6 @@
         android:id="@+id/titleField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:inputType="text"
         android:maxLength="30"
         android:singleLine="true" />
