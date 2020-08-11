@@ -27,7 +27,6 @@ public class RemindersFragment extends Fragment {
 
     private static final String REMINDERS_LIST_KEY = "reminders_list";
 
-
     public RemindersFragment() {
     }
 

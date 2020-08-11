@@ -23,16 +23,13 @@
                 android:layout_height="wrap_content"
                 tools:layout="@layout/fragment_title" />
 
-            <!--
-                        <fragment
-                            android:id="@+id/habitTypeFragment"
-                            android:name="com.hcifedii.sprout.fragment.HabitTypeFragment"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            tools:layout="@layout/fragment_habit_type" />
+            <fragment
+                android:id="@+id/habitTypeFragment"
+                android:name="com.hcifedii.sprout.fragment.HabitTypeFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_habit_type" />
 
-                        <include layout="@layout/divider_layout" />
-            -->
             <fragment
                 android:id="@+id/frequencyFragment"
                 android:name="com.hcifedii.sprout.fragment.FrequencyFragment"

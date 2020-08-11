@@ -19,14 +19,11 @@
     <string name="titleHintString">Cosa vuoi monitorare?</string>
 
     <string name="infoClassicHabit">
-        Quando tieni traccia di un’abitudine classica,
-        dovrai inserire manualmente i tuoi risultati.
-        Più risultati otterrai, più aumenterai il valore della tua serie!
+        Con questa tipologia puoi tenere traccia delle abitudini che devono essere completate una sola volta al giorno.
     </string>
 
-    <string name="infoCounterHabit">
-        Quando tieni traccia di un’abitudine contatore, dovrai completare ogni giorno il numero di
-        azioni che hai previsto (come ad esempio bere 4 bicchieri d’acqua al giorno).
+    <string name="infoCounterHabit"> Se hai bisogno di ripetere un\'abitudine più volte al giorno
+        (come ad esempio bere 4 bicchieri d’acqua).
     </string>
 
     <string name="frequencyString">Frequenza</string>
@@ -66,7 +63,7 @@
     </string>
 
     <string name="maxSnoozesString">Rinvii massimi</string>
-    <string name="numberOfRepetitionsString">Numero ripetizioni</string>
+    <string name="numberOfRepetitionsString">Ripetizioni</string>
 
     <string name="goalString">Tipo di obiettivo</string>
     <string-array name="goalTypeString">
@@ -82,6 +79,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="datePickerString">Seleziona una data</string>
     <string name="goal_button_picker_string">Aggiungi una data</string>
-    <string name="reminder_info_string">Con le notifiche non ti dimenticherai della tua nuova abitudine.</string>
+    <string name="reminder_info_string">Con le notifiche non ti dimenticherai dell\'abitudine.</string>
+    <string name="counter_habit_subtitle">Abitudine a \"Contatore\"</string>
 
 </resources>

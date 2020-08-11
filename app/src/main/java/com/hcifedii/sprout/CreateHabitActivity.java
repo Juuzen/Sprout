@@ -72,7 +72,7 @@ public class CreateHabitActivity extends AppCompatActivity {
         titleFragment = (TitleFragment) fragmentManager.findFragmentById(R.id.titleFragment);
         //habitTypeFragment = (HabitTypeFragment) fragmentManager.findFragmentById(R.id.habitTypeFragment);
         frequencyFragment = (FrequencyFragment) fragmentManager.findFragmentById(R.id.frequencyFragment);
-        //remindersFragment = (RemindersFragment) fragmentManager.findFragmentById(R.id.reminderFragment);
+        remindersFragment = (RemindersFragment) fragmentManager.findFragmentById(R.id.reminderFragment);
         snoozeFragment = (SnoozeFragment) fragmentManager.findFragmentById(R.id.snoozeFragment);
         goalFragment = (GoalFragment) fragmentManager.findFragmentById(R.id.goalFragment);
 
