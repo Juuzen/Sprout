@@ -226,8 +226,12 @@ public class RemindersAdapter
             // Set up delete button
             deleteButton.setOnClickListener(deleteView -> {
 
-                reminders.remove(getAdapterPosition());
-                notifyItemRemoved(getAdapterPosition());
+                int position = getAdapterPosition();
+
+                if (position != RecyclerView.NO_POSITION) {
+                    reminders.remove(position);
+                    notifyItemRemoved(position);
+                }
             });
 
             // Set up pause button
@@ -235,11 +239,13 @@ public class RemindersAdapter
 
                 int position = getAdapterPosition();
                 // Save the new state inside the reminder list
-                Reminder reminder = reminders.get(position);
-                boolean isPaused = !reminder.isPaused();
+                if (position != RecyclerView.NO_POSITION) {
+                    Reminder reminder = reminders.get(position);
+                    boolean isPaused = !reminder.isPaused();
 
-                reminder.setPaused(isPaused);
-                notifyItemChanged(position);
+                    reminder.setPaused(isPaused);
+                    notifyItemChanged(position);
+                }
             });
 
         }

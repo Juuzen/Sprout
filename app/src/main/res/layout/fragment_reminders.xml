@@ -1,45 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/SproutTitleHorizontal"
+                android:text="@string/reminder_title_string" />
+
+            <ImageButton
+                android:id="@+id/addReminder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/add_reminder_button_content_description"
+                android:padding="10dp"
+                android:src="@drawable/ic_add_24"
+                android:tint="@color/secondaryDarkColor" />
+
+        </LinearLayout>
 
         <TextView
-            style="@style/SproutTitleHorizontal"
-            android:text="@string/notifyContentDescription" />
-
-        <ImageButton
-            android:id="@+id/addReminder"
-            android:layout_width="wrap_content"
+            style="@style/SproutInfo"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
+            android:layout_marginBottom="8dp"
+            android:text="@string/reminder_info_string" />
 
-            android:background="?attr/selectableItemBackground"
-            android:padding="10dp"
-            android:contentDescription="@string/addReminderContentDescription"
-            android:src="@drawable/ic_add_24"
-            android:tint="@color/secondaryColor" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/remindersRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true" />
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/remindersRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:clickable="true"
-        android:focusable="true" />
-
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>
 
 
