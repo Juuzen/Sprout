@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateHabitActivity"
     android:paddingLeft="@dimen/formOuterSpace"
-    android:paddingRight="@dimen/formOuterSpace">
+    android:paddingRight="@dimen/formOuterSpace"
+    tools:context=".CreateHabitActivity">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 tools:layout="@layout/fragment_frequency" />
 
-<!--
+
             <fragment
                 android:id="@+id/reminderFragment"
                 android:name="com.hcifedii.sprout.fragment.RemindersFragment"
@@ -48,15 +48,13 @@
                 android:layout_height="wrap_content"
                 tools:layout="@layout/fragment_reminders" />
 
-            <include layout="@layout/divider_layout" />
--->
             <fragment
                 android:id="@+id/snoozeFragment"
+                android:name="com.hcifedii.sprout.fragment.SnoozeFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.hcifedii.sprout.fragment.SnoozeFragment"
-                tools:layout="@layout/fragment_snooze"/>
-            
+                tools:layout="@layout/fragment_snooze" />
+
             <fragment
                 android:id="@+id/goalFragment"
                 android:name="com.hcifedii.sprout.fragment.GoalFragment"
