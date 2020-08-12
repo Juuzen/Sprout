@@ -16,7 +16,7 @@
 
         <TextView
             style="@style/SproutTitle"
-            android:text="@string/frequencyString"/>
+            android:text="@string/frequency_title"/>
 
         <HorizontalScrollView
             android:layout_width="match_parent"

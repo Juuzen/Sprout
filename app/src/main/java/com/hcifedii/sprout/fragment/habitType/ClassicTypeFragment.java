@@ -29,7 +29,7 @@ public class ClassicTypeFragment extends Fragment implements HabitTypeInterface 
     }
 
     @Override
-    public int getInt() {
+    public int getRepetitions() {
         return 1;
     }
 }

@@ -21,7 +21,7 @@
 
             <TextView
                 style="@style/SproutTitleHorizontal"
-                android:text="@string/reminder_title_string" />
+                android:text="@string/reminder_title" />
 
             <ImageButton
                 android:id="@+id/addReminder"
@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="@string/reminder_info_string" />
+            android:text="@string/reminder_info" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/remindersRecyclerView"

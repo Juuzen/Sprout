@@ -9,11 +9,11 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
         style="@style/SproutBoldSubtitle"
-        android:text="Streak" />
+        android:text="@string/goal_streak_subtitle" />
 
     <TextView
         style="@style/SproutInfo"
-        android:text="Quando completi l'abitudine per un certo numero di giorni di fila, questa viene archiviata." />
+        android:text="@string/goal_streak_info" />
 
     <com.shawnlin.numberpicker.NumberPicker
         android:id="@+id/goalStreakPicker"

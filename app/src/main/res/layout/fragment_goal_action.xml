@@ -9,11 +9,11 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
         style="@style/SproutBoldSubtitle"
-        android:text="Azioni da completare"/>
+        android:text="@string/goal_action_subtitle"/>
 
     <TextView
         style="@style/SproutInfo"
-        android:text="@string/goalActionInfoString" />
+        android:text="@string/goal_action_info" />
 
     <com.shawnlin.numberpicker.NumberPicker
         android:id="@+id/goalMaxActionPicker"

@@ -19,7 +19,7 @@
 
             <TextView
                 style="@style/SproutTitleHorizontal"
-                android:text="@string/snoozeString" />
+                android:text="@string/snooze_title" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/snoozeSwitch"
@@ -32,7 +32,7 @@
         <TextView
             style="@style/SproutInfo"
             android:layout_marginBottom="16dp"
-            android:text="@string/snoozeInfoString" />
+            android:text="@string/snooze_info" />
 
         <LinearLayout
             android:id="@+id/snoozePickerContainer"
@@ -47,7 +47,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/maxSnoozesString"
+                android:text="@string/max_snoozes_subtitle"
                 android:textStyle="bold" />
 
             <com.shawnlin.numberpicker.NumberPicker
@@ -61,6 +61,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
 </com.google.android.material.card.MaterialCardView>

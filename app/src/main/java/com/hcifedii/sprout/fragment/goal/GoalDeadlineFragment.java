@@ -77,7 +77,7 @@ public class GoalDeadlineFragment extends Fragment implements GoalInterface {
             calendarConstraint.setValidator(DateValidatorPointForward.now());
 
             // Set date picker's title and default date
-            builder.setTitleText(R.string.datePickerString);
+            builder.setTitleText(R.string.deadline_picker_button);
 
             long timeInMills = Calendar.getInstance().getTimeInMillis();
             this.timeInMills = timeInMills;

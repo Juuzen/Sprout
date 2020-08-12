@@ -9,29 +9,17 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.hcifedii.sprout.GoalType;
 import com.hcifedii.sprout.HabitType;
 import com.hcifedii.sprout.R;
-import com.hcifedii.sprout.fragment.goal.GoalActionFragment;
-import com.hcifedii.sprout.fragment.goal.GoalDeadlineFragment;
-import com.hcifedii.sprout.fragment.goal.GoalInterface;
-import com.hcifedii.sprout.fragment.goal.GoalStreakFragment;
-import com.hcifedii.sprout.fragment.goal.NoGoalFragment;
 import com.hcifedii.sprout.fragment.habitType.ClassicTypeFragment;
 import com.hcifedii.sprout.fragment.habitType.CounterTypeFragment;
 import com.hcifedii.sprout.fragment.habitType.HabitTypeInterface;
-import com.shawnlin.numberpicker.NumberPicker;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,13 +27,8 @@ import java.util.Map;
 public class HabitTypeFragment extends Fragment {
 
     private ViewPager2 habitTypeViewPager;
-    private ViewPagerFragmentAdapter adapter;
 
     Map<HabitType, HabitTypeInterface> habitTypeFragmentMap = new HashMap<>();
-
-    private static final String logcatTag = "Sprout - HabitTypeFragment";
-    private HabitType habitType = HabitType.Classic;
-    private int repetitions = 1;
 
     public HabitTypeFragment() {
         // Required empty public constructor
@@ -57,6 +40,38 @@ public class HabitTypeFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null) {
+
+            FragmentManager manager = getChildFragmentManager();
+
+            for (HabitType key : HabitType.values()) {
+                Fragment fragment = manager.getFragment(savedInstanceState, key.name());
+
+                // If there is an actual fragment saved with that name, then put it inside the map.
+                if (fragment != null)
+                    habitTypeFragmentMap.put(key, (HabitTypeInterface) fragment);
+            }
+        }
+    }
+
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        FragmentManager manager = getChildFragmentManager();
+
+        // For each fragment inside the map, save it inside the outState
+        for (HabitType key : habitTypeFragmentMap.keySet()) {
+            Fragment fragment = (Fragment) habitTypeFragmentMap.get(key);
+
+            if (fragment != null && fragment.isAdded())
+                manager.putFragment(outState, key.name(), fragment);
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -64,7 +79,7 @@ public class HabitTypeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_habit_type, container, false);
 
         habitTypeViewPager = view.findViewById(R.id.habitTypeViewPager);
-        adapter = new ViewPagerFragmentAdapter(getChildFragmentManager(), getLifecycle());
+        ViewPagerFragmentAdapter adapter = new ViewPagerFragmentAdapter(getChildFragmentManager(), getLifecycle());
 
         habitTypeViewPager.setAdapter(adapter);
         habitTypeViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
@@ -77,17 +92,33 @@ public class HabitTypeFragment extends Fragment {
                 });
         tabLayoutMediator.attach();
 
-
-
         return view;
     }
 
     public int getRepetitions() {
-        return repetitions;
+
+        HabitType habitType = getHabitTypeByPosition(habitTypeViewPager.getCurrentItem());
+        HabitTypeInterface fragment = habitTypeFragmentMap.get(habitType);
+
+        if (fragment != null) {
+            return fragment.getRepetitions();
+        }
+        return 1;
     }
 
-    public HabitType getHabitType(){
-        return habitType;
+    public HabitType getHabitType() {
+        return getHabitTypeByPosition(habitTypeViewPager.getCurrentItem());
+    }
+
+    private HabitType getHabitTypeByPosition(int position) {
+
+        switch (position) {
+            case 0:
+                return HabitType.Classic;
+            case 1:
+                return HabitType.Counter;
+        }
+        return HabitType.Classic;
     }
 
     private class ViewPagerFragmentAdapter extends FragmentStateAdapter {
@@ -127,6 +158,5 @@ public class HabitTypeFragment extends Fragment {
             return 2;
         }
     }
-
 
 }

@@ -18,7 +18,7 @@
             style="@style/SproutTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Scegli un obiettivo" />
+            android:text="@string/goal_fragment_title" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/cardViewPager"

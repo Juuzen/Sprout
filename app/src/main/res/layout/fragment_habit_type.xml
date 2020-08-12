@@ -18,7 +18,7 @@
             style="@style/SproutTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/habitTypeString" />
+            android:text="@string/habit_type_title" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/habitTypeViewPager"

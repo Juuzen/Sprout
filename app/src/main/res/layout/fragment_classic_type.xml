@@ -10,12 +10,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
-        android:text="Abitudine Classica" />
+        android:text="@string/classic_habit_subtitle" />
 
     <TextView
         style="@style/SproutInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/infoClassicHabit" />
+        android:text="@string/classic_habit_info" />
 
 </LinearLayout>

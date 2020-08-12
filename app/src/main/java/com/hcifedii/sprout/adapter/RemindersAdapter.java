@@ -27,7 +27,7 @@ public class RemindersAdapter
 
         private int hours;
         private int minutes;
-        private boolean isPaused;
+        private boolean isActive = true;
 
         private boolean is24HourFormat;
 
@@ -52,12 +52,12 @@ public class RemindersAdapter
             this.minutes = minutes;
         }
 
-        public boolean isPaused() {
-            return isPaused;
+        public boolean isActive() {
+            return isActive;
         }
 
-        public void setPaused(boolean paused) {
-            isPaused = paused;
+        public void setActive(boolean active) {
+            isActive = active;
         }
 
         public void is24HourFormat(boolean is24Hour) {
@@ -110,8 +110,13 @@ public class RemindersAdapter
             return time.toString();
         }
 
-    }
+        @NonNull
+        @Override
+        public String toString() {
+            return "[" + hours + ":" + minutes + ", isActive=" + isActive + ", is24Hour=" + is24HourFormat + "]";
+        }
 
+    }
 
     public RemindersAdapter(List<Reminder> reminders) {
         this.reminders = reminders;
@@ -172,7 +177,7 @@ public class RemindersAdapter
 
         boolean is24HourFormat = DateFormat.is24HourFormat(holder.context);
         holder.content.setText(Reminder.buildFormattedTimeString(reminder.getHours(), reminder.getMinutes(), is24HourFormat));
-        holder.pauseButton.setSelected(reminder.isPaused());
+        holder.pauseButton.setSelected(reminder.isActive());
     }
 
     // Return the size of the list
@@ -241,9 +246,9 @@ public class RemindersAdapter
                 // Save the new state inside the reminder list
                 if (position != RecyclerView.NO_POSITION) {
                     Reminder reminder = reminders.get(position);
-                    boolean isPaused = !reminder.isPaused();
+                    boolean isActive = !reminder.isActive();
 
-                    reminder.setPaused(isPaused);
+                    reminder.setActive(isActive);
                     notifyItemChanged(position);
                 }
             });

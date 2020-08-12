@@ -37,7 +37,6 @@
                 android:layout_height="wrap_content"
                 tools:layout="@layout/fragment_frequency" />
 
-
             <fragment
                 android:id="@+id/reminderFragment"
                 android:name="com.hcifedii.sprout.fragment.RemindersFragment"
@@ -74,7 +73,7 @@
         android:backgroundTint="@color/primaryColor"
         android:fitsSystemWindows="true"
         android:padding="16dp"
-        android:text="@string/saveFabString"
+        android:text="@string/save_fab"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/whiteColor" />

@@ -8,12 +8,12 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
         style="@style/SproutBoldSubtitle"
-        android:text="Deadline" />
+        android:text="@string/goal_deadline_subtitle" />
 
     <TextView
         android:layout_marginBottom="16dp"
         style="@style/SproutInfo"
-        android:text="L'abitudine viene archiviata automaticamente quando viene superata la seguente data:" />
+        android:text="@string/goal_deadline_info" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/dateButton"
@@ -21,6 +21,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:elevation="1dp"
-        android:text="@string/goal_button_picker_string"
+        android:text="@string/goal_deadline_picker"
         android:textAllCaps="false" />
 </LinearLayout>
