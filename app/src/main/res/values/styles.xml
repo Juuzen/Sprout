@@ -28,17 +28,16 @@
         <item name="android:layout_weight">1</item>
     </style>
 
-    <style name="SproutBoldSubtitle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Caption</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
     <style name="SproutInfo">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Caption</item>
+    </style>
+
+    <style name="SproutBoldSubtitle" parent="SproutInfo">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="SproutChip" parent="Widget.MaterialComponents.Chip.Entry">
@@ -75,6 +74,7 @@
 
     </style>
 
+    <!-- FAB MainActivity -->
     <style name="FabDiamondOverlay" parent="">
         <item name="cornerFamily">cut</item>
         <item name="cornerSize">8dp</item>
