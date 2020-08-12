@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateHabitActivity"
     android:paddingLeft="@dimen/formOuterSpace"
-    android:paddingRight="@dimen/formOuterSpace">
+    android:paddingRight="@dimen/formOuterSpace"
+    tools:context=".CreateHabitActivity">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -16,14 +16,12 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <!--<fragment
+            <fragment
                 android:id="@+id/titleFragment"
                 android:name="com.hcifedii.sprout.fragment.TitleFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:layout="@layout/fragment_title" />
-
-            <include layout="@layout/divider_layout" />
 
             <fragment
                 android:id="@+id/habitTypeFragment"
@@ -32,16 +30,12 @@
                 android:layout_height="wrap_content"
                 tools:layout="@layout/fragment_habit_type" />
 
-            <include layout="@layout/divider_layout" />
-
             <fragment
                 android:id="@+id/frequencyFragment"
                 android:name="com.hcifedii.sprout.fragment.FrequencyFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:layout="@layout/fragment_frequency" />
-
-            <include layout="@layout/divider_layout" />
 
             <fragment
                 android:id="@+id/reminderFragment"
@@ -50,24 +44,20 @@
                 android:layout_height="wrap_content"
                 tools:layout="@layout/fragment_reminders" />
 
-            <include layout="@layout/divider_layout" />
--->
             <fragment
                 android:id="@+id/snoozeFragment"
+                android:name="com.hcifedii.sprout.fragment.SnoozeFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.hcifedii.sprout.fragment.SnoozeFragment"
-                tools:layout="@layout/fragment_snooze"/>
+                tools:layout="@layout/fragment_snooze" />
 
-            <include layout="@layout/divider_layout" />
-            
             <fragment
                 android:id="@+id/goalFragment"
                 android:name="com.hcifedii.sprout.fragment.GoalFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="100dp"
-                tools:layout="@layout/fragment_goal_action" />
+                tools:layout="@layout/fragment_goal" />
 
         </LinearLayout>
 
@@ -83,7 +73,7 @@
         android:backgroundTint="@color/primaryColor"
         android:fitsSystemWindows="true"
         android:padding="16dp"
-        android:text="@string/saveFabString"
+        android:text="@string/save_fab"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/whiteColor" />

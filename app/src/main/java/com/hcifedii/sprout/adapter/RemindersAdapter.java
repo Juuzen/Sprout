@@ -3,7 +3,7 @@ package com.hcifedii.sprout.adapter;
 import android.app.TimePickerDialog;
 
 import android.content.Context;
-import android.provider.CalendarContract;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.hcifedii.sprout.R;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class RemindersAdapter
@@ -22,11 +23,13 @@ public class RemindersAdapter
 
     private List<Reminder> reminders;
 
-    public static class Reminder {
+    public static class Reminder implements Serializable {
 
         private int hours;
         private int minutes;
-        private boolean isPaused;
+        private boolean isActive = true;
+
+        private boolean is24HourFormat;
 
         public Reminder(int hours, int minutes) {
             this.hours = hours;
@@ -49,26 +52,71 @@ public class RemindersAdapter
             this.minutes = minutes;
         }
 
-        public boolean isPaused() {
-            return isPaused;
+        public boolean isActive() {
+            return isActive;
         }
 
-        public void setPaused(boolean paused) {
-            isPaused = paused;
+        public void setActive(boolean active) {
+            isActive = active;
         }
 
-        public static String buildFormattedTimeString(int hours, int minutes) {
+        public void is24HourFormat(boolean is24Hour) {
+            this.is24HourFormat = is24Hour;
+        }
 
-            StringBuilder time = new StringBuilder().append(hours).append(':');
-            // 0 minute need an extra zero
-            if (minutes == 0)
-                time.append(0);
+        public static String buildFormattedTimeString(int hour, int minutes, boolean is24HourFormat) {
+
+            if (is24HourFormat)
+                return get24HourFormattedString(hour, minutes);
+
+            return get12HourFormattedString(hour, minutes);
+        }
+
+        private static String get24HourFormattedString(int hours, int minutes) {
+
+            StringBuilder time = new StringBuilder();
+
+            time.append(hours);
+
+            time.append(':');
+
+            if (minutes < 10) time.append('0');
 
             time.append(minutes);
+
             return time.toString();
         }
-    }
 
+        private static String get12HourFormattedString(int hour, int minutes) {
+
+            StringBuilder time = new StringBuilder();
+            String timeSet;
+
+            if (hour >= 12) timeSet = "PM";
+            else if (hour == 0) timeSet = "AM";
+            else timeSet = "AM";
+
+            if (hour > 12) time.append(hour - 12);
+            else if (hour == 0) time.append(hour + 12);
+            else time.append(hour);
+
+            time.append(':');
+
+            if (minutes < 10) time.append('0');
+
+            time.append(minutes);
+            time.append(' ').append(timeSet);
+
+            return time.toString();
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return "[" + hours + ":" + minutes + ", isActive=" + isActive + ", is24Hour=" + is24HourFormat + "]";
+        }
+
+    }
 
     public RemindersAdapter(List<Reminder> reminders) {
         this.reminders = reminders;
@@ -127,8 +175,9 @@ public class RemindersAdapter
         // Set the contents inside a row of a reminder
         Reminder reminder = reminders.get(position);
 
-        holder.content.setText(Reminder.buildFormattedTimeString(reminder.getHours(), reminder.getMinutes()));
-        holder.pauseButton.setSelected(reminder.isPaused());
+        boolean is24HourFormat = DateFormat.is24HourFormat(holder.context);
+        holder.content.setText(Reminder.buildFormattedTimeString(reminder.getHours(), reminder.getMinutes(), is24HourFormat));
+        holder.pauseButton.setSelected(reminder.isActive());
     }
 
     // Return the size of the list
@@ -140,35 +189,40 @@ public class RemindersAdapter
     // Provide a reference to the views for each data item
     public class RemindersViewHolder extends RecyclerView.ViewHolder {
 
+        private Context context;
         private TextView content;
-        ImageButton pauseButton;
+        private ImageButton pauseButton;
 
         public RemindersViewHolder(View view) {
             super(view);
+
+            context = view.getContext();
 
             pauseButton = view.findViewById(R.id.pauseButton);
             content = view.findViewById(R.id.contentTextView);
             ImageButton deleteButton = view.findViewById(R.id.deleteButton);
 
+            boolean is24HourFormat = DateFormat.is24HourFormat(context);
+
             // Set up content TextView
-            content.setText(R.string.defaultTimeString);
             content.setOnClickListener(contentView -> {
 
-                TimePickerDialog timePickerDialog = new TimePickerDialog(contentView.getContext(),
+                TimePickerDialog timePickerDialog = new TimePickerDialog(context,
                         (timePicker, hour, minutes) -> {
 
                             int position = getAdapterPosition();
 
-                            content.setText(Reminder.buildFormattedTimeString(hour, minutes));
+                            content.setText(Reminder.buildFormattedTimeString(hour, minutes, is24HourFormat));
 
                             // Update values inside the reminder list
                             Reminder reminder = reminders.get(position);
                             reminder.setHours(hour);
                             reminder.setMinutes(minutes);
+                            reminder.is24HourFormat(is24HourFormat);
 
                             notifyItemChanged(position);
 
-                        }, 12, 0, true);
+                        }, 12, 0, is24HourFormat);
 
                 timePickerDialog.show();
 
@@ -177,8 +231,12 @@ public class RemindersAdapter
             // Set up delete button
             deleteButton.setOnClickListener(deleteView -> {
 
-                reminders.remove(getAdapterPosition());
-                notifyItemRemoved(getAdapterPosition());
+                int position = getAdapterPosition();
+
+                if (position != RecyclerView.NO_POSITION) {
+                    reminders.remove(position);
+                    notifyItemRemoved(position);
+                }
             });
 
             // Set up pause button
@@ -186,11 +244,13 @@ public class RemindersAdapter
 
                 int position = getAdapterPosition();
                 // Save the new state inside the reminder list
-                Reminder reminder = reminders.get(position);
-                boolean isPaused = !reminder.isPaused();
+                if (position != RecyclerView.NO_POSITION) {
+                    Reminder reminder = reminders.get(position);
+                    boolean isActive = !reminder.isActive();
 
-                reminder.setPaused(isPaused);
-                notifyItemChanged(position);
+                    reminder.setActive(isActive);
+                    notifyItemChanged(position);
+                }
             });
 
         }

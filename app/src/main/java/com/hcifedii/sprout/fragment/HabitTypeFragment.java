@@ -3,28 +3,32 @@ package com.hcifedii.sprout.fragment;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
 
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.hcifedii.sprout.HabitType;
 import com.hcifedii.sprout.R;
-import com.shawnlin.numberpicker.NumberPicker;
+import com.hcifedii.sprout.fragment.habitType.ClassicTypeFragment;
+import com.hcifedii.sprout.fragment.habitType.CounterTypeFragment;
+import com.hcifedii.sprout.fragment.habitType.HabitTypeInterface;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class HabitTypeFragment extends Fragment {
 
-    private static final String logcatTag = "Sprout - HabitTypeFragment";
-    private HabitType habitType = HabitType.Classic;
-    private int repetitions = 1;
-    View root;
+    private ViewPager2 habitTypeViewPager;
+
+    Map<HabitType, HabitTypeInterface> habitTypeFragmentMap = new HashMap<>();
 
     public HabitTypeFragment() {
         // Required empty public constructor
@@ -36,72 +40,123 @@ public class HabitTypeFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null) {
+
+            FragmentManager manager = getChildFragmentManager();
+
+            for (HabitType key : HabitType.values()) {
+                Fragment fragment = manager.getFragment(savedInstanceState, key.name());
+
+                // If there is an actual fragment saved with that name, then put it inside the map.
+                if (fragment != null)
+                    habitTypeFragmentMap.put(key, (HabitTypeInterface) fragment);
+            }
+        }
+    }
+
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        FragmentManager manager = getChildFragmentManager();
+
+        // For each fragment inside the map, save it inside the outState
+        for (HabitType key : habitTypeFragmentMap.keySet()) {
+            Fragment fragment = (Fragment) habitTypeFragmentMap.get(key);
+
+            if (fragment != null && fragment.isAdded())
+                manager.putFragment(outState, key.name(), fragment);
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        root = inflater.inflate(R.layout.fragment_habit_type, container, false);
+        View view = inflater.inflate(R.layout.fragment_habit_type, container, false);
 
-        setUpListener();
+        habitTypeViewPager = view.findViewById(R.id.habitTypeViewPager);
+        ViewPagerFragmentAdapter adapter = new ViewPagerFragmentAdapter(getChildFragmentManager(), getLifecycle());
 
-        return root;
+        habitTypeViewPager.setAdapter(adapter);
+        habitTypeViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+
+        // Dots under the ViewPager
+        TabLayout dots = view.findViewById(R.id.habitTypeViewPagerDots);
+        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(dots, habitTypeViewPager, true,
+                (tab, position) -> {
+                    // position of the current tab and that tab
+                });
+        tabLayoutMediator.attach();
+
+        return view;
     }
 
     public int getRepetitions() {
-        return repetitions;
+
+        HabitType habitType = getHabitTypeByPosition(habitTypeViewPager.getCurrentItem());
+        HabitTypeInterface fragment = habitTypeFragmentMap.get(habitType);
+
+        if (fragment != null) {
+            return fragment.getRepetitions();
+        }
+        return 1;
     }
 
-    public HabitType getHabitType(){
-        return habitType;
+    public HabitType getHabitType() {
+        return getHabitTypeByPosition(habitTypeViewPager.getCurrentItem());
     }
 
-    private void setUpListener() {
-        // Habit type selection - Spinner
-        Spinner habitTypeSpinner = root.findViewById(R.id.habitTypeSpinner);
+    private HabitType getHabitTypeByPosition(int position) {
 
-        NumberPicker numberPicker = root.findViewById(R.id.repetitionsPicker);
+        switch (position) {
+            case 0:
+                return HabitType.Classic;
+            case 1:
+                return HabitType.Counter;
+        }
+        return HabitType.Classic;
+    }
 
-        numberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> repetitions = newVal);
+    private class ViewPagerFragmentAdapter extends FragmentStateAdapter {
 
-        habitTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        public ViewPagerFragmentAdapter(@NonNull FragmentManager fragmentManager,
+                                        @NonNull Lifecycle lifecycle) {
+            super(fragmentManager, lifecycle);
+        }
 
-                TextView informationMessage = root.findViewById(R.id.informationMessage);
-                LinearLayout counterContainer = root.findViewById(R.id.counterContainer);
+        /**
+         * This method create a new Fragment or, if it already exists, recycle the old one.
+         *
+         * @param position Position of the fragment inside the ViewPager2.
+         * @return Fragment The fragment that the ViewPager2 has to show.
+         */
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
 
-                switch (i) {
-                    case 0:
-                        // Classic Habit
-                        informationMessage.setText(R.string.infoClassicHabit);
-                        counterContainer.setVisibility(View.GONE);
+            Fragment habitTypeFragment = null;
 
-                        habitType = HabitType.Classic;
-                        numberPicker.setValue(1);
-                        repetitions = 1;
-
-                        break;
-                    case 1:
-                        // Counter Habit
-                        informationMessage.setText(R.string.infoCounterHabit);
-                        counterContainer.setVisibility(View.VISIBLE);
-
-                        habitType = HabitType.Counter;
-                        numberPicker.setValue(3);
-                        repetitions = 3;
-
-                        break;
-                    default:
-                        Log.e(logcatTag, "Spinner item select returned \"default\"");
-                        break;
-                }
+            switch (position) {
+                case 0:
+                    habitTypeFragment = new ClassicTypeFragment();
+                    habitTypeFragmentMap.put(HabitType.Classic, (HabitTypeInterface) habitTypeFragment);
+                    break;
+                case 1:
+                    habitTypeFragment = new CounterTypeFragment();
+                    habitTypeFragmentMap.put(HabitType.Counter, (HabitTypeInterface) habitTypeFragment);
+                    break;
             }
+            return habitTypeFragment;
+        }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
+        @Override
+        public int getItemCount() {
+            return 2;
+        }
     }
-
 
 }

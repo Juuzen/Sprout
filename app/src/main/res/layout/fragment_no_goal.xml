@@ -8,10 +8,10 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
         style="@style/SproutBoldSubtitle"
-        android:text="Nessun Obiettivo" />
+        android:text="@string/no_goal_subtitle" />
 
     <TextView
         style="@style/SproutInfo"
-        android:text="L'abitudine non verrà mai archiviata." />
+        android:text="@string/no_goal_info" />
 
 </LinearLayout>
