@@ -14,9 +14,9 @@
 
     <string name="save_fab">Salva l\'abitudine</string>
 
-    <string name="titleIsEmptyErrorString">Il titolo non può essere vuoto</string>
+    <string name="error_title_is_empty">Il titolo non può essere vuoto</string>
 
-    <string name="titleHintString">Cosa vuoi monitorare?</string>
+    <string name="title_hint">Titolo dell\'abitudine</string>
 
     <string name="classic_habit_info">
         Con questa tipologia puoi tenere traccia delle abitudini che devono essere completate una sola volta al giorno.

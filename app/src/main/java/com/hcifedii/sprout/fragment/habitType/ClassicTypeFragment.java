@@ -25,7 +25,7 @@ public class ClassicTypeFragment extends Fragment implements HabitTypeInterface 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_classic_type, container, false);
+        return inflater.inflate(R.layout.fragment_habit_type_classic, container, false);
     }
 
     @Override

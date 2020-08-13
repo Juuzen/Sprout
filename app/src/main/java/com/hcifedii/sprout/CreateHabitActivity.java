@@ -103,7 +103,7 @@ public class CreateHabitActivity extends AppCompatActivity {
                 // Save habit
 
             } else {
-                titleFragment.setErrorMessage(getString(R.string.titleIsEmptyErrorString));
+                titleFragment.setErrorMessage(getString(R.string.error_title_is_empty));
             }
 
         });
