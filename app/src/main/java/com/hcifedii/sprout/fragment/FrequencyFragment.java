@@ -2,6 +2,8 @@ package com.hcifedii.sprout.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -14,7 +16,6 @@ import com.google.android.material.chip.ChipGroup;
 import com.hcifedii.sprout.Days;
 import com.hcifedii.sprout.R;
 
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,57 @@ public class FrequencyFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            for (Days day : Days.values()) {
+                boolean isSelected = savedInstanceState.getBoolean(day.name(), false);
+
+                if (isSelected) {
+                    switch (day) {
+                        case MONDAY:
+                            frequencyGroup.check(R.id.mondayChip);
+                            break;
+                        case TUESDAY:
+                            frequencyGroup.check(R.id.tuesdayChip);
+                            break;
+                        case WEDNESDAY:
+                            frequencyGroup.check(R.id.wednesdayChip);
+                            break;
+                        case THURSDAY:
+                            frequencyGroup.check(R.id.thursdayChip);
+                            break;
+                        case FRIDAY:
+                            frequencyGroup.check(R.id.fridayChip);
+                            break;
+                        case SATURDAY:
+                            frequencyGroup.check(R.id.saturdayChip);
+                            break;
+                        case SUNDAY:
+                            frequencyGroup.check(R.id.sundayChip);
+                            break;
+                    }
+                }
+            }
+
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        List<Days> selectedDays = getSelectedDays();
+
+        for (Days day : Days.values()) {
+            if (selectedDays.contains(day)) {
+                outState.putBoolean(day.name(), true);
+            }
+        }
     }
 
     @Override
@@ -43,7 +94,6 @@ public class FrequencyFragment extends Fragment {
 
         return view;
     }
-
 
     public List<Days> getSelectedDays() {
 
@@ -88,6 +138,5 @@ public class FrequencyFragment extends Fragment {
         }
         return selectedDays;
     }
-
 
 }

@@ -1,11 +1,14 @@
 <resources>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="android:navigationBarColor">@color/primaryDarkColor</item>
+
         <item name="colorSecondary">@color/secondaryColor</item>
         <item name="colorAccent">@color/secondaryColor</item>
+
         <item name="colorError">@color/redColor</item>
         <item name="iconTint">@color/whiteColor</item>
 
@@ -28,14 +31,23 @@
     <style name="SproutInfo">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Caption</item>
+    </style>
+
+    <style name="SproutBoldSubtitle" parent="SproutInfo">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="SproutChip" parent="Widget.MaterialComponents.Chip.Entry">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">30dp</item>
         <item name="android:textAlignment">center</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:checkable">true</item>
+        <item name="textAllCaps">true</item>
         <item name="chipBackgroundColor">@color/chip_background_color_selector</item>
     </style>
 
@@ -60,6 +72,7 @@
 
     </style>
 
+    <!-- FAB MainActivity -->
     <style name="FabDiamondOverlay" parent="">
         <item name="cornerFamily">cut</item>
         <item name="cornerSize">8dp</item>

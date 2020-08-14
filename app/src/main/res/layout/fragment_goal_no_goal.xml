@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        style="@style/SproutBoldSubtitle"
+        android:text="@string/no_goal_subtitle" />
+
+    <TextView
+        style="@style/SproutInfo"
+        android:text="@string/no_goal_info" />
+
+</LinearLayout>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        style="@style/SproutBoldSubtitle"
+        android:text="@string/goal_deadline_subtitle" />
+
+    <TextView
+        android:layout_marginBottom="8dp"
+        style="@style/SproutInfo"
+        android:text="@string/goal_deadline_info" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/dateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:elevation="1dp"
+        android:text="@string/goal_deadline_picker"
+        android:textAllCaps="false" />
+</LinearLayout>

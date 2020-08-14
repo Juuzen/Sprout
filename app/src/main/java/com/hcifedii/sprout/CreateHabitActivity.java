@@ -7,17 +7,18 @@ import androidx.fragment.app.FragmentManager;
 import android.os.Bundle;
 import android.util.Log;
 
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.textfield.TextInputLayout;
+import com.hcifedii.sprout.adapter.RemindersAdapter;
 import com.hcifedii.sprout.fragment.FrequencyFragment;
 import com.hcifedii.sprout.fragment.GoalFragment;
 import com.hcifedii.sprout.fragment.HabitTypeFragment;
 import com.hcifedii.sprout.fragment.RemindersFragment;
 import com.hcifedii.sprout.fragment.SnoozeFragment;
 import com.hcifedii.sprout.fragment.TitleFragment;
+
+import java.util.List;
 
 public class CreateHabitActivity extends AppCompatActivity {
 
@@ -48,19 +49,67 @@ public class CreateHabitActivity extends AppCompatActivity {
                 // Clear error message
                 titleFragment.setErrorMessage(null);
 
+                // Recover the data from the fragments
+                // Habit type
+                HabitType habitType = habitTypeFragment.getHabitType();
+                int repetitions = habitTypeFragment.getRepetitions();
+
+                // Frequency
+                List<Days> frequency = frequencyFragment.getSelectedDays();
+
+                if (frequency.size() < 1) {
+
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.empty_frequency_warning), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                // Reminders
+                List<RemindersAdapter.Reminder> reminders = remindersFragment.getReminderList();
+
+                // Snooze
+                boolean isSnoozeEnabled = snoozeFragment.isSnoozeEnabled();
+                int snooze = 0;
+                if (isSnoozeEnabled) {
+                    snooze = snoozeFragment.getMaxSnoozes();
+                }
+
+                // Goal
+                GoalType goalType = goalFragment.getGoalType();
+
+
+                // Start Test
+                StringBuilder testData = new StringBuilder();
+                testData.append("\nTitle: ").append(title);
+                testData.append("\nHabitType: ").append(habitType).append(", ").append(repetitions);
+                testData.append("\nFrequency: ");
+
+                for (Days d : frequency) {
+                    testData.append(d.name()).append(' ');
+                }
+
+                testData.append("\nReminders: ");
+
+                for (RemindersAdapter.Reminder r : reminders) {
+                    testData.append(r.toString()).append("\t");
+                }
+
+                testData.append("\nSnooze: ").append(isSnoozeEnabled).append(", ").append(snooze);
+
+                testData.append("\nGoal type: ").append(goalType.name());
+
+                Log.i(logcatTag, testData.toString());
+                // End Test
+
                 // Save habit
 
             } else {
-                titleFragment.setErrorMessage(getString(R.string.titleIsEmptyErrorString));
+                titleFragment.setErrorMessage(getString(R.string.error_title_is_empty));
             }
 
-            String message = goalFragment.getGoalType().name();
-
-            Toast.makeText(getBaseContext(), message, Toast.LENGTH_SHORT).show();
         });
 
 
-        // Saving a reference to the fragments
+        // Saving a reference to each fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         titleFragment = (TitleFragment) fragmentManager.findFragmentById(R.id.titleFragment);
         habitTypeFragment = (HabitTypeFragment) fragmentManager.findFragmentById(R.id.habitTypeFragment);

@@ -13,13 +13,13 @@ import android.view.ViewGroup;
 import com.hcifedii.sprout.R;
 import com.shawnlin.numberpicker.NumberPicker;
 
-public class GoalActionFragment extends Fragment implements GoalInterface {
+public class GoalStreakFragment extends Fragment implements GoalInterface {
 
-    NumberPicker actionPicker;
+    private NumberPicker streakPicker;
 
-    private static final String ACTION_PICKER_VALUE_KEY = "actionVal";
+    private static final String STREAK_PICKER_VALUE_KEY = "streakVal";
 
-    public GoalActionFragment() {
+    public GoalStreakFragment() {
         // Required empty public constructor
     }
 
@@ -33,8 +33,8 @@ public class GoalActionFragment extends Fragment implements GoalInterface {
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null) {
-            int value = savedInstanceState.getInt(ACTION_PICKER_VALUE_KEY);
-            actionPicker.setValue(value);
+            int value = savedInstanceState.getInt(STREAK_PICKER_VALUE_KEY);
+            streakPicker.setValue(value);
         }
     }
 
@@ -42,22 +42,23 @@ public class GoalActionFragment extends Fragment implements GoalInterface {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putInt(ACTION_PICKER_VALUE_KEY, actionPicker.getValue());
+        outState.putInt(STREAK_PICKER_VALUE_KEY, streakPicker.getValue());
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_goal_action, container, false);
+        View view = inflater.inflate(R.layout.fragment_goal_streak, container, false);
 
-        actionPicker = view.findViewById(R.id.goalMaxActionPicker);
+        streakPicker = view.findViewById(R.id.goalStreakPicker);
 
         return view;
     }
 
     @Override
     public int getInt() {
-        return actionPicker.getValue();
+        return streakPicker.getValue();
     }
 }
