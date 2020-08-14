@@ -22,6 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:fadingEdge="horizontal"
+            android:requiresFadingEdge="horizontal"
             android:scrollbars="none">
 
             <com.google.android.material.chip.ChipGroup
@@ -30,7 +32,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:checkedChip="@id/mondayChip"
-                app:chipSpacingHorizontal="0dp"
+                app:itemSpacing="-5sp"
+                app:chipSpacingHorizontal="0sp"
                 app:singleLine="true">
 
                 <com.google.android.material.chip.Chip
@@ -44,6 +47,7 @@
                 <com.google.android.material.chip.Chip
                     android:id="@+id/tuesdayChip"
                     style="@style/SproutChip"
+                    
                     android:text="@string/tuesdayString"
                     app:checkedIconEnabled="false"
                     app:closeIconEnabled="false" />
