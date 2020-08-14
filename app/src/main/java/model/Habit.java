@@ -8,21 +8,26 @@ import java.util.Date;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 import utils.HabitType;
 import utils.ObjectiveType;
 
 public class Habit extends RealmObject {
+    @PrimaryKey
     private int id;
+    @Required
     private String title;
-    //private HabitType habitType; //TODO: Make get/setters
+
+    //private HabitType habitType; //TODO: Use the util
     private String habitType;
     //private DayOfWeek activeDays; //TODO: Try to make it work with Realm
-    private  RealmList<Integer> notificationList;
+    //private  RealmList<Integer> notificationList; //TODO: setup notifications
 
     private @Nullable
     int maxSnoozes;
 
-    //private ObjectiveType objectiveType; //TODO: make get/setters
+    //private ObjectiveType objectiveType; //TODO: Use the util
     private int maxCompletedTasks;
     private int maxStreakValue;
     private Date finalDate;

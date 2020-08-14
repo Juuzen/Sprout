@@ -70,4 +70,6 @@
     <string name="goal_streak_info">Quando completi l\'abitudine per un certo numero di giorni di fila, questa viene archiviata.</string>
     <string name="no_goal_subtitle">Nessun Obiettivo</string>
     <string name="no_goal_info">L\'abitudine non verrà mai archiviata.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
