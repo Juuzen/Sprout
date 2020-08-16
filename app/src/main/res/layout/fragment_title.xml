@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardElevation="2dp"
+    app:cardCornerRadius="16dp"
     app:cardUseCompatPadding="true">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -15,7 +15,7 @@
         android:paddingRight="16dp"
         android:paddingBottom="8dp"
         android:textColorHint="@color/primaryColor"
-        
+
         app:counterEnabled="true"
         app:counterMaxLength="30"
         app:errorEnabled="true">
@@ -24,41 +24,16 @@
             android:id="@+id/titleField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="0dp"
-            android:paddingLeft="0dp"
-            android:paddingRight="0dp"
-            android:paddingEnd="0dp"
             android:background="#00FFFFFF"
             android:inputType="text"
             android:maxLength="30"
+            android:paddingStart="0dp"
+            android:paddingLeft="0dp"
+            android:paddingEnd="0dp"
+            android:paddingRight="0dp"
             android:singleLine="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-
-</com.google.android.material.card.MaterialCardView>
-
-
-    <!--<com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/titleLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/titleHintString"
-        android:paddingTop="16dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-        app:counterEnabled="true"
-        app:counterMaxLength="30"
-        app:endIconMode="clear_text"
-        app:errorEnabled="true">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/titleField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:maxLength="30"
-            android:singleLine="true" />
-
-    </com.google.android.material.textfield.TextInputLayout>-->
+</androidx.cardview.widget.CardView>

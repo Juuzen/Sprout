@@ -10,7 +10,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.hcifedii.sprout.adapter.RemindersAdapter;
 import com.hcifedii.sprout.fragment.FrequencyFragment;
 import com.hcifedii.sprout.fragment.GoalFragment;
 import com.hcifedii.sprout.fragment.HabitTypeFragment;
@@ -19,6 +18,8 @@ import com.hcifedii.sprout.fragment.SnoozeFragment;
 import com.hcifedii.sprout.fragment.TitleFragment;
 
 import java.util.List;
+
+import model.Reminder;
 
 public class CreateHabitActivity extends AppCompatActivity {
 
@@ -64,7 +65,7 @@ public class CreateHabitActivity extends AppCompatActivity {
                 }
 
                 // Reminders
-                List<RemindersAdapter.Reminder> reminders = remindersFragment.getReminderList();
+                List<Reminder> reminders = remindersFragment.getReminderList();
 
                 // Snooze
                 boolean isSnoozeEnabled = snoozeFragment.isSnoozeEnabled();
@@ -89,7 +90,7 @@ public class CreateHabitActivity extends AppCompatActivity {
 
                 testData.append("\nReminders: ");
 
-                for (RemindersAdapter.Reminder r : reminders) {
+                for (Reminder r : reminders) {
                     testData.append(r.toString()).append("\t");
                 }
 

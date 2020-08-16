@@ -114,11 +114,11 @@ public class HabitTypeFragment extends Fragment {
 
         switch (position) {
             case 0:
-                return HabitType.Classic;
+                return HabitType.CLASSIC;
             case 1:
-                return HabitType.Counter;
+                return HabitType.COUNTER;
         }
-        return HabitType.Classic;
+        return HabitType.CLASSIC;
     }
 
     private class ViewPagerFragmentAdapter extends FragmentStateAdapter {
@@ -143,11 +143,11 @@ public class HabitTypeFragment extends Fragment {
             switch (position) {
                 case 0:
                     habitTypeFragment = new ClassicTypeFragment();
-                    habitTypeFragmentMap.put(HabitType.Classic, (HabitTypeInterface) habitTypeFragment);
+                    habitTypeFragmentMap.put(HabitType.CLASSIC, (HabitTypeInterface) habitTypeFragment);
                     break;
                 case 1:
                     habitTypeFragment = new CounterTypeFragment();
-                    habitTypeFragmentMap.put(HabitType.Counter, (HabitTypeInterface) habitTypeFragment);
+                    habitTypeFragmentMap.put(HabitType.COUNTER, (HabitTypeInterface) habitTypeFragment);
                     break;
             }
             return habitTypeFragment;

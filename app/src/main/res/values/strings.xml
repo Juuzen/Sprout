@@ -70,4 +70,5 @@
     <string name="goal_streak_info">Quando completi l\'abitudine per un certo numero di giorni di fila, questa viene archiviata.</string>
     <string name="no_goal_subtitle">Nessun Obiettivo</string>
     <string name="no_goal_info">L\'abitudine non verrà mai archiviata.</string>
+    <string name="preset_image_content_description">Immagine dell\'abitudine preset.</string>
 </resources>

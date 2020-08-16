@@ -16,6 +16,14 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+
+            <fragment
+                android:id="@+id/presetHabitFragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:name="com.hcifedii.sprout.fragment.PresetFragment"
+                tools:layout="@layout/fragment_preset"/>
+
             <fragment
                 android:id="@+id/titleFragment"
                 android:name="com.hcifedii.sprout.fragment.TitleFragment"
