@@ -18,9 +18,11 @@ import model.Habit;
 public class PresetHabitAdapter extends RecyclerView.Adapter<PresetHabitAdapter.ViewHolder> {
 
     private final List<Habit> presetHabitList;
+    private OnClickListener listener;
 
-    public PresetHabitAdapter(List<Habit> presetHabitList) {
+    public PresetHabitAdapter(List<Habit> presetHabitList, OnClickListener listener) {
         this.presetHabitList = presetHabitList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -40,6 +42,8 @@ public class PresetHabitAdapter extends RecyclerView.Adapter<PresetHabitAdapter.
 
         holder.titleTextView.setText(presetHabit.getTitle());
         //holder.iconView.setText(presetHabit.getHabitType());
+
+        holder.listener = listener;
     }
 
     @Override
@@ -53,13 +57,21 @@ public class PresetHabitAdapter extends RecyclerView.Adapter<PresetHabitAdapter.
         public final ImageView iconView;
 
         public Habit presetHabit;
+        private OnClickListener listener;
 
         public ViewHolder(View view) {
             super(view);
 
             this.view = view;
+
             titleTextView = (TextView) view.findViewById(R.id.presetTitleTextView);
             iconView = (ImageView) view.findViewById(R.id.iconView);
+            view.setOnClickListener(view1 -> listener.onClick(presetHabit));
         }
+
+    }
+
+    public interface OnClickListener {
+        void onClick(Habit habit);
     }
 }

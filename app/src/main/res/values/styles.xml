@@ -41,9 +41,8 @@
     </style>
 
     <style name="SproutChip" parent="Widget.MaterialComponents.Chip.Entry">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:padding">30dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textSize">12sp</item>
         <item name="android:checkable">true</item>

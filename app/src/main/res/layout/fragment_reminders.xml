@@ -34,7 +34,7 @@
                 android:contentDescription="@string/add_reminder_button_content_description"
                 android:padding="10dp"
                 android:src="@drawable/ic_add_24"
-                android:tint="@color/secondaryDarkColor" />
+                android:tint="@color/blackColor" />
 
         </LinearLayout>
 

@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:breakStrategy="high_quality"
+            style="@style/SproutInfo"
             android:text="Andare a fare più sport"
             android:textAlignment="center"
 

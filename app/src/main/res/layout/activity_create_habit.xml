@@ -1,73 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/formOuterSpace"
-    android:paddingRight="@dimen/formOuterSpace"
     tools:context=".CreateHabitActivity">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="80dp">
 
 
             <fragment
                 android:id="@+id/presetHabitFragment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:name="com.hcifedii.sprout.fragment.PresetFragment"
-                tools:layout="@layout/fragment_preset"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout="@layout/fragment_preset_list" />
 
             <fragment
                 android:id="@+id/titleFragment"
                 android:name="com.hcifedii.sprout.fragment.TitleFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/presetHabitFragment"
                 tools:layout="@layout/fragment_title" />
 
             <fragment
                 android:id="@+id/habitTypeFragment"
                 android:name="com.hcifedii.sprout.fragment.HabitTypeFragment"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@+id/titleFragment"
+                app:layout_constraintStart_toStartOf="@+id/titleFragment"
+                app:layout_constraintTop_toBottomOf="@+id/titleFragment"
                 tools:layout="@layout/fragment_habit_type" />
 
             <fragment
                 android:id="@+id/frequencyFragment"
                 android:name="com.hcifedii.sprout.fragment.FrequencyFragment"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@+id/habitTypeFragment"
+                app:layout_constraintStart_toStartOf="@+id/habitTypeFragment"
+                app:layout_constraintTop_toBottomOf="@+id/habitTypeFragment"
                 tools:layout="@layout/fragment_frequency" />
 
             <fragment
                 android:id="@+id/reminderFragment"
                 android:name="com.hcifedii.sprout.fragment.RemindersFragment"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@+id/frequencyFragment"
+                app:layout_constraintStart_toStartOf="@+id/frequencyFragment"
+                app:layout_constraintTop_toBottomOf="@+id/frequencyFragment"
                 tools:layout="@layout/fragment_reminders" />
 
             <fragment
                 android:id="@+id/snoozeFragment"
                 android:name="com.hcifedii.sprout.fragment.SnoozeFragment"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@+id/reminderFragment"
+                app:layout_constraintStart_toStartOf="@+id/reminderFragment"
+                app:layout_constraintTop_toBottomOf="@+id/reminderFragment"
                 tools:layout="@layout/fragment_snooze" />
 
             <fragment
                 android:id="@+id/goalFragment"
                 android:name="com.hcifedii.sprout.fragment.GoalFragment"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="100dp"
+                app:layout_constraintEnd_toEndOf="@+id/snoozeFragment"
+                app:layout_constraintStart_toStartOf="@+id/snoozeFragment"
+                app:layout_constraintTop_toBottomOf="@+id/snoozeFragment"
                 tools:layout="@layout/fragment_goal" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
 

@@ -1,17 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/presetHabitRecyclerView"
-    android:name="com.hcifedii.sprout.fragment.PresetFragment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    android:clickable="true"
-    android:focusable="true"
+    app:cardCornerRadius="16dp"
+    app:cardUseCompatPadding="true">
 
-    android:orientation="horizontal"
-    app:layoutManager="LinearLayoutManager"
-    tools:context=".fragment.PresetFragment"
-    tools:listitem="@layout/fragment_preset" />
+    <LinearLayout
+        android:id="@+id/groupContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/topContainer"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/SproutTitle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
+                android:text="@string/preset_habit_title" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/showMoreButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground"
+                android:checkable="true"
+
+                android:contentDescription="@string/show_more_content_description"
+                app:icon="@drawable/expand_more_selector"
+                app:iconGravity="textStart"
+                app:iconTint="@color/blackColor" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/bottomContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/presetHabitRecyclerView"
+                android:name="com.hcifedii.sprout.fragment.PresetFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:clickable="false"
+
+                android:fadingEdge="horizontal"
+                android:focusable="false"
+
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+
+                android:requiresFadingEdge="horizontal"
+                app:layoutManager="LinearLayoutManager"
+                tools:context=".fragment.PresetFragment"
+                tools:listitem="@layout/fragment_preset">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
+
+
