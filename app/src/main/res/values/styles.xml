@@ -64,7 +64,6 @@
 
 
     <style name="SproutBottomAppBar" parent="Widget.MaterialComponents.BottomAppBar">
-
         <item name="android:layout_gravity">bottom</item>
         <item name="android:backgroundTint">@color/primaryColor</item>
         <item name="android:foregroundTint">@color/whiteColor</item>

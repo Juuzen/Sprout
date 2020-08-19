@@ -61,9 +61,7 @@ public class Reminder implements Serializable {
 
         time.append(':');
 
-        if (minutes < 10) time.append('0');
-
-        time.append(minutes);
+        time.append(String.format("%02d", minutes));
 
         return time.toString();
     }
@@ -83,9 +81,8 @@ public class Reminder implements Serializable {
 
         time.append(':');
 
-        if (minutes < 10) time.append('0');
+        time.append(String.format("%02d", minutes));
 
-        time.append(minutes);
         time.append(' ').append(timeSet);
 
         return time.toString();

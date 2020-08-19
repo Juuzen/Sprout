@@ -44,7 +44,6 @@
 
         </LinearLayout>
 
-
         <LinearLayout
             android:id="@+id/bottomContainer"
             android:layout_width="match_parent"
@@ -66,6 +65,7 @@
 
                 android:orientation="horizontal"
                 android:paddingBottom="8dp"
+
 
                 android:requiresFadingEdge="horizontal"
                 app:layoutManager="LinearLayoutManager"

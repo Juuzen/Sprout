@@ -98,6 +98,7 @@ public class PresetFragment extends Fragment {
         }
     }
 
+    // Unused
     private class Listener implements PresetHabitAdapter.OnClickListener {
 
         private Habit habit;
@@ -119,9 +120,17 @@ public class PresetFragment extends Fragment {
         List<Habit> list = new LinkedList<>();
 
         Habit habit1 = new Habit(), habit2 = new Habit(), habit3 = new Habit();
-        habit1.setTitle("Bevi più acqua");
-        habit2.setTitle("Fai più sport");
-        habit3.setTitle("Fai meditazione");
+
+        habit1.setTitle(getString(R.string.preset_drink_more_water));
+        habit1.setImage(R.drawable.ic_round_local_drink_24);
+
+        habit2.setTitle(getString(R.string.preset_do_more_sports));
+        habit2.setImage(R.drawable.ic_sports_tennis_24);
+
+        habit3.setTitle(getString(R.string.preset_go_to_bed_early));
+        habit3.setImage(R.drawable.ic_bed_24);
+
+
 
         list.add(habit1);
         list.add(habit2);

@@ -1,8 +1,11 @@
 package com.hcifedii.sprout.adapter;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +20,16 @@ import model.Habit;
 
 public class PresetHabitAdapter extends RecyclerView.Adapter<PresetHabitAdapter.ViewHolder> {
 
-    private final List<Habit> presetHabitList;
     private OnClickListener listener;
+
+    public interface OnClickListener {
+        void onClick(Habit habit);
+    }
+
+    private int[] colorArray;
+    private final List<Habit> presetHabitList;
+
+    private Context context;
 
     public PresetHabitAdapter(List<Habit> presetHabitList, OnClickListener listener) {
         this.presetHabitList = presetHabitList;
@@ -30,6 +41,11 @@ public class PresetHabitAdapter extends RecyclerView.Adapter<PresetHabitAdapter.
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_preset, parent, false);
+
+        context = view.getContext();
+
+        colorArray = context.getResources().getIntArray(R.array.materialColors);
+
         return new ViewHolder(view);
     }
 
@@ -41,8 +57,15 @@ public class PresetHabitAdapter extends RecyclerView.Adapter<PresetHabitAdapter.
         holder.presetHabit = presetHabit;
 
         holder.titleTextView.setText(presetHabit.getTitle());
-        //holder.iconView.setText(presetHabit.getHabitType());
 
+        // Set the card's icon
+        if (presetHabit.getImage() > 0)
+            holder.iconView.setImageDrawable(ContextCompat.getDrawable(context, presetHabit.getImage()));
+
+        // Set card's background color
+        holder.cardView.setCardBackgroundColor(colorArray[position % colorArray.length]);
+
+        // Set the card's onClickListener
         holder.listener = listener;
     }
 
@@ -52,26 +75,27 @@ public class PresetHabitAdapter extends RecyclerView.Adapter<PresetHabitAdapter.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public final View view;
-        public final TextView titleTextView;
-        public final ImageView iconView;
+
+        private OnClickListener listener;
+
+        private final TextView titleTextView;
+        private final ImageView iconView;
+        private final CardView cardView;
+
 
         public Habit presetHabit;
-        private OnClickListener listener;
 
         public ViewHolder(View view) {
             super(view);
 
-            this.view = view;
+            cardView = (CardView) view;
 
-            titleTextView = (TextView) view.findViewById(R.id.presetTitleTextView);
-            iconView = (ImageView) view.findViewById(R.id.iconView);
+            titleTextView = view.findViewById(R.id.presetTitleTextView);
+            iconView = view.findViewById(R.id.iconView);
             view.setOnClickListener(view1 -> listener.onClick(presetHabit));
+
         }
 
     }
 
-    public interface OnClickListener {
-        void onClick(Habit habit);
-    }
 }
