@@ -16,7 +16,6 @@
             android:orientation="vertical"
             android:paddingBottom="80dp">
 
-
             <fragment
                 android:id="@+id/presetHabitFragment"
                 android:name="com.hcifedii.sprout.fragment.PresetFragment"
@@ -30,47 +29,39 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout="@layout/fragment_preset_list" />
 
-            <fragment
-                android:id="@+id/titleFragment"
-                android:name="com.hcifedii.sprout.fragment.TitleFragment"
+
+            <include
+                android:id="@+id/general"
+                layout="@layout/title_frequency_general_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/presetHabitFragment"
-                tools:layout="@layout/fragment_title" />
+                app:layout_constraintTop_toBottomOf="@id/presetHabitFragment" />
+
 
             <fragment
                 android:id="@+id/habitTypeFragment"
                 android:name="com.hcifedii.sprout.fragment.HabitTypeFragment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="@+id/titleFragment"
-                app:layout_constraintStart_toStartOf="@+id/titleFragment"
-                app:layout_constraintTop_toBottomOf="@+id/titleFragment"
+                app:layout_constraintEnd_toEndOf="@+id/general"
+                app:layout_constraintStart_toStartOf="@+id/general"
+                app:layout_constraintTop_toBottomOf="@+id/general"
                 tools:layout="@layout/fragment_habit_type" />
 
-            <fragment
-                android:id="@+id/frequencyFragment"
-                android:name="com.hcifedii.sprout.fragment.FrequencyFragment"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="@+id/habitTypeFragment"
-                app:layout_constraintStart_toStartOf="@+id/habitTypeFragment"
-                app:layout_constraintTop_toBottomOf="@+id/habitTypeFragment"
-                tools:layout="@layout/fragment_frequency" />
 
             <fragment
                 android:id="@+id/reminderFragment"
                 android:name="com.hcifedii.sprout.fragment.RemindersFragment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="@+id/frequencyFragment"
-                app:layout_constraintStart_toStartOf="@+id/frequencyFragment"
-                app:layout_constraintTop_toBottomOf="@+id/frequencyFragment"
+                app:layout_constraintEnd_toEndOf="@+id/habitTypeFragment"
+                app:layout_constraintStart_toStartOf="@+id/habitTypeFragment"
+                app:layout_constraintTop_toBottomOf="@+id/habitTypeFragment"
                 tools:layout="@layout/fragment_reminders" />
 
             <fragment

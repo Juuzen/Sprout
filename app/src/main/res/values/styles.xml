@@ -17,7 +17,7 @@
 
     <style name="SproutTitle">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_height">40dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>

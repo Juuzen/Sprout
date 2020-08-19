@@ -1,39 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/titleLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="16dp"
-    app:cardUseCompatPadding="true">
+    android:hint="@string/title_hint"
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/titleLayout"
+    app:endIconMode="clear_text"
+    app:counterEnabled="true"
+    app:counterMaxLength="30"
+    app:errorEnabled="true">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/titleField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/title_hint"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="8dp"
-        android:textColorHint="@color/primaryColor"
+        android:background="#00FFFFFF"
+        android:inputType="text"
+        android:maxLength="30"
+        android:paddingStart="0dp"
+        android:paddingLeft="0dp"
+        android:paddingEnd="0dp"
+        android:paddingRight="0dp"
+        android:singleLine="true"
+        android:textSize="14sp" />
 
-        app:counterEnabled="true"
-        app:counterMaxLength="30"
-        app:errorEnabled="true">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/titleField"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#00FFFFFF"
-            android:inputType="text"
-            android:maxLength="30"
-            android:paddingStart="0dp"
-            android:paddingLeft="0dp"
-            android:paddingEnd="0dp"
-            android:paddingRight="0dp"
-            android:singleLine="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-</androidx.cardview.widget.CardView>
+</com.google.android.material.textfield.TextInputLayout>

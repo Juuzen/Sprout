@@ -74,4 +74,5 @@
     <string name="show_more_content_description">Mostra altro</string>
     <string name="preset_habit_title">Abitudini pronte all\'uso</string>
     <string name="hide_button">Nascondi</string>
+    <string name="general_title">Generale</string>
 </resources>
