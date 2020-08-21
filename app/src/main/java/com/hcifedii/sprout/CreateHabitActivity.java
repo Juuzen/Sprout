@@ -3,12 +3,14 @@ package com.hcifedii.sprout;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.DisplayCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -144,6 +146,20 @@ public class CreateHabitActivity extends AppCompatActivity {
                     .show();
 
         });
+
+
+        NestedScrollView scrollView = findViewById(R.id.nestedScrollView);
+        scrollView.setOnScrollChangeListener((View.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+
+            if (scrollY > oldScrollY) {
+                // Scroll down
+                saveFab.shrink();
+            } else {
+                // Scroll up
+                saveFab.extend();
+            }
+        });
+
 
     }
 
