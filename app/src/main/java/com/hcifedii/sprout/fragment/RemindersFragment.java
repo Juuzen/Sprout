@@ -40,6 +40,7 @@ public class RemindersFragment extends Fragment {
 
             if (serializable instanceof List) {
 
+                //noinspection unchecked
                 List<? extends Reminder> savedReminders = (List<? extends Reminder>) serializable;
                 reminderList.addAll(savedReminders);
             }

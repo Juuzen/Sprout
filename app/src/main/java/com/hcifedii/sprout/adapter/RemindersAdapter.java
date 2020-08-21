@@ -94,9 +94,9 @@ public class RemindersAdapter
     // Provide a reference to the views for each data item
     public class RemindersViewHolder extends RecyclerView.ViewHolder {
 
-        private Context context;
-        private TextView content;
-        private ImageButton pauseButton;
+        private final Context context;
+        private final TextView content;
+        private final ImageButton pauseButton;
 
         public RemindersViewHolder(View view) {
             super(view);

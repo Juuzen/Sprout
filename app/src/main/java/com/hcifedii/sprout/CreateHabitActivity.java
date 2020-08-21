@@ -2,19 +2,15 @@ package com.hcifedii.sprout;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.DisplayCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
 
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.hcifedii.sprout.fragment.FrequencyFragment;
 import com.hcifedii.sprout.fragment.GoalFragment;
@@ -69,10 +65,7 @@ public class CreateHabitActivity extends AppCompatActivity {
 
                 if (frequency.size() < 1) {
                     // Warning Snackbar. The user hasn't selected any days of the week.
-                    Snackbar.make(saveFab, R.string.empty_frequency_warning, Snackbar.LENGTH_SHORT)
-                            .setBackgroundTint(getResources().getColor(R.color.redColor, getTheme()))
-                            .setAnchorView(saveFab)
-                            .show();
+                    showErrorSnackbar(saveFab, R.string.empty_frequency_warning);
                     return;
                 }
 
@@ -117,6 +110,7 @@ public class CreateHabitActivity extends AppCompatActivity {
 
             } else {
                 titleFragment.setErrorMessage(getString(R.string.error_title_is_empty));
+                showErrorSnackbar(saveFab, R.string.error_title_is_empty);
             }
 
         });
@@ -147,7 +141,7 @@ public class CreateHabitActivity extends AppCompatActivity {
 
         });
 
-
+        // Shrinking / extending behaviour of the fab
         NestedScrollView scrollView = findViewById(R.id.nestedScrollView);
         scrollView.setOnScrollChangeListener((View.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
 
@@ -163,6 +157,16 @@ public class CreateHabitActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * @param view         The view you want to anchor the Snackbar
+     * @param messageResId Resource id of the string you want to use.
+     */
+    private void showErrorSnackbar(View view, int messageResId) {
+        Snackbar.make(view, messageResId, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(getResources().getColor(R.color.redColor, getTheme()))
+                .setAnchorView(view)
+                .show();
+    }
 
     private void enableTopBackButton() {
 

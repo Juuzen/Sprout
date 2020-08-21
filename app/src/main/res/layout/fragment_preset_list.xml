@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/primaryColor"
+    app:cardCornerRadius="0dp">
 
     <LinearLayout
         android:id="@+id/groupContainer"
@@ -26,7 +28,8 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="24dp"
                 android:paddingRight="24dp"
-                android:text="@string/preset_habit_title" />
+                android:text="@string/preset_habit_title"
+                android:textColor="@color/whiteColor" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/showMoreButton"
@@ -34,11 +37,9 @@
                 android:layout_height="match_parent"
                 android:background="?android:attr/selectableItemBackground"
                 android:checkable="true"
-
                 android:contentDescription="@string/show_more_content_description"
                 app:icon="@drawable/expand_more_selector"
-                app:iconGravity="textStart"
-                app:iconTint="@color/blackColor" />
+                app:iconGravity="textStart" />
 
         </LinearLayout>
 
@@ -57,14 +58,10 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:clickable="false"
-
                 android:fadingEdge="horizontal"
                 android:focusable="false"
-
                 android:orientation="horizontal"
                 android:paddingBottom="8dp"
-
-
                 android:requiresFadingEdge="horizontal"
                 app:layoutManager="LinearLayoutManager"
                 tools:context=".fragment.PresetFragment"

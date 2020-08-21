@@ -1,5 +1,7 @@
 package model;
 
+import android.annotation.SuppressLint;
+
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
@@ -53,19 +55,12 @@ public class Reminder implements Serializable {
         return get12HourFormattedString(hour, minutes);
     }
 
+    @SuppressLint("DefaultLocale")
     private static String get24HourFormattedString(int hours, int minutes) {
-
-        StringBuilder time = new StringBuilder();
-
-        time.append(hours);
-
-        time.append(':');
-
-        time.append(String.format("%02d", minutes));
-
-        return time.toString();
+        return String.valueOf(hours) + ':' + String.format("%02d", minutes);
     }
 
+    @SuppressLint("DefaultLocale")
     private static String get12HourFormattedString(int hour, int minutes) {
 
         StringBuilder time = new StringBuilder();

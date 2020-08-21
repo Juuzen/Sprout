@@ -24,8 +24,6 @@ import com.hcifedii.sprout.fragment.habitType.HabitTypeInterface;
 import java.util.HashMap;
 import java.util.Map;
 
-import model.Habit;
-
 public class HabitTypeFragment extends Fragment {
 
     private ViewPager2 habitTypeViewPager;
@@ -59,7 +57,7 @@ public class HabitTypeFragment extends Fragment {
         }
     }
 
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         FragmentManager manager = getChildFragmentManager();
@@ -154,7 +152,7 @@ public class HabitTypeFragment extends Fragment {
         @Override
         public Fragment createFragment(int position) {
 
-            Fragment habitTypeFragment = null;
+            Fragment habitTypeFragment;
 
             if (position == 1) {
                 habitTypeFragment = new CounterTypeFragment();
