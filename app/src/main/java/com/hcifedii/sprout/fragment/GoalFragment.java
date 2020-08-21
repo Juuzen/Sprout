@@ -69,7 +69,7 @@ public class GoalFragment extends Fragment {
      * @param outState Bundle used to save the data.
      */
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         FragmentManager manager = getChildFragmentManager();
@@ -112,7 +112,7 @@ public class GoalFragment extends Fragment {
 
     private GoalType getGoalTypeByPosition(int position) {
         switch (position) {
-            case 0:
+            default:
                 return GoalType.NONE;
             case 1:
                 return GoalType.ACTION;
@@ -121,7 +121,6 @@ public class GoalFragment extends Fragment {
             case 3:
                 return GoalType.STREAK;
         }
-        return GoalType.NONE;
     }
 
     // Return the data from the fragments
@@ -168,7 +167,7 @@ public class GoalFragment extends Fragment {
             Fragment goalFragment = null;
 
             switch (position) {
-                case 0:
+                default:
                     goalFragment = new NoGoalFragment();
                     goalFragmentMap.put(GoalType.NONE, (GoalInterface) goalFragment);
                     break;

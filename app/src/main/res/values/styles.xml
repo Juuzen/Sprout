@@ -12,12 +12,19 @@
         <item name="colorError">@color/redColor</item>
         <item name="iconTint">@color/whiteColor</item>
 
+        <item name="snackbarStyle">@style/SproutSnackBar</item>
+
+
+    </style>
+
+    <style name="SproutSnackBar" parent="Widget.MaterialComponents.Snackbar">
+        <item name="backgroundTint">@color/primaryDarkColor</item>
 
     </style>
 
     <style name="SproutTitle">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_height">40dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
@@ -41,9 +48,8 @@
     </style>
 
     <style name="SproutChip" parent="Widget.MaterialComponents.Chip.Entry">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:padding">30dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textSize">12sp</item>
         <item name="android:checkable">true</item>
@@ -65,7 +71,6 @@
 
 
     <style name="SproutBottomAppBar" parent="Widget.MaterialComponents.BottomAppBar">
-
         <item name="android:layout_gravity">bottom</item>
         <item name="android:backgroundTint">@color/primaryColor</item>
         <item name="android:foregroundTint">@color/whiteColor</item>

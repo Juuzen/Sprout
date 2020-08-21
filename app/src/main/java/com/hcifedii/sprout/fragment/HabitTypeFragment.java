@@ -57,7 +57,7 @@ public class HabitTypeFragment extends Fragment {
         }
     }
 
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         FragmentManager manager = getChildFragmentManager();
@@ -112,13 +112,27 @@ public class HabitTypeFragment extends Fragment {
 
     private HabitType getHabitTypeByPosition(int position) {
 
-        switch (position) {
-            case 0:
-                return HabitType.Classic;
-            case 1:
-                return HabitType.Counter;
+        if (position == 1) {
+            return HabitType.COUNTER;
         }
-        return HabitType.Classic;
+        return HabitType.CLASSIC;
+    }
+
+    private  int getPositionByHabitType(HabitType habitType){
+        if (habitType == HabitType.COUNTER)
+            return 1;
+        return 0;
+    }
+
+    public void setHabitType(String habitType) {
+
+        int position = 0;
+        if(habitType != null){
+            HabitType type = HabitType.valueOf(habitType);
+            position = getPositionByHabitType(type);
+        }
+
+        habitTypeViewPager.setCurrentItem(position);
     }
 
     private class ViewPagerFragmentAdapter extends FragmentStateAdapter {
@@ -138,17 +152,14 @@ public class HabitTypeFragment extends Fragment {
         @Override
         public Fragment createFragment(int position) {
 
-            Fragment habitTypeFragment = null;
+            Fragment habitTypeFragment;
 
-            switch (position) {
-                case 0:
-                    habitTypeFragment = new ClassicTypeFragment();
-                    habitTypeFragmentMap.put(HabitType.Classic, (HabitTypeInterface) habitTypeFragment);
-                    break;
-                case 1:
-                    habitTypeFragment = new CounterTypeFragment();
-                    habitTypeFragmentMap.put(HabitType.Counter, (HabitTypeInterface) habitTypeFragment);
-                    break;
+            if (position == 1) {
+                habitTypeFragment = new CounterTypeFragment();
+                habitTypeFragmentMap.put(HabitType.COUNTER, (HabitTypeInterface) habitTypeFragment);
+            } else {
+                habitTypeFragment = new ClassicTypeFragment();
+                habitTypeFragmentMap.put(HabitType.CLASSIC, (HabitTypeInterface) habitTypeFragment);
             }
             return habitTypeFragment;
         }

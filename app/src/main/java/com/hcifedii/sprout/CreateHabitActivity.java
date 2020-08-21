@@ -2,29 +2,35 @@ package com.hcifedii.sprout;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 import android.util.Log;
 
-import android.widget.Toast;
+import android.view.View;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.hcifedii.sprout.adapter.RemindersAdapter;
+import com.google.android.material.snackbar.Snackbar;
 import com.hcifedii.sprout.fragment.FrequencyFragment;
 import com.hcifedii.sprout.fragment.GoalFragment;
 import com.hcifedii.sprout.fragment.HabitTypeFragment;
+import com.hcifedii.sprout.fragment.PresetFragment;
 import com.hcifedii.sprout.fragment.RemindersFragment;
 import com.hcifedii.sprout.fragment.SnoozeFragment;
 import com.hcifedii.sprout.fragment.TitleFragment;
 
 import java.util.List;
 
+import model.Reminder;
+
 public class CreateHabitActivity extends AppCompatActivity {
 
     private static final String logcatTag = "Sprout - CreateHabitActivity";
 
     // Fragments of this activity
+    PresetFragment presetFragment;
+
     TitleFragment titleFragment;
     HabitTypeFragment habitTypeFragment;
     FrequencyFragment frequencyFragment;
@@ -41,7 +47,7 @@ public class CreateHabitActivity extends AppCompatActivity {
 
         // FAB - Floating Action Button
         ExtendedFloatingActionButton saveFab = findViewById(R.id.fabSaveButton);
-        saveFab.setOnClickListener(view -> {
+        saveFab.setOnClickListener(fabView -> {
 
             String title = titleFragment.getTitle();
 
@@ -58,13 +64,13 @@ public class CreateHabitActivity extends AppCompatActivity {
                 List<Days> frequency = frequencyFragment.getSelectedDays();
 
                 if (frequency.size() < 1) {
-
-                    Toast.makeText(getBaseContext(), getResources().getString(R.string.empty_frequency_warning), Toast.LENGTH_LONG).show();
+                    // Warning Snackbar. The user hasn't selected any days of the week.
+                    showErrorSnackbar(saveFab, R.string.empty_frequency_warning);
                     return;
                 }
 
                 // Reminders
-                List<RemindersAdapter.Reminder> reminders = remindersFragment.getReminderList();
+                List<Reminder> reminders = remindersFragment.getReminderList();
 
                 // Snooze
                 boolean isSnoozeEnabled = snoozeFragment.isSnoozeEnabled();
@@ -89,7 +95,7 @@ public class CreateHabitActivity extends AppCompatActivity {
 
                 testData.append("\nReminders: ");
 
-                for (RemindersAdapter.Reminder r : reminders) {
+                for (Reminder r : reminders) {
                     testData.append(r.toString()).append("\t");
                 }
 
@@ -104,6 +110,7 @@ public class CreateHabitActivity extends AppCompatActivity {
 
             } else {
                 titleFragment.setErrorMessage(getString(R.string.error_title_is_empty));
+                showErrorSnackbar(saveFab, R.string.error_title_is_empty);
             }
 
         });
@@ -111,6 +118,7 @@ public class CreateHabitActivity extends AppCompatActivity {
 
         // Saving a reference to each fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
+
         titleFragment = (TitleFragment) fragmentManager.findFragmentById(R.id.titleFragment);
         habitTypeFragment = (HabitTypeFragment) fragmentManager.findFragmentById(R.id.habitTypeFragment);
         frequencyFragment = (FrequencyFragment) fragmentManager.findFragmentById(R.id.frequencyFragment);
@@ -118,8 +126,47 @@ public class CreateHabitActivity extends AppCompatActivity {
         snoozeFragment = (SnoozeFragment) fragmentManager.findFragmentById(R.id.snoozeFragment);
         goalFragment = (GoalFragment) fragmentManager.findFragmentById(R.id.goalFragment);
 
+        presetFragment = (PresetFragment) fragmentManager.findFragmentById(R.id.presetHabitFragment);
+
+        presetFragment.setAdapterListener(habit -> {
+
+            titleFragment.setTitle(habit.getTitle());
+            habitTypeFragment.setHabitType(habit.getHabitType());
+            //habitTypeFragment.setRepetitions(habit.getRepetitions());
+
+
+            Snackbar.make(presetFragment.getView(), R.string.preset_habit_loading_snackbar, Snackbar.LENGTH_SHORT)
+                    .setAnchorView(saveFab)
+                    .show();
+
+        });
+
+        // Shrinking / extending behaviour of the fab
+        NestedScrollView scrollView = findViewById(R.id.nestedScrollView);
+        scrollView.setOnScrollChangeListener((View.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+
+            if (scrollY > oldScrollY) {
+                // Scroll down
+                saveFab.shrink();
+            } else {
+                // Scroll up
+                saveFab.extend();
+            }
+        });
+
+
     }
 
+    /**
+     * @param view         The view you want to anchor the Snackbar
+     * @param messageResId Resource id of the string you want to use.
+     */
+    private void showErrorSnackbar(View view, int messageResId) {
+        Snackbar.make(view, messageResId, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(getResources().getColor(R.color.redColor, getTheme()))
+                .setAnchorView(view)
+                .show();
+    }
 
     private void enableTopBackButton() {
 
@@ -130,4 +177,6 @@ public class CreateHabitActivity extends AppCompatActivity {
             Log.e(logcatTag, "getSupportActionBar() returned null");
         }
     }
+
+
 }

@@ -10,6 +10,18 @@
     <color name="secondaryTextColor">#000000</color>
 
 
+    <color name="materialRed">#EF9A9A</color>
+    <color name="materialGreen">#A5D6A7</color>
+    <color name="materialBlue">#9FA8DA</color>
+    <color name="materialYellow">#E6EE9C</color>
+
+    <array name="materialColors">
+        <item>@color/materialRed</item>
+        <item>@color/materialGreen</item>
+        <item>@color/materialBlue</item>
+        <item>@color/materialYellow</item>
+    </array>
+
     <color name="transparentColor">@android:color/transparent</color>
     <color name="whiteColor">#FFFFFF</color>
     <color name="grayColor">#EEEEEE</color>

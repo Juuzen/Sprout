@@ -1,5 +1,7 @@
 package model;
 
+import android.graphics.drawable.Drawable;
+
 import androidx.annotation.Nullable;
 
 import java.time.DayOfWeek;
@@ -15,6 +17,21 @@ import utils.ObjectiveType;
 
 public class Habit extends RealmObject {
     @PrimaryKey
+
+    public int getImage() {
+        return imageResId;
+    }
+
+    public void setImage(int image) {
+        this.imageResId = image;
+    }
+
+    private int imageResId;
+
+
+
+
+
     private int id;
     @Required
     private String title;

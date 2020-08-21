@@ -47,4 +47,7 @@ public class TitleFragment extends Fragment {
         layout.setError(message);
     }
 
+    public void setTitle(String title) {
+        this.title.setText(title);
+    }
 }

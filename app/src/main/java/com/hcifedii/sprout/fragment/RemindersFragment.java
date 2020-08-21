@@ -15,7 +15,7 @@ import android.widget.ImageButton;
 
 import com.hcifedii.sprout.R;
 import com.hcifedii.sprout.adapter.RemindersAdapter;
-import com.hcifedii.sprout.adapter.RemindersAdapter.Reminder;
+import model.Reminder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,6 +40,7 @@ public class RemindersFragment extends Fragment {
 
             if (serializable instanceof List) {
 
+                //noinspection unchecked
                 List<? extends Reminder> savedReminders = (List<? extends Reminder>) serializable;
                 reminderList.addAll(savedReminders);
             }
