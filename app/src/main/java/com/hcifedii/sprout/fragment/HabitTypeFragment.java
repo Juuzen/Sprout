@@ -24,6 +24,8 @@ import com.hcifedii.sprout.fragment.habitType.HabitTypeInterface;
 import java.util.HashMap;
 import java.util.Map;
 
+import model.Habit;
+
 public class HabitTypeFragment extends Fragment {
 
     private ViewPager2 habitTypeViewPager;
@@ -112,13 +114,27 @@ public class HabitTypeFragment extends Fragment {
 
     private HabitType getHabitTypeByPosition(int position) {
 
-        switch (position) {
-            case 0:
-                return HabitType.CLASSIC;
-            case 1:
-                return HabitType.COUNTER;
+        if (position == 1) {
+            return HabitType.COUNTER;
         }
         return HabitType.CLASSIC;
+    }
+
+    private  int getPositionByHabitType(HabitType habitType){
+        if (habitType == HabitType.COUNTER)
+            return 1;
+        return 0;
+    }
+
+    public void setHabitType(String habitType) {
+
+        int position = 0;
+        if(habitType != null){
+            HabitType type = HabitType.valueOf(habitType);
+            position = getPositionByHabitType(type);
+        }
+
+        habitTypeViewPager.setCurrentItem(position);
     }
 
     private class ViewPagerFragmentAdapter extends FragmentStateAdapter {
@@ -140,15 +156,12 @@ public class HabitTypeFragment extends Fragment {
 
             Fragment habitTypeFragment = null;
 
-            switch (position) {
-                case 0:
-                    habitTypeFragment = new ClassicTypeFragment();
-                    habitTypeFragmentMap.put(HabitType.CLASSIC, (HabitTypeInterface) habitTypeFragment);
-                    break;
-                case 1:
-                    habitTypeFragment = new CounterTypeFragment();
-                    habitTypeFragmentMap.put(HabitType.COUNTER, (HabitTypeInterface) habitTypeFragment);
-                    break;
+            if (position == 1) {
+                habitTypeFragment = new CounterTypeFragment();
+                habitTypeFragmentMap.put(HabitType.COUNTER, (HabitTypeInterface) habitTypeFragment);
+            } else {
+                habitTypeFragment = new ClassicTypeFragment();
+                habitTypeFragmentMap.put(HabitType.CLASSIC, (HabitTypeInterface) habitTypeFragment);
             }
             return habitTypeFragment;
         }

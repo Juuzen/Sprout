@@ -10,10 +10,10 @@
     <color name="secondaryTextColor">#000000</color>
 
 
-    <color name="materialRed">#FFCDD2</color>
-    <color name="materialGreen">#C8E6C9</color>
-    <color name="materialBlue">#C5CAE9</color>
-    <color name="materialYellow">#F0F4C3</color>
+    <color name="materialRed">#EF9A9A</color>
+    <color name="materialGreen">#A5D6A7</color>
+    <color name="materialBlue">#9FA8DA</color>
+    <color name="materialYellow">#E6EE9C</color>
 
     <array name="materialColors">
         <item>@color/materialRed</item>

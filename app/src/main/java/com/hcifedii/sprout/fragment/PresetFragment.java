@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,11 +30,13 @@ import model.Habit;
 public class PresetFragment extends Fragment {
 
     Context context;
-    Listener viewListener;
-
-    MaterialButton showMore;
+    PresetHabitAdapter adapter;
 
     public PresetFragment() {
+    }
+
+    public void setAdapterListener(@NonNull PresetHabitAdapter.OnClickListener listener){
+        this.adapter.setListener(listener);
     }
 
     @Override
@@ -56,13 +59,12 @@ public class PresetFragment extends Fragment {
         presetHabitRecyclerView.setLayoutManager(linearLayoutManager);
 
         // Set the listener to the recycler view
-        viewListener = new Listener();
-        PresetHabitAdapter adapter = new PresetHabitAdapter(createPresetHabitList(), viewListener);
+        adapter = new PresetHabitAdapter(createPresetHabitList());
 
         presetHabitRecyclerView.setAdapter(adapter);
 
         // Set the listener to the button
-        showMore = view.findViewById(R.id.showMoreButton);
+        MaterialButton showMore = view.findViewById(R.id.showMoreButton);
 
         showMore.setOnClickListener(new ShowMoreButtonListener(view));
 
@@ -98,23 +100,6 @@ public class PresetFragment extends Fragment {
         }
     }
 
-    // Unused
-    private class Listener implements PresetHabitAdapter.OnClickListener {
-
-        private Habit habit;
-
-        @Override
-        public void onClick(Habit habit) {
-            this.habit = habit;
-            Toast.makeText(context, habit.getTitle(), Toast.LENGTH_SHORT).show();
-        }
-
-        public Habit getHabit() {
-            return habit;
-        }
-    }
-
-
     private List<Habit> createPresetHabitList() {
 
         List<Habit> list = new LinkedList<>();
@@ -122,12 +107,15 @@ public class PresetFragment extends Fragment {
         Habit habit1 = new Habit(), habit2 = new Habit(), habit3 = new Habit();
 
         habit1.setTitle(getString(R.string.preset_drink_more_water));
+        habit1.setHabitType("COUNTER");
         habit1.setImage(R.drawable.ic_round_local_drink_24);
 
         habit2.setTitle(getString(R.string.preset_do_more_sports));
+        habit2.setHabitType("CLASSIC");
         habit2.setImage(R.drawable.ic_sports_tennis_24);
 
         habit3.setTitle(getString(R.string.preset_go_to_bed_early));
+        habit3.setHabitType("CLASSIC");
         habit3.setImage(R.drawable.ic_bed_24);
 
 

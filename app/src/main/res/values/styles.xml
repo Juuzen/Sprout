@@ -12,6 +12,13 @@
         <item name="colorError">@color/redColor</item>
         <item name="iconTint">@color/whiteColor</item>
 
+        <item name="snackbarStyle">@style/SproutSnackBar</item>
+
+
+    </style>
+
+    <style name="SproutSnackBar" parent="Widget.MaterialComponents.Snackbar">
+        <item name="backgroundTint">@color/primaryDarkColor</item>
 
     </style>
 

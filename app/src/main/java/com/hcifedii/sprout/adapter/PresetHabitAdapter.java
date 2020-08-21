@@ -31,8 +31,11 @@ public class PresetHabitAdapter extends RecyclerView.Adapter<PresetHabitAdapter.
 
     private Context context;
 
-    public PresetHabitAdapter(List<Habit> presetHabitList, OnClickListener listener) {
+    public PresetHabitAdapter(List<Habit> presetHabitList) {
         this.presetHabitList = presetHabitList;
+    }
+
+    public void setListener(@NonNull OnClickListener listener) {
         this.listener = listener;
     }
 
