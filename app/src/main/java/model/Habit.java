@@ -16,7 +16,7 @@ import utils.HabitType;
 import utils.ObjectiveType;
 
 public class Habit extends RealmObject {
-    @PrimaryKey
+
 
     public int getImage() {
         return imageResId;
@@ -29,10 +29,9 @@ public class Habit extends RealmObject {
     private int imageResId;
 
 
-
-
-
+    @PrimaryKey
     private int id;
+
     @Required
     private String title;
 
