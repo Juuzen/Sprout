@@ -164,7 +164,7 @@ public class GoalFragment extends Fragment {
         @Override
         public Fragment createFragment(int position) {
 
-            Fragment goalFragment = null;
+            Fragment goalFragment;
 
             switch (position) {
                 default:

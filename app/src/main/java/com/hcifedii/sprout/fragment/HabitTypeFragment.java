@@ -124,15 +124,20 @@ public class HabitTypeFragment extends Fragment {
         return 0;
     }
 
-    public void setHabitType(String habitType) {
+    public void setHabitType(HabitType habitType) {
 
-        int position = 0;
-        if(habitType != null){
-            HabitType type = HabitType.valueOf(habitType);
-            position = getPositionByHabitType(type);
-        }
-
+        int position = getPositionByHabitType(habitType);
         habitTypeViewPager.setCurrentItem(position);
+    }
+
+    public void setRepetitions(int repetitions) {
+
+        HabitType habitType = getHabitTypeByPosition(habitTypeViewPager.getCurrentItem());
+        HabitTypeInterface fragment = habitTypeFragmentMap.get(habitType);
+
+        if (fragment != null) {
+            fragment.setRepetitions(repetitions);
+        }
     }
 
     private class ViewPagerFragmentAdapter extends FragmentStateAdapter {

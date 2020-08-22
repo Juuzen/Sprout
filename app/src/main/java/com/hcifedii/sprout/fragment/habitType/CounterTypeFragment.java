@@ -60,4 +60,9 @@ public class CounterTypeFragment extends Fragment implements HabitTypeInterface 
     public int getRepetitions() {
         return picker.getValue();
     }
+
+    @Override
+    public void setRepetitions(int repetitions) {
+        picker.setValue(repetitions);
+    }
 }

@@ -132,7 +132,7 @@ public class CreateHabitActivity extends AppCompatActivity {
 
             titleFragment.setTitle(habit.getTitle());
             habitTypeFragment.setHabitType(habit.getHabitType());
-            //habitTypeFragment.setRepetitions(habit.getRepetitions());
+            habitTypeFragment.setRepetitions(habit.getRepetitions());
 
 
             Snackbar.make(presetFragment.getView(), R.string.preset_habit_loading_snackbar, Snackbar.LENGTH_SHORT)

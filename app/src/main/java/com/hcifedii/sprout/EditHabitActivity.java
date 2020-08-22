@@ -14,6 +14,8 @@ public class EditHabitActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_habit);
+
+
     }
 
     @Override
@@ -25,6 +27,12 @@ public class EditHabitActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.deleteHabitButton:
+                // Delete the selected habit
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
