@@ -52,7 +52,7 @@ public class Habit extends RealmObject {
         this.repetitions = repetitions;
     }
 
-    // Week frequency
+    // Week frequency TODO
 //    private List<Days> frequency;
 //
 //    public List<Days> getFrequency() {
@@ -96,18 +96,20 @@ public class Habit extends RealmObject {
         goalType.saveType(val);
     }
 
-    // Goal -- Max completed actions TODO
-    private int maxCompletedActions;
+    // TODO: volendo potremmo ridurre i campi interi di goal (maxAction e maxStreakValue) ad
+    // un singolo valore intero (visto che un goal può essere di una sola tipologia alla volta) ed usare
+    // goalType per decidere quale valore è al momento utilizzato.
 
-    public int getMaxCompletedActions() {
-        return maxCompletedActions;
+    private int maxAction;
+
+    public int getMaxAction() {
+        return maxAction;
     }
 
-    public void setMaxCompletedActions(int maxCompletedActions) {
-        this.maxCompletedActions = maxCompletedActions;
+    public void setMaxAction(int maxAction) {
+        this.maxAction = maxAction;
     }
 
-    // Goal -- Max streak value TODO
     private int maxStreakValue;
 
     public int getMaxStreakValue() {
@@ -118,24 +120,15 @@ public class Habit extends RealmObject {
         this.maxStreakValue = maxStreakValue;
     }
 
-    // Goal -- Deadline TODO
-    private Date finalDate;
+    // Goal -- Deadline
+    private long finalDate;     // Time in milliseconds
 
-    public Date getFinalDate() {
+    public long getFinalDate() {
         return finalDate;
     }
 
-    public void setFinalDate(Date finalDate) {
+    public void setFinalDate(long finalDate) {
         this.finalDate = finalDate;
-    }
-
-
-    public RealmList<Task> getTaskHistory() {
-        return null;
-    }
-
-    public void setTaskHistory(RealmList<Task> taskHistory) {
-        this.taskHistory = taskHistory;
     }
 
     // Icon showed inside the preset habit view
@@ -151,6 +144,14 @@ public class Habit extends RealmObject {
 
     // Stats data TODO
     private RealmList<Task> taskHistory;
+
+    public RealmList<Task> getTaskHistory() {
+        return null;
+    }
+
+    public void setTaskHistory(RealmList<Task> taskHistory) {
+        this.taskHistory = taskHistory;
+    }
 
     private int bestStreak;
     private int currentStreak;

@@ -61,4 +61,9 @@ public class GoalStreakFragment extends Fragment implements GoalInterface {
     public int getInt() {
         return streakPicker.getValue();
     }
+
+    @Override
+    public void setInt(int value) {
+        streakPicker.setValue(value);
+    }
 }

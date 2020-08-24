@@ -27,4 +27,9 @@ public class NoGoalFragment extends Fragment implements GoalInterface {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_goal_no_goal, container, false);
     }
+
+    @Override
+    public int getInt() {
+        return 0;
+    }
 }

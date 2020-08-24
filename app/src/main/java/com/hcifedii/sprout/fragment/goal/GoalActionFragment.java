@@ -60,4 +60,9 @@ public class GoalActionFragment extends Fragment implements GoalInterface {
     public int getInt() {
         return actionPicker.getValue();
     }
+
+    @Override
+    public void setInt(int value) {
+        actionPicker.setValue(value);
+    }
 }

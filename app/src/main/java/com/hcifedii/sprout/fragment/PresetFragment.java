@@ -17,14 +17,20 @@ import android.widget.LinearLayout;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.transition.MaterialContainerTransform;
+import com.hcifedii.sprout.enumerations.GoalType;
 import com.hcifedii.sprout.enumerations.HabitType;
 import com.hcifedii.sprout.R;
 import com.hcifedii.sprout.adapter.PresetHabitAdapter;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
+import io.realm.RealmList;
 import model.Habit;
+import model.Reminder;
 
 
 public class PresetFragment extends Fragment {
@@ -114,15 +120,23 @@ public class PresetFragment extends Fragment {
         habit2.setTitle(getString(R.string.preset_do_more_sports));
         habit2.setHabitType(HabitType.CLASSIC);
         habit2.setMaxSnoozes(4);
+        habit2.setGoalType(GoalType.STREAK);
+        habit2.setMaxStreakValue(80);
         habit2.setImage(R.drawable.ic_sports_tennis_24);
 
         habit3.setTitle(getString(R.string.preset_go_to_bed_early));
         habit3.setHabitType(HabitType.CLASSIC);
+
+        RealmList<Reminder> reminders = new RealmList<>();
+        reminders.add(new Reminder(22, 0));
+        habit3.setReminders(reminders);
+
         habit3.setImage(R.drawable.ic_bed_24);
 
         habit4.setTitle(getString(R.string.preset_take_meds));
         habit4.setHabitType(HabitType.COUNTER);
         habit4.setRepetitions(1);
+
         habit4.setImage(R.drawable.ic_healing_24);
 
         list.add(habit1);

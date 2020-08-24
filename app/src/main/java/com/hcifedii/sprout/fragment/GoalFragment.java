@@ -149,19 +149,35 @@ public class GoalFragment extends Fragment {
         return -1;
     }
 
-    public String getString() {
+    public long getLong() {
 
         GoalType goalType = getGoalTypeByPosition(cardViewPager.getCurrentItem());
         GoalInterface fragment = goalFragmentMap.get(goalType);
 
         if (fragment != null)
-            return fragment.getString();
+            return fragment.getLong();
 
-        return null;
+        return -1;
     }
 
     public void setGoalType(GoalType goalType) {
         cardViewPager.setCurrentItem(getPositionByGoalType(goalType));
+    }
+
+    public void setInt(int value) {
+        GoalType goalType = getGoalTypeByPosition(cardViewPager.getCurrentItem());
+        GoalInterface fragment = goalFragmentMap.get(goalType);
+
+        if (fragment != null)
+            fragment.setInt(value);
+    }
+
+    public void setLong(long value) {
+        GoalType goalType = getGoalTypeByPosition(cardViewPager.getCurrentItem());
+        GoalInterface fragment = goalFragmentMap.get(goalType);
+
+        if (fragment != null)
+            fragment.setLong(value);
     }
 
 

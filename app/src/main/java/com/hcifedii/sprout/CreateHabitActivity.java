@@ -86,8 +86,22 @@ public class CreateHabitActivity extends AppCompatActivity {
                 // Goal
                 GoalType goalType = goalFragment.getGoalType();
 
+                long goalLongValue = 0;
+                int goalIntValue = 0;
 
-                // Start Test
+                if (goalType == GoalType.DEADLINE) {
+                    goalLongValue = goalFragment.getLong();
+
+                    if (goalLongValue < 0) {
+                        showErrorSnackbar(saveFab, R.string.error_deadline_is_empty);
+                        return;
+                    }
+                } else {
+                    goalIntValue = goalFragment.getInt();
+                }
+
+
+                // Start Test message
                 StringBuilder testData = new StringBuilder();
                 testData.append("\nTitle: ").append(title);
                 testData.append("\nHabitType: ").append(habitType).append(", ").append(repetitions);
@@ -105,10 +119,16 @@ public class CreateHabitActivity extends AppCompatActivity {
 
                 testData.append("\nSnooze: ").append(isSnoozeEnabled).append(", ").append(snooze);
 
-                testData.append("\nGoal type: ").append(goalType.name());
+                testData.append("\nGoal type: ").append(goalType.name()).append(' ');
+
+                if (goalType == GoalType.DEADLINE)
+                    testData.append(goalLongValue);
+                else
+                    testData.append(goalIntValue);
 
                 Log.i(logcatTag, testData.toString());
-                // End Test
+
+                // End Test message
 
                 // Save habit
 
@@ -134,7 +154,6 @@ public class CreateHabitActivity extends AppCompatActivity {
 
         presetFragment.setAdapterListener(habit -> {
 
-
             this.runOnUiThread(() -> {
 
                 titleFragment.setTitle(habit.getTitle());
@@ -144,16 +163,19 @@ public class CreateHabitActivity extends AppCompatActivity {
                 remindersFragment.setReminderList(habit.getReminders());
 
                 snoozeFragment.setSnooze(habit.getMaxSnoozes());
-                goalFragment.setGoalType(habit.getGoalType());
+
+                GoalType goalType = habit.getGoalType();
+                goalFragment.setGoalType(goalType);
+                if (goalType == GoalType.ACTION)
+                    goalFragment.setInt(habit.getMaxAction());
+                else if (goalType == GoalType.STREAK)
+                    goalFragment.setInt(habit.getMaxStreakValue());
+                else if (goalType == GoalType.DEADLINE)
+                    goalFragment.setLong(habit.getFinalDate());
+
+
+                Toast.makeText(getBaseContext(), R.string.preset_habit_loading_snackbar, Toast.LENGTH_SHORT).show();
             });
-
-
-
-
-
-
-            Toast.makeText(getBaseContext(), R.string.preset_habit_loading_snackbar, Toast.LENGTH_SHORT).show();
-
         });
 
 
