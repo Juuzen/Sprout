@@ -1,4 +1,4 @@
-package com.hcifedii.sprout;
+package com.hcifedii.sprout.enumerations;
 
 public enum GoalType {
     NONE,

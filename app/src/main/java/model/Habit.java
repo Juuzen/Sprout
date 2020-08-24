@@ -1,9 +1,7 @@
 package model;
 
-import androidx.annotation.Nullable;
-
-import com.hcifedii.sprout.Days;
-import com.hcifedii.sprout.HabitType;
+import com.hcifedii.sprout.enumerations.GoalType;
+import com.hcifedii.sprout.enumerations.HabitType;
 
 import java.util.Date;
 import java.util.List;
@@ -12,16 +10,16 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
-import utils.DaysEnum;
+import utils.GoalEnum;
 import utils.HabitTypeEnum;
 
-public
-class Habit extends RealmObject {
+// TODO: potrebbe essere necessario un costruttore per inizializzare i vari campi enum / list
+
+public class Habit extends RealmObject {
 
     @PrimaryKey
     private int id;
 
-    // Title
     @Required
     private String title;
 
@@ -34,7 +32,6 @@ class Habit extends RealmObject {
     }
 
     // Habit type + repetitions
-    // TODO: aggiungere un costruttore
     private HabitTypeEnum habitTypeEnum = new HabitTypeEnum();
 
     public HabitType getHabitType() {
@@ -45,8 +42,7 @@ class Habit extends RealmObject {
         habitTypeEnum.saveType(habitType);
     }
 
-    @Required
-    private int repetitions = 1;
+    private int repetitions = 1;    // 1 default value
 
     public int getRepetitions() {
         return repetitions;
@@ -67,21 +63,19 @@ class Habit extends RealmObject {
 //        this.frequency = frequency;
 //    }
 //
-//    // Reminders
-//    private List<Reminder> reminders;
-//
-//    public List<Reminder> getReminders() {
-//        return reminders;
-//    }
-//
-//    public void setReminders(List<Reminder> reminders) {
-//        this.reminders = reminders;
-//    }
+    // Reminders
+    private RealmList<Reminder> reminders;
 
+    public List<Reminder> getReminders() {
+        return reminders;
+    }
+
+    public void setReminders(RealmList<Reminder> reminders) {
+        this.reminders = reminders;
+    }
 
     // Snoozes
-    @Nullable
-    private int maxSnoozes;
+    private int maxSnoozes = 0;
 
     public int getMaxSnoozes() {
         return maxSnoozes;
@@ -92,38 +86,29 @@ class Habit extends RealmObject {
     }
 
     // Goal
-    //private ObjectiveType objectiveType; //TODO: Use the util
+    private GoalEnum goalType = new GoalEnum();
 
-    private int maxCompletedTasks;
+    public GoalType getGoalType() {
+        return goalType.getEnum();
+    }
+
+    public void setGoalType(GoalType val) {
+        goalType.saveType(val);
+    }
+
+    // Goal -- Max completed actions TODO
+    private int maxCompletedActions;
+
+    public int getMaxCompletedActions() {
+        return maxCompletedActions;
+    }
+
+    public void setMaxCompletedActions(int maxCompletedActions) {
+        this.maxCompletedActions = maxCompletedActions;
+    }
+
+    // Goal -- Max streak value TODO
     private int maxStreakValue;
-    private Date finalDate;
-
-    // Stats data
-    private RealmList<Task> taskHistory;
-
-    private int bestStreak;
-    private int currentStreak;
-    private int completedTasks;
-
-
-    public int getImage() {
-        return imageResId;
-    }
-
-    public void setImage(int image) {
-        this.imageResId = image;
-    }
-
-    private int imageResId;
-
-
-    public int getMaxCompletedTasks() {
-        return maxCompletedTasks;
-    }
-
-    public void setMaxCompletedTasks(int maxCompletedTasks) {
-        this.maxCompletedTasks = maxCompletedTasks;
-    }
 
     public int getMaxStreakValue() {
         return maxStreakValue;
@@ -133,6 +118,9 @@ class Habit extends RealmObject {
         this.maxStreakValue = maxStreakValue;
     }
 
+    // Goal -- Deadline TODO
+    private Date finalDate;
+
     public Date getFinalDate() {
         return finalDate;
     }
@@ -140,6 +128,34 @@ class Habit extends RealmObject {
     public void setFinalDate(Date finalDate) {
         this.finalDate = finalDate;
     }
+
+
+    public RealmList<Task> getTaskHistory() {
+        return null;
+    }
+
+    public void setTaskHistory(RealmList<Task> taskHistory) {
+        this.taskHistory = taskHistory;
+    }
+
+    // Icon showed inside the preset habit view
+    private int imageResId;
+
+    public int getImage() {
+        return imageResId;
+    }
+
+    public void setImage(int image) {
+        this.imageResId = image;
+    }
+
+    // Stats data TODO
+    private RealmList<Task> taskHistory;
+
+    private int bestStreak;
+    private int currentStreak;
+    private int completedTasks;
+
 
     public int getBestStreak() {
         return bestStreak;

@@ -91,4 +91,12 @@ public class SnoozeFragment extends Fragment {
         return 0;
     }
 
+    public void setSnooze(int maxSnoozes) {
+        if(maxSnoozes > 0){
+            switchMaterial.setChecked(true);
+            snoozePicker.setValue(maxSnoozes);
+        }else{
+            switchMaterial.setChecked(false);
+        }
+    }
 }

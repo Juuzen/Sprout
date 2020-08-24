@@ -9,9 +9,13 @@ import android.os.Bundle;
 import android.util.Log;
 
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.hcifedii.sprout.enumerations.Days;
+import com.hcifedii.sprout.enumerations.GoalType;
+import com.hcifedii.sprout.enumerations.HabitType;
 import com.hcifedii.sprout.fragment.FrequencyFragment;
 import com.hcifedii.sprout.fragment.GoalFragment;
 import com.hcifedii.sprout.fragment.HabitTypeFragment;
@@ -130,16 +134,28 @@ public class CreateHabitActivity extends AppCompatActivity {
 
         presetFragment.setAdapterListener(habit -> {
 
-            titleFragment.setTitle(habit.getTitle());
-            habitTypeFragment.setHabitType(habit.getHabitType());
-            habitTypeFragment.setRepetitions(habit.getRepetitions());
+
+            this.runOnUiThread(() -> {
+
+                titleFragment.setTitle(habit.getTitle());
+                habitTypeFragment.setHabitType(habit.getHabitType());
+                habitTypeFragment.setRepetitions(habit.getRepetitions());
+
+                remindersFragment.setReminderList(habit.getReminders());
+
+                snoozeFragment.setSnooze(habit.getMaxSnoozes());
+                goalFragment.setGoalType(habit.getGoalType());
+            });
 
 
-            Snackbar.make(presetFragment.getView(), R.string.preset_habit_loading_snackbar, Snackbar.LENGTH_SHORT)
-                    .setAnchorView(saveFab)
-                    .show();
+
+
+
+
+            Toast.makeText(getBaseContext(), R.string.preset_habit_loading_snackbar, Toast.LENGTH_SHORT).show();
 
         });
+
 
         // Shrinking / extending behaviour of the fab
         NestedScrollView scrollView = findViewById(R.id.nestedScrollView);
@@ -173,6 +189,7 @@ public class CreateHabitActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
+            actionBar.setElevation(0);
         } else {
             Log.e(logcatTag, "getSupportActionBar() returned null");
         }

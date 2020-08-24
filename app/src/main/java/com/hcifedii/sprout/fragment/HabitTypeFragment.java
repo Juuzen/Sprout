@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.hcifedii.sprout.HabitType;
+import com.hcifedii.sprout.enumerations.HabitType;
 import com.hcifedii.sprout.R;
 import com.hcifedii.sprout.fragment.habitType.ClassicTypeFragment;
 import com.hcifedii.sprout.fragment.habitType.CounterTypeFragment;
@@ -83,6 +83,7 @@ public class HabitTypeFragment extends Fragment {
 
         habitTypeViewPager.setAdapter(adapter);
         habitTypeViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        habitTypeViewPager.setOffscreenPageLimit(adapter.NUM_PAGES);
 
         // Dots under the ViewPager
         TabLayout dots = view.findViewById(R.id.habitTypeViewPagerDots);
@@ -142,6 +143,8 @@ public class HabitTypeFragment extends Fragment {
 
     private class ViewPagerFragmentAdapter extends FragmentStateAdapter {
 
+        public final int NUM_PAGES = 2;
+
         public ViewPagerFragmentAdapter(@NonNull FragmentManager fragmentManager,
                                         @NonNull Lifecycle lifecycle) {
             super(fragmentManager, lifecycle);
@@ -171,7 +174,7 @@ public class HabitTypeFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return 2;
+            return NUM_PAGES;
         }
     }
 

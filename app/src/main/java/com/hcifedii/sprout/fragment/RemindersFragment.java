@@ -15,6 +15,8 @@ import android.widget.ImageButton;
 
 import com.hcifedii.sprout.R;
 import com.hcifedii.sprout.adapter.RemindersAdapter;
+
+import io.realm.RealmList;
 import model.Reminder;
 
 import java.io.Serializable;
@@ -23,7 +25,8 @@ import java.util.List;
 
 public class RemindersFragment extends Fragment {
 
-    private List<Reminder> reminderList = new ArrayList<>();
+    private List<Reminder> reminderList = new RealmList<>();
+    private RemindersAdapter remindersAdapter;
 
     private static final String REMINDERS_LIST_KEY = "reminders_list";
 
@@ -68,7 +71,7 @@ public class RemindersFragment extends Fragment {
         RecyclerView remindersRecyclerView = view.findViewById(R.id.remindersRecyclerView);
         remindersRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        RemindersAdapter remindersAdapter = new RemindersAdapter(reminderList);
+        remindersAdapter = new RemindersAdapter(reminderList);
         remindersRecyclerView.setAdapter(remindersAdapter);
 
         // Set up the + button with a click listener
@@ -87,4 +90,13 @@ public class RemindersFragment extends Fragment {
         return reminderList;
     }
 
+    public void setReminderList(List<Reminder> reminders) {
+
+        if(reminders != null && reminders.size() > 0){
+            // Delete the existent reminders and add the new ones
+            reminderList.clear();
+            reminderList.addAll(reminders);
+            remindersAdapter.notifyDataSetChanged();
+        }
+    }
 }

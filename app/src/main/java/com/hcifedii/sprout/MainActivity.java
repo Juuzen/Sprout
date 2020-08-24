@@ -15,6 +15,8 @@ import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.shape.MaterialShapeDrawable;
 
+import utils.SproutBottomAppBarCutCornersTopEdge;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String logcatTag = "Sprout - MainActivity";

@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.transition.MaterialContainerTransform;
-import com.hcifedii.sprout.HabitType;
+import com.hcifedii.sprout.enumerations.HabitType;
 import com.hcifedii.sprout.R;
 import com.hcifedii.sprout.adapter.PresetHabitAdapter;
 
@@ -113,6 +113,7 @@ public class PresetFragment extends Fragment {
 
         habit2.setTitle(getString(R.string.preset_do_more_sports));
         habit2.setHabitType(HabitType.CLASSIC);
+        habit2.setMaxSnoozes(4);
         habit2.setImage(R.drawable.ic_sports_tennis_24);
 
         habit3.setTitle(getString(R.string.preset_go_to_bed_early));
@@ -121,6 +122,7 @@ public class PresetFragment extends Fragment {
 
         habit4.setTitle(getString(R.string.preset_take_meds));
         habit4.setHabitType(HabitType.COUNTER);
+        habit4.setRepetitions(1);
         habit4.setImage(R.drawable.ic_healing_24);
 
         list.add(habit1);

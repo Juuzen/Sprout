@@ -1,14 +1,10 @@
 package utils;
 
-import com.hcifedii.sprout.Days;
-
-import io.realm.RealmList;
-import io.realm.RealmModel;
-import io.realm.RealmObject;
+import com.hcifedii.sprout.enumerations.Days;
 
 public class DaysEnum {
 
-    private String day;
+    private String day = Days.MONDAY.name();
 
     public void saveType(Days val) {
         this.day = val.name();
