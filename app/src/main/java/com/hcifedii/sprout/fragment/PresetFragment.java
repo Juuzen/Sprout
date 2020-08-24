@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.transition.MaterialContainerTransform;
+import com.hcifedii.sprout.enumerations.HabitType;
 import com.hcifedii.sprout.R;
 import com.hcifedii.sprout.adapter.PresetHabitAdapter;
 
@@ -102,25 +103,26 @@ public class PresetFragment extends Fragment {
     private List<Habit> createPresetHabitList() {
 
         List<Habit> list = new LinkedList<>();
-        final String classic = "CLASSIC";
-        final String counter = "COUNTER";
 
         Habit habit1 = new Habit(), habit2 = new Habit(), habit3 = new Habit(), habit4 = new Habit();
 
         habit1.setTitle(getString(R.string.preset_drink_more_water));
-        habit1.setHabitType(counter);
+        habit1.setHabitType(HabitType.COUNTER);
+        habit1.setRepetitions(8);
         habit1.setImage(R.drawable.ic_round_local_drink_24);
 
         habit2.setTitle(getString(R.string.preset_do_more_sports));
-        habit2.setHabitType(classic);
+        habit2.setHabitType(HabitType.CLASSIC);
+        habit2.setMaxSnoozes(4);
         habit2.setImage(R.drawable.ic_sports_tennis_24);
 
         habit3.setTitle(getString(R.string.preset_go_to_bed_early));
-        habit3.setHabitType(classic);
+        habit3.setHabitType(HabitType.CLASSIC);
         habit3.setImage(R.drawable.ic_bed_24);
 
         habit4.setTitle(getString(R.string.preset_take_meds));
-        habit4.setHabitType(counter);
+        habit4.setHabitType(HabitType.COUNTER);
+        habit4.setRepetitions(1);
         habit4.setImage(R.drawable.ic_healing_24);
 
         list.add(habit1);

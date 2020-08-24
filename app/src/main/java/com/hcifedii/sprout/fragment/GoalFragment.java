@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.hcifedii.sprout.GoalType;
+import com.hcifedii.sprout.enumerations.GoalType;
 
 import com.hcifedii.sprout.R;
 import com.hcifedii.sprout.fragment.goal.*;
@@ -95,6 +95,7 @@ public class GoalFragment extends Fragment {
 
         cardViewPager.setAdapter(adapter);
         cardViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        cardViewPager.setOffscreenPageLimit(adapter.NUM_PAGES);
 
         TabLayout dots = view.findViewById(R.id.viewPagerDots);
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(dots, cardViewPager, true,
@@ -123,6 +124,19 @@ public class GoalFragment extends Fragment {
         }
     }
 
+    private int getPositionByGoalType(GoalType goalType){
+        switch (goalType){
+            default:
+                return 0;
+            case ACTION:
+                return 1;
+            case DEADLINE:
+                return 2;
+            case STREAK:
+                return 3;
+        }
+    }
+
     // Return the data from the fragments
     public int getInt() {
 
@@ -146,8 +160,14 @@ public class GoalFragment extends Fragment {
         return null;
     }
 
+    public void setGoalType(GoalType goalType) {
+        cardViewPager.setCurrentItem(getPositionByGoalType(goalType));
+    }
+
 
     private class ViewPagerFragmentAdapter extends FragmentStateAdapter {
+
+        public final int NUM_PAGES = 4;
 
         public ViewPagerFragmentAdapter(@NonNull FragmentManager fragmentManager,
                                         @NonNull Lifecycle lifecycle) {
@@ -164,7 +184,7 @@ public class GoalFragment extends Fragment {
         @Override
         public Fragment createFragment(int position) {
 
-            Fragment goalFragment = null;
+            Fragment goalFragment;
 
             switch (position) {
                 default:
@@ -189,7 +209,7 @@ public class GoalFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return 4;
+            return NUM_PAGES;
         }
     }
 

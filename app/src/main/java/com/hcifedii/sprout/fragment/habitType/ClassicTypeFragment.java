@@ -32,4 +32,9 @@ public class ClassicTypeFragment extends Fragment implements HabitTypeInterface 
     public int getRepetitions() {
         return 1;
     }
+
+    @Override
+    public void setRepetitions(int repetitions) {
+        // Do nothing
+    }
 }

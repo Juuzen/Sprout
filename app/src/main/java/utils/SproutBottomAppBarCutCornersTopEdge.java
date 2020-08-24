@@ -1,4 +1,4 @@
-package com.hcifedii.sprout;
+package utils;
 /*
  * Copyright 2018 The Android Open Source Project
  *
@@ -33,7 +33,7 @@ public class SproutBottomAppBarCutCornersTopEdge extends BottomAppBarTopEdgeTrea
     private final float fabMargin;
     private final float cradleVerticalOffset;
 
-    SproutBottomAppBarCutCornersTopEdge(
+    public SproutBottomAppBarCutCornersTopEdge(
             float fabMargin, float roundedCornerRadius, float cradleVerticalOffset) {
         super(fabMargin, roundedCornerRadius, cradleVerticalOffset);
         this.fabMargin = fabMargin;

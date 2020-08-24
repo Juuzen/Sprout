@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.hcifedii.sprout.Days;
+import com.hcifedii.sprout.enumerations.Days;
 import com.hcifedii.sprout.R;
 
 import java.util.ArrayList;
