@@ -5,6 +5,7 @@ import com.hcifedii.sprout.enumerations.HabitType;
 import com.hcifedii.sprout.enumerations.Days;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import io.realm.RealmList;
@@ -18,6 +19,17 @@ import utils.HabitTypeEnum;
 // TODO: potrebbe essere necessario un costruttore per inizializzare i vari campi enum / list
 
 public class Habit extends RealmObject {
+
+    public Habit() {
+
+        habitCreationDate = Calendar.getInstance().getTimeInMillis();
+
+        habitTypeEnum = new HabitTypeEnum();
+        goalType = new GoalEnum();
+
+        frequency = new RealmList<>();
+
+    }
 
     @PrimaryKey
     private int id;
@@ -34,7 +46,7 @@ public class Habit extends RealmObject {
     }
 
     // Habit type + repetitions
-    private HabitTypeEnum habitTypeEnum = new HabitTypeEnum();
+    private HabitTypeEnum habitTypeEnum;
 
     public HabitType getHabitType() {
         return habitTypeEnum.getEnum();
@@ -55,7 +67,7 @@ public class Habit extends RealmObject {
     }
 
     // Week frequency
-    private RealmList<DaysEnum> frequency = new RealmList<>();
+    private RealmList<DaysEnum> frequency;
 
     public List<Days> getFrequency() {
         List<Days> output = new ArrayList<>();
@@ -100,7 +112,7 @@ public class Habit extends RealmObject {
     }
 
     // Goal
-    private GoalEnum goalType = new GoalEnum();
+    private GoalEnum goalType;
 
     public GoalType getGoalType() {
         return goalType.getEnum();
@@ -135,7 +147,7 @@ public class Habit extends RealmObject {
     }
 
     // Goal -- Deadline
-    private long finalDate;     // Time in milliseconds
+    private long finalDate;     // Deadline in milliseconds
 
     public long getFinalDate() {
         return finalDate;
@@ -167,6 +179,7 @@ public class Habit extends RealmObject {
         this.taskHistory = taskHistory;
     }
 
+    private long habitCreationDate;     // Creation date in milliseconds
     private int bestStreak;
     private int currentStreak;
     private int completedTasks;
@@ -194,5 +207,9 @@ public class Habit extends RealmObject {
 
     public void setCompletedTasks(int completedTasks) {
         this.completedTasks = completedTasks;
+    }
+
+    public long getHabitCreationDate() {
+        return habitCreationDate;
     }
 }
