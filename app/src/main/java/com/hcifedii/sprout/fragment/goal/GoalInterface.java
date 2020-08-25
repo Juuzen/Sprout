@@ -5,12 +5,19 @@ package com.hcifedii.sprout.fragment.goal;
  */
 public interface GoalInterface {
 
-    default int getInt(){
+    default int getInt() {
         throw new UnsupportedOperationException();
     }
 
-    default String getString(){
+    default long getLong() {
         throw new UnsupportedOperationException();
     }
 
+    default void setInt(int value) {
+        throw new UnsupportedOperationException();
+    }
+
+    default void setLong(long value) {
+        throw new UnsupportedOperationException();
+    }
 }

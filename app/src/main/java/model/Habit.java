@@ -2,7 +2,10 @@ package model;
 
 import com.hcifedii.sprout.enumerations.GoalType;
 import com.hcifedii.sprout.enumerations.HabitType;
+import com.hcifedii.sprout.enumerations.Days;
 
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +13,7 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
+import utils.DaysEnum;
 import utils.GoalEnum;
 import utils.HabitTypeEnum;
 
@@ -53,16 +57,28 @@ public class Habit extends RealmObject {
     }
 
     // Week frequency
-//    private List<Days> frequency;
-//
-//    public List<Days> getFrequency() {
-//        return frequency;
-//    }
-//
-//    public void setFrequency(List<Days> frequency) {
-//        this.frequency = frequency;
-//    }
-//
+    private RealmList<DaysEnum> frequency = new RealmList<>();
+
+    public List<Days> getFrequency() {
+        List<Days> output = new ArrayList<>();
+        // Convert the RealmList of DaysEnum to a List of Days
+        for (DaysEnum en : frequency)
+            output.add(en.getEnum());
+        return output;
+    }
+
+    public void setFrequency(List<Days> input) {
+
+        if(frequency.size() > 0)
+            frequency.clear();
+        // Convert the List of Days to a RealmList of DaysEnum
+        for (Days da : input) {
+            DaysEnum daysEnum = new DaysEnum();
+            daysEnum.saveType(da);
+            frequency.add(daysEnum);
+        }
+    }
+
     // Reminders
     private RealmList<Reminder> reminders;
 
@@ -96,18 +112,20 @@ public class Habit extends RealmObject {
         goalType.saveType(val);
     }
 
-    // Goal -- Max completed actions TODO
-    private int maxCompletedActions;
+    // TODO: volendo potremmo ridurre i campi interi di goal (maxAction e maxStreakValue) ad
+    // un singolo valore intero (visto che un goal può essere di una sola tipologia alla volta) ed usare
+    // goalType per decidere quale valore è al momento utilizzato.
 
-    public int getMaxCompletedActions() {
-        return maxCompletedActions;
+    private int maxAction;
+
+    public int getMaxAction() {
+        return maxAction;
     }
 
-    public void setMaxCompletedActions(int maxCompletedActions) {
-        this.maxCompletedActions = maxCompletedActions;
+    public void setMaxAction(int maxAction) {
+        this.maxAction = maxAction;
     }
 
-    // Goal -- Max streak value TODO
     private int maxStreakValue;
 
     public int getMaxStreakValue() {
@@ -118,24 +136,15 @@ public class Habit extends RealmObject {
         this.maxStreakValue = maxStreakValue;
     }
 
-    // Goal -- Deadline TODO
-    private Date finalDate;
+    // Goal -- Deadline
+    private long finalDate;     // Time in milliseconds
 
-    public Date getFinalDate() {
+    public long getFinalDate() {
         return finalDate;
     }
 
-    public void setFinalDate(Date finalDate) {
+    public void setFinalDate(long finalDate) {
         this.finalDate = finalDate;
-    }
-
-
-    public RealmList<Task> getTaskHistory() {
-        return null;
-    }
-
-    public void setTaskHistory(RealmList<Task> taskHistory) {
-        this.taskHistory = taskHistory;
     }
 
     // Icon showed inside the preset habit view
@@ -151,6 +160,14 @@ public class Habit extends RealmObject {
 
     // Stats data TODO
     private RealmList<Task> taskHistory;
+
+    public RealmList<Task> getTaskHistory() {
+        return null;
+    }
+
+    public void setTaskHistory(RealmList<Task> taskHistory) {
+        this.taskHistory = taskHistory;
+    }
 
     private int bestStreak;
     private int currentStreak;

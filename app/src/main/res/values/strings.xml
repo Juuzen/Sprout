@@ -84,4 +84,5 @@
     <string name="preset_take_meds">Prendi le medicine</string>
     <string name="edit_fab">Modifica l\'abitudine</string>
     <string name="edit_habit_delete_button">Elimina</string>
+    <string name="error_deadline_is_empty">Inserisci una data di scadenza</string>
 </resources>

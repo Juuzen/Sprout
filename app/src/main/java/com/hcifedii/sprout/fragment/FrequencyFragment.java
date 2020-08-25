@@ -139,4 +139,49 @@ public class FrequencyFragment extends Fragment {
         return selectedDays;
     }
 
+    public void setFrequency(List<Days> frequency) {
+
+        resetChipStatus();
+
+        for (Days day : frequency) {
+            int chipId;
+            switch (day) {
+                // Select the right id
+                default:
+                    chipId = R.id.mondayChip;
+                    break;
+                case TUESDAY:
+                    chipId = R.id.tuesdayChip;
+                    break;
+                case WEDNESDAY:
+                    chipId = R.id.wednesdayChip;
+                    break;
+                case THURSDAY:
+                    chipId = R.id.thursdayChip;
+                    break;
+                case FRIDAY:
+                    chipId = R.id.fridayChip;
+                    break;
+                case SATURDAY:
+                    chipId = R.id.saturdayChip;
+                    break;
+                case SUNDAY:
+                    chipId = R.id.sundayChip;
+                    break;
+            }
+            // Check the right chip
+            Chip chip = frequencyGroup.findViewById(chipId);
+            chip.setChecked(true);
+        }
+
+    }
+
+    private void resetChipStatus() {
+        int chipCount = frequencyGroup.getChildCount();
+        for (int i = 0; i < chipCount; i++) {
+            Chip chip = (Chip) frequencyGroup.getChildAt(i);
+            chip.setChecked(false);
+        }
+
+    }
 }

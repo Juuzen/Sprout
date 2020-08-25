@@ -19,11 +19,9 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.annotation.Nullable;
-
 public class GoalDeadlineFragment extends Fragment implements GoalInterface {
 
-    private long timeInMills;
+    private long timeInMills = -1;
     private String timeString;
 
     private static final String TIME_IN_MILLS_KEY = "mills";
@@ -48,7 +46,7 @@ public class GoalDeadlineFragment extends Fragment implements GoalInterface {
             timeInMills = savedInstanceState.getLong(TIME_IN_MILLS_KEY);
             timeString = savedInstanceState.getString(TIME_STRING_KEY);
 
-            if(timeString != null)
+            if (timeString != null)
                 dateButton.setText(timeString);
         }
     }
@@ -80,7 +78,6 @@ public class GoalDeadlineFragment extends Fragment implements GoalInterface {
             builder.setTitleText(R.string.deadline_picker_button);
 
             long timeInMills = Calendar.getInstance().getTimeInMillis();
-            this.timeInMills = timeInMills;
 
             builder.setSelection(timeInMills);
 
@@ -91,12 +88,10 @@ public class GoalDeadlineFragment extends Fragment implements GoalInterface {
             datePicker.show(getChildFragmentManager(), datePicker.toString());
 
             // Add listener
-            datePicker.addOnPositiveButtonClickListener(selectedDate -> {
+            datePicker.addOnPositiveButtonClickListener(mills -> {
 
-                DateFormat dateFormatter = android.text.format.DateFormat.getDateFormat(getContext());
-
-                this.timeInMills = selectedDate;
-                this.timeString = dateFormatter.format(new Date(selectedDate));
+                this.timeInMills = mills;
+                this.timeString = getFormattedTimeString(mills);
 
                 dateButton.setText(this.timeString);
             });
@@ -106,8 +101,23 @@ public class GoalDeadlineFragment extends Fragment implements GoalInterface {
     }
 
     @Override
-    public @Nullable
-    String getString() {
-        return timeString;
+    public long getLong() {
+        return timeInMills;
+    }
+
+    @Override
+    public void setLong(long value) {
+
+        this.timeInMills = value;
+
+        this.timeString = getFormattedTimeString(value);
+
+        dateButton.setText(this.timeString);
+
+    }
+
+    private String getFormattedTimeString(long timeInMills){
+        DateFormat dateFormatter = android.text.format.DateFormat.getDateFormat(getContext());
+        return dateFormatter.format(new Date(timeInMills));
     }
 }
