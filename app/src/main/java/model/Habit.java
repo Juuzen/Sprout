@@ -4,9 +4,7 @@ import com.hcifedii.sprout.enumerations.GoalType;
 import com.hcifedii.sprout.enumerations.HabitType;
 import com.hcifedii.sprout.enumerations.Days;
 
-
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import io.realm.RealmList;
@@ -69,7 +67,7 @@ public class Habit extends RealmObject {
 
     public void setFrequency(List<Days> input) {
 
-        if(frequency.size() > 0)
+        if (frequency.size() > 0)
             frequency.clear();
         // Convert the List of Days to a RealmList of DaysEnum
         for (Days da : input) {
