@@ -157,8 +157,11 @@ public class CreateHabitActivity extends AppCompatActivity {
             this.runOnUiThread(() -> {
 
                 titleFragment.setTitle(habit.getTitle());
+
                 habitTypeFragment.setHabitType(habit.getHabitType());
                 habitTypeFragment.setRepetitions(habit.getRepetitions());
+
+                frequencyFragment.setFrequency(habit.getFrequency());
 
                 remindersFragment.setReminderList(habit.getReminders());
 
@@ -182,14 +185,15 @@ public class CreateHabitActivity extends AppCompatActivity {
         // Shrinking / extending behaviour of the fab
         NestedScrollView scrollView = findViewById(R.id.nestedScrollView);
         scrollView.setOnScrollChangeListener((View.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-
-            if (scrollY > oldScrollY) {
-                // Scroll down
-                saveFab.shrink();
-            } else {
-                // Scroll up
-                saveFab.extend();
-            }
+            this.runOnUiThread(() -> {
+                if (scrollY > oldScrollY) {
+                    // Scroll down
+                    saveFab.shrink();
+                } else {
+                    // Scroll up
+                    saveFab.extend();
+                }
+            });
         });
 
 

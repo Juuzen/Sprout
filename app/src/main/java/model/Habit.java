@@ -2,7 +2,10 @@ package model;
 
 import com.hcifedii.sprout.enumerations.GoalType;
 import com.hcifedii.sprout.enumerations.HabitType;
+import com.hcifedii.sprout.enumerations.Days;
 
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +13,7 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
+import utils.DaysEnum;
 import utils.GoalEnum;
 import utils.HabitTypeEnum;
 
@@ -52,17 +56,29 @@ public class Habit extends RealmObject {
         this.repetitions = repetitions;
     }
 
-    // Week frequency TODO
-//    private List<Days> frequency;
-//
-//    public List<Days> getFrequency() {
-//        return frequency;
-//    }
-//
-//    public void setFrequency(List<Days> frequency) {
-//        this.frequency = frequency;
-//    }
-//
+    // Week frequency
+    private RealmList<DaysEnum> frequency = new RealmList<>();
+
+    public List<Days> getFrequency() {
+        List<Days> output = new ArrayList<>();
+        // Convert the RealmList of DaysEnum to a List of Days
+        for (DaysEnum en : frequency)
+            output.add(en.getEnum());
+        return output;
+    }
+
+    public void setFrequency(List<Days> input) {
+
+        if(frequency.size() > 0)
+            frequency.clear();
+        // Convert the List of Days to a RealmList of DaysEnum
+        for (Days da : input) {
+            DaysEnum daysEnum = new DaysEnum();
+            daysEnum.saveType(da);
+            frequency.add(daysEnum);
+        }
+    }
+
     // Reminders
     private RealmList<Reminder> reminders;
 

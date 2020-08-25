@@ -2,7 +2,9 @@ package utils;
 
 import com.hcifedii.sprout.enumerations.Days;
 
-public class DaysEnum {
+import io.realm.RealmObject;
+
+public class DaysEnum extends RealmObject {
 
     private String day = Days.MONDAY.name();
 
