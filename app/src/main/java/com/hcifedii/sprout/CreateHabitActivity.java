@@ -26,7 +26,9 @@ import com.hcifedii.sprout.fragment.TitleFragment;
 
 import java.util.List;
 
+import model.Habit;
 import model.Reminder;
+import utils.HabitRealmManager;
 
 public class CreateHabitActivity extends AppCompatActivity {
 
@@ -52,6 +54,8 @@ public class CreateHabitActivity extends AppCompatActivity {
         // FAB - Floating Action Button
         ExtendedFloatingActionButton saveFab = findViewById(R.id.fabSaveButton);
         saveFab.setOnClickListener(fabView -> {
+
+            Habit habit = new Habit();
 
             String title = titleFragment.getTitle();
 
@@ -129,6 +133,19 @@ public class CreateHabitActivity extends AppCompatActivity {
                 Log.i(logcatTag, testData.toString());
 
                 // End Test message
+                habit.setTitle(title);
+                habit.setHabitType(habitType);
+                habit.setRepetitions(repetitions);
+                habit.setFrequency(frequency);
+                habit.setMaxSnoozes(snooze);
+                habit.setGoalType(goalType);
+                habit.setMaxAction(goalIntValue);
+                habit.setMaxStreakValue(goalIntValue);
+                habit.setFinalDate(goalLongValue);
+
+                HabitRealmManager manager = new HabitRealmManager();
+                manager.saveOrUpdateHabit(habit);
+
 
                 // Save habit
 
