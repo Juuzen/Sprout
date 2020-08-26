@@ -16,12 +16,10 @@ import utils.DaysEnum;
 import utils.GoalEnum;
 import utils.HabitTypeEnum;
 
-// TODO: potrebbe essere necessario un costruttore per inizializzare i vari campi enum / list
-
 public class Habit extends RealmObject {
 
     public Habit() {
-
+        id = -1;
         habitCreationDate = Calendar.getInstance().getTimeInMillis();
 
         habitTypeEnum = new HabitTypeEnum();
@@ -33,6 +31,14 @@ public class Habit extends RealmObject {
 
     @PrimaryKey
     private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @Required
     private String title;
