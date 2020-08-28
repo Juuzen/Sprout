@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -15,6 +16,9 @@ import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.shape.MaterialShapeDrawable;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
+import model.Habit;
 import utils.SproutBottomAppBarCutCornersTopEdge;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,7 +41,14 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-
+        TextView tv = findViewById(R.id.textView);
+        String data = "";
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<Habit> habits = realm.where(Habit.class).findAll();
+        for (Habit habit: habits) {
+            data = data + habit.getTitle() + " " + habit.getId() + "\n";
+        }
+        tv.setText(data);
         BottomAppBar bar = findViewById(R.id.bottomAppBar);
         cutBottomAppEdge(bar);
 

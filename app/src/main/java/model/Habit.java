@@ -24,6 +24,10 @@ public class Habit extends RealmObject {
     @PrimaryKey
     private int id;
 
+    public int getId() {
+        return this.id;
+    }
+
     @Required
     private String title;
 

@@ -26,6 +26,8 @@ import com.hcifedii.sprout.fragment.TitleFragment;
 
 import java.util.List;
 
+import io.realm.Realm;
+import model.Habit;
 import model.Reminder;
 
 public class CreateHabitActivity extends AppCompatActivity {
@@ -131,6 +133,39 @@ public class CreateHabitActivity extends AppCompatActivity {
                 // End Test message
 
                 // Save habit
+                Realm realm = null;
+                try { // I could use try-with-resources here
+                    realm = Realm.getDefaultInstance();
+
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            //getting the next id
+                            Number currentIdNum = realm.where(Habit.class).max("id");
+                            int nextId;
+                            if(currentIdNum == null) {
+                                nextId = 1;
+                            } else {
+                                nextId = currentIdNum.intValue() + 1;
+                            }
+
+                            Habit newHabit = realm.createObject(Habit.class, nextId);
+                            newHabit.setTitle(title);
+                            newHabit.setHabitType(habitType);
+                            newHabit.setRepetitions(repetitions);
+                            newHabit.setFrequency(frequency);
+
+                            realm.insertOrUpdate(newHabit);
+                            Toast.makeText(getBaseContext(), "Abitudine salvata!", Toast.LENGTH_SHORT).show();
+                            //TODO: ritornare nella main activity
+                            finish();
+                        }
+                    });
+                } finally {
+                    if(realm != null) {
+                        realm.close();
+                    }
+                }
 
             } else {
                 titleFragment.setErrorMessage(getString(R.string.error_title_is_empty));

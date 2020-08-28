@@ -20,8 +20,10 @@ allprojects {
         jcenter()
         maven {
             url 'http://oss.jfrog.org/artifactory/oss-snapshot-local'
-            }
-        maven { url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo' }
+        }
+        maven {
+            url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo'
+        }
     }
 }
 

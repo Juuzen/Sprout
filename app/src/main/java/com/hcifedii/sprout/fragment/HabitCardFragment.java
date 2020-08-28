@@ -1,4 +1,4 @@
-package com.hcifedii.sprout;
+package com.hcifedii.sprout.fragment;
 
 import android.os.Bundle;
 
@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hcifedii.sprout.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link habit_cardview#newInstance} factory method to
+ * Use the {@link HabitCardFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class habit_cardview extends Fragment {
+public class HabitCardFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +26,7 @@ public class habit_cardview extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public habit_cardview() {
+    public HabitCardFragment() {
         // Required empty public constructor
     }
 
@@ -37,8 +39,8 @@ public class habit_cardview extends Fragment {
      * @return A new instance of fragment habit_cardview.
      */
     // TODO: Rename and change types and number of parameters
-    public static habit_cardview newInstance(String param1, String param2) {
-        habit_cardview fragment = new habit_cardview();
+    public static HabitCardFragment newInstance(String param1, String param2) {
+        HabitCardFragment fragment = new HabitCardFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
