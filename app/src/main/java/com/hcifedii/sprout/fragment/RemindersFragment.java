@@ -20,7 +20,6 @@ import io.realm.RealmList;
 import model.Reminder;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class RemindersFragment extends Fragment {
@@ -53,8 +52,10 @@ public class RemindersFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
+        // TODO: reminderList cannot be cast to Serializable
         if (reminderList.size() > 0)
-            outState.putSerializable(REMINDERS_LIST_KEY, (Serializable) reminderList);
+            if(reminderList instanceof Serializable)
+                outState.putSerializable(REMINDERS_LIST_KEY, (Serializable) reminderList);
     }
 
     @Override

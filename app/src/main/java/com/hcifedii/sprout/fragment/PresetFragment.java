@@ -24,9 +24,6 @@ import com.hcifedii.sprout.R;
 import com.hcifedii.sprout.adapter.PresetHabitAdapter;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 

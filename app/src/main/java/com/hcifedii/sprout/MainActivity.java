@@ -55,10 +55,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.firstMenuItem:
-                Toast.makeText(this, "Sono il primo", Toast.LENGTH_LONG).show();
+            case R.id.settingMenuItem:
+                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);
                 return true;
-            case R.id.secondMenuItem:
+            case R.id.aboutMenuItem:
                 Toast.makeText(this, "Sono il secondo", Toast.LENGTH_LONG).show();
                 return true;
             default:

@@ -223,6 +223,7 @@ public class CreateHabitActivity extends AppCompatActivity {
     private void showErrorSnackbar(View view, int messageResId) {
         Snackbar.make(view, messageResId, Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(getResources().getColor(R.color.redColor, getTheme()))
+                .setTextColor(getResources().getColor(R.color.onRedColor, getTheme()))
                 .setAnchorView(view)
                 .show();
     }
