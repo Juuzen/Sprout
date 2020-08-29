@@ -1,10 +1,10 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="@string/messages_header">
 
-
         <ListPreference
-            app:defaultValue="light"
+            android:icon="@drawable/ic_brightness_half_24"
             app:entries="@array/theme_entries"
             app:entryValues="@array/theme_values"
             app:key="theme"
@@ -12,7 +12,5 @@
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
-
-
 
 </PreferenceScreen>

@@ -1,8 +1,10 @@
 package com.hcifedii.sprout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,7 +25,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        setUIMode();
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         // Set the title inside the top bar for this activity.
@@ -43,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -69,8 +76,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**
-     * @param bar
+     * Set the Night/Light UI. On the first run of the app, the user get the Light UI.
      */
+    private void setUIMode() {
+
+        SharedPreferences preferences = getSharedPreferences(SettingsActivity.SHARED_PREFS_FILE, MODE_PRIVATE);
+
+        int pref = preferences.getInt(SettingsActivity.SHARED_PREFS_DARK_MODE, AppCompatDelegate.MODE_NIGHT_NO);
+
+        AppCompatDelegate.setDefaultNightMode(pref);
+    }
+
     private void cutBottomAppEdge(BottomAppBar bar) {
         BottomAppBarTopEdgeTreatment topEdge = new SproutBottomAppBarCutCornersTopEdge(
                 bar.getFabCradleMargin(),
