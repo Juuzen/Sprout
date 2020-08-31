@@ -13,6 +13,8 @@
 
     <color name="surfaceColor">#323232</color>
 
+    <color name="darkOnSurface">#323232</color>
+
     <color name="presetBackground">@color/surfaceColor</color>
 
 

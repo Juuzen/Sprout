@@ -20,6 +20,7 @@ import io.realm.RealmList;
 import model.Reminder;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RemindersFragment extends Fragment {
@@ -41,8 +42,7 @@ public class RemindersFragment extends Fragment {
             Serializable serializable = savedInstanceState.getSerializable(REMINDERS_LIST_KEY);
 
             if (serializable instanceof List) {
-
-                List<? extends Reminder> savedReminders = (List<? extends Reminder>) serializable;
+                List<Reminder> savedReminders = (List<Reminder>) serializable;
                 reminderList.addAll(savedReminders);
             }
         }
@@ -52,10 +52,12 @@ public class RemindersFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        // TODO: reminderList cannot be cast to Serializable
-        if (reminderList.size() > 0)
-            if(reminderList instanceof Serializable)
-                outState.putSerializable(REMINDERS_LIST_KEY, (Serializable) reminderList);
+        if (reminderList.size() > 0) {
+            // I have to make a new list because RealmList cannot be cast to Serializable.
+            List<Reminder> list = new ArrayList<>(reminderList);
+
+            outState.putSerializable(REMINDERS_LIST_KEY, (Serializable) list);
+        }
     }
 
     @Override
@@ -93,7 +95,7 @@ public class RemindersFragment extends Fragment {
 
     public void setReminderList(List<Reminder> reminders) {
 
-        if(reminders != null && reminders.size() > 0){
+        if (reminders != null && reminders.size() > 0) {
             // Delete the existent reminders and add the new ones
             reminderList.clear();
             reminderList.addAll(reminders);

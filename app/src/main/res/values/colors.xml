@@ -13,6 +13,8 @@
 
     <color name="surfaceColor">#FFFFFF</color>
 
+    <color name="darkOnSurface">#323232</color>
+
     <color name="presetBackground">@color/primaryColor</color>
 
     <color name="materialGreen">#A5D6A7</color>
