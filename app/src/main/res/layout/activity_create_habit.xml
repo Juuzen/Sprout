@@ -9,7 +9,9 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fadingEdge="vertical"
+        android:requiresFadingEdge="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -27,7 +29,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout="@layout/fragment_preset_list" />
 
-
             <include
                 android:id="@+id/general"
                 layout="@layout/title_frequency_general_layout"
@@ -41,7 +42,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/presetHabitFragment" />
 
-
             <fragment
                 android:id="@+id/habitTypeFragment"
                 android:name="com.hcifedii.sprout.fragment.HabitTypeFragment"
@@ -51,7 +51,6 @@
                 app:layout_constraintStart_toStartOf="@+id/general"
                 app:layout_constraintTop_toBottomOf="@+id/general"
                 tools:layout="@layout/fragment_habit_type" />
-
 
             <fragment
                 android:id="@+id/reminderFragment"
@@ -87,14 +86,13 @@
 
     </androidx.core.widget.NestedScrollView>
 
-
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabSaveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:backgroundTint="@color/primaryColor"
+        android:backgroundTint="?attr/colorPrimary"
         android:fitsSystemWindows="true"
         android:padding="16dp"
         android:text="@string/save_fab"

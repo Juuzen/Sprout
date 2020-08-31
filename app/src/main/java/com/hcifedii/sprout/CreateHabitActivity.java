@@ -1,5 +1,6 @@
 package com.hcifedii.sprout;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
@@ -28,7 +29,10 @@ import java.util.List;
 
 import io.realm.Realm;
 import model.Habit;
+import io.realm.RealmList;
+import model.Habit;
 import model.Reminder;
+import utils.HabitRealmManager;
 
 public class CreateHabitActivity extends AppCompatActivity {
 
@@ -54,6 +58,8 @@ public class CreateHabitActivity extends AppCompatActivity {
         // FAB - Floating Action Button
         ExtendedFloatingActionButton saveFab = findViewById(R.id.fabSaveButton);
         saveFab.setOnClickListener(fabView -> {
+
+            Habit habit = new Habit();
 
             String title = titleFragment.getTitle();
 
@@ -102,71 +108,26 @@ public class CreateHabitActivity extends AppCompatActivity {
                     goalIntValue = goalFragment.getInt();
                 }
 
+                // Set the habit fields
+                habit.setTitle(title);
+                habit.setHabitType(habitType);
+                habit.setRepetitions(repetitions);
+                habit.setFrequency(frequency);
+                habit.setReminders((RealmList<Reminder>) reminders);
+                habit.setMaxSnoozes(snooze);
+                habit.setGoalType(goalType);
+                habit.setMaxAction(goalIntValue);
+                habit.setMaxStreakValue(goalIntValue);
+                habit.setFinalDate(goalLongValue);
 
-                // Start Test message
-                StringBuilder testData = new StringBuilder();
-                testData.append("\nTitle: ").append(title);
-                testData.append("\nHabitType: ").append(habitType).append(", ").append(repetitions);
-                testData.append("\nFrequency: ");
-
-                for (Days d : frequency) {
-                    testData.append(d.name()).append(' ');
-                }
-
-                testData.append("\nReminders: ");
-
-                for (Reminder r : reminders) {
-                    testData.append(r.toString()).append("\t");
-                }
-
-                testData.append("\nSnooze: ").append(isSnoozeEnabled).append(", ").append(snooze);
-
-                testData.append("\nGoal type: ").append(goalType.name()).append(' ');
-
-                if (goalType == GoalType.DEADLINE)
-                    testData.append(goalLongValue);
-                else
-                    testData.append(goalIntValue);
-
-                Log.i(logcatTag, testData.toString());
-
-                // End Test message
+                // Print test Message
+                printHabitInfoOnLog(habit);
 
                 // Save habit
-                Realm realm = null;
-                try { // I could use try-with-resources here
-                    realm = Realm.getDefaultInstance();
+                HabitRealmManager manager = new HabitRealmManager();
+                manager.saveOrUpdateHabit(habit);
 
-                    realm.executeTransaction(new Realm.Transaction() {
-                        @Override
-                        public void execute(Realm realm) {
-                            //getting the next id
-                            Number currentIdNum = realm.where(Habit.class).max("id");
-                            int nextId;
-                            if(currentIdNum == null) {
-                                nextId = 1;
-                            } else {
-                                nextId = currentIdNum.intValue() + 1;
-                            }
-
-                            Habit newHabit = realm.createObject(Habit.class, nextId);
-                            newHabit.setTitle(title);
-                            newHabit.setHabitType(habitType);
-                            newHabit.setRepetitions(repetitions);
-                            newHabit.setFrequency(frequency);
-
-                            realm.insertOrUpdate(newHabit);
-                            Toast.makeText(getBaseContext(), "Abitudine salvata!", Toast.LENGTH_SHORT).show();
-                            //TODO: ritornare nella main activity
-                            finish();
-                        }
-                    });
-                } finally {
-                    if(realm != null) {
-                        realm.close();
-                    }
-                }
-
+                
             } else {
                 titleFragment.setErrorMessage(getString(R.string.error_title_is_empty));
                 showErrorSnackbar(saveFab, R.string.error_title_is_empty);
@@ -241,6 +202,7 @@ public class CreateHabitActivity extends AppCompatActivity {
     private void showErrorSnackbar(View view, int messageResId) {
         Snackbar.make(view, messageResId, Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(getResources().getColor(R.color.redColor, getTheme()))
+                .setTextColor(getResources().getColor(R.color.onRedColor, getTheme()))
                 .setAnchorView(view)
                 .show();
     }
@@ -254,6 +216,45 @@ public class CreateHabitActivity extends AppCompatActivity {
         } else {
             Log.e(logcatTag, "getSupportActionBar() returned null");
         }
+    }
+
+    /**
+     * Print a test message inside logcat
+     * @param habit Habit to be printed
+     */
+    private void printHabitInfoOnLog(@NonNull Habit habit){
+
+        // Start Test message
+        StringBuilder testData = new StringBuilder();
+        testData.append("\nTitle: ").append(habit.getTitle());
+        testData.append("\nHabitType: ")
+                .append(habit.getHabitType()).append(", ")
+                .append(habit.getRepetitions());
+
+        testData.append("\nFrequency: ");
+        for (Days d : habit.getFrequency()) {
+            testData.append(d.name()).append(' ');
+        }
+
+        testData.append("\nReminders: ");
+        for (Reminder r : habit.getReminders()) {
+            testData.append(r.toString()).append("\t");
+        }
+
+        boolean isSnoozeEnabled = habit.getMaxSnoozes() > 0;
+        testData.append("\nSnooze: ").append(isSnoozeEnabled).append(", ")
+                .append(habit.getMaxSnoozes());
+
+        GoalType goalType = habit.getGoalType();
+        testData.append("\nGoal type: ").append(goalType.name()).append(' ');
+        if (goalType == GoalType.DEADLINE)
+            testData.append(habit.getFinalDate());
+        else {
+            int intValue = (habit.getMaxAction() > 0) ? habit.getMaxAction() : habit.getMaxStreakValue();
+            testData.append(intValue);
+        }
+
+        Log.i(logcatTag, testData.toString());
     }
 
 

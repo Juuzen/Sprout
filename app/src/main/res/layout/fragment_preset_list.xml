@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/primaryColor"
+    app:cardBackgroundColor="@color/presetBackground"
+    app:cardElevation="1dp"
     app:cardCornerRadius="0dp">
 
     <LinearLayout
@@ -39,7 +40,8 @@
                 android:checkable="true"
                 android:contentDescription="@string/show_more_content_description"
                 app:icon="@drawable/expand_more_selector"
-                app:iconGravity="textStart" />
+                app:iconGravity="textStart"
+                app:iconTint="@color/whiteColor"/>
 
         </LinearLayout>
 

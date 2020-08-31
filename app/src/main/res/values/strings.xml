@@ -85,4 +85,15 @@
     <string name="edit_fab">Modifica l\'abitudine</string>
     <string name="edit_habit_delete_button">Elimina</string>
     <string name="error_deadline_is_empty">Inserisci una data di scadenza</string>
+    <string name="title_activity_settings">Impostazioni</string>
+
+
+    <string name="light">Chiaro</string>
+    <string name="dark">Scuro</string>
+    <string name="predefined">Predefinito</string>
+
+    <string name="messages_header">Generale</string>
+    <string name="theme_title">Tema dell\'applicazione</string>
+
+
 </resources>

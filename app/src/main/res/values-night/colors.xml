@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primaryColor">#43a048</color>
-    <color name="primaryLightColor">#76d276</color>
-    <color name="primaryDarkColor">#00701c</color>
+    <color name="primaryColor">#00701c</color>
+    <color name="primaryLightColor">#43a048</color>
+    <color name="primaryDarkColor">#323232</color>
 
     <color name="secondaryColor">#fdc210</color>
     <color name="secondaryLightColor">#fff453</color>
     <color name="secondaryDarkColor">#c59200</color>
 
-    <color name="primaryTextColor">#000000</color>
+    <color name="primaryTextColor">#FFFFFF</color>
     <color name="secondaryTextColor">#000000</color>
 
-    <color name="surfaceColor">#FFFFFF</color>
+    <color name="surfaceColor">#323232</color>
 
     <color name="darkOnSurface">#323232</color>
 
-    <color name="presetBackground">@color/primaryColor</color>
+    <color name="presetBackground">@color/surfaceColor</color>
+
 
     <color name="materialGreen">#A5D6A7</color>
 
     <array name="materialColors">
-        <item>#EF9A9A</item>
+        <item>#FF1744</item>
         <item>@color/materialGreen</item>
         <item>#9FA8DA</item>
         <item>#E6EE9C</item>
@@ -29,12 +30,11 @@
     <color name="transparentColor">@android:color/transparent</color>
     <color name="whiteColor">#FFFFFF</color>
 
-    <color name="grayColor">#EEEEEE</color>
+    <color name="grayColor">@android:color/darker_gray</color>
 
     <color name="blackColor">#000000</color>
     <color name="yellowColor">#fdc010</color>
-
-    <color name="redColor">@color/design_default_color_error</color>
+    <color name="redColor">#A9001F</color>
     <color name="onRedColor">@color/whiteColor</color>
 
 </resources>

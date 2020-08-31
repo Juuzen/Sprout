@@ -1,27 +1,51 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
 
+        <!-- Primary -->
         <item name="colorPrimary">@color/primaryColor</item>
-        <item name="colorPrimaryDark">@color/primaryColor</item>
-        <item name="android:navigationBarColor">@color/primaryDarkColor</item>
+        <item name="colorOnPrimary">@color/whiteColor</item>
 
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorPrimaryVariant">@color/primaryLightColor</item>
+
+        <!-- Secondary -->
         <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorOnSecondary">@color/whiteColor</item>
+
+        <!-- Accent -->
         <item name="colorAccent">@color/secondaryColor</item>
 
+        <!-- Surface -->
+        <item name="colorSurface">@color/surfaceColor</item>
+        <item name="colorOnSurface">@color/primaryTextColor</item>
+
+        <!-- Application Background -->
+        <item name="android:windowBackground">@color/surfaceColor</item>
+
+        <!-- Top System Bar -->
+        <item name="android:navigationBarColor">?attr/colorPrimary</item>
+
+        <!-- Other -->
+
         <item name="colorError">@color/redColor</item>
+        <item name="colorOnError">@color/onRedColor</item>
+        <item name="errorTextColor">@color/onRedColor</item>
+
         <item name="iconTint">@color/whiteColor</item>
 
         <item name="snackbarStyle">@style/SproutSnackBar</item>
 
-
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>
 
+
+    <!-- Snackbar -->
     <style name="SproutSnackBar" parent="Widget.MaterialComponents.Snackbar">
         <item name="backgroundTint">@color/primaryDarkColor</item>
-
     </style>
 
+    <!-- Style of the title inside the card -->
     <style name="SproutTitle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">40dp</item>
@@ -35,6 +59,7 @@
         <item name="android:layout_weight">1</item>
     </style>
 
+    <!-- Informative message inside the card -->
     <style name="SproutInfo">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -47,6 +72,7 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <!-- Frequency Chip -->
     <style name="SproutChip" parent="Widget.MaterialComponents.Chip.Entry">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
@@ -57,31 +83,40 @@
         <item name="chipBackgroundColor">@color/chip_background_color_selector</item>
     </style>
 
+    <!-- Number picker -->
     <style name="SproutNumberPicker" parent="AppTheme">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="np_dividerColor">@color/primaryDarkColor</item>
+
         <item name="np_dividerType">underline</item>
         <item name="np_fadingEdgeEnabled">true</item>
+
+        <item name="np_dividerColor">?attr/colorAccent</item>
+        <item name="np_textColor">?attr/colorOnSurface</item>
+        <item name="np_selectedTextColor">?attr/colorOnSurface</item>
+
         <item name="np_width">@dimen/number_picker_width</item>
         <item name="np_height">@dimen/number_picker_height</item>
         <item name="np_orientation">horizontal</item>
-
     </style>
 
-
+    <!-- MainActivity bottom app bar -->
     <style name="SproutBottomAppBar" parent="Widget.MaterialComponents.BottomAppBar">
         <item name="android:layout_gravity">bottom</item>
         <item name="android:backgroundTint">@color/primaryColor</item>
         <item name="android:foregroundTint">@color/whiteColor</item>
-
     </style>
 
-    <!-- FAB MainActivity -->
+    <!-- FAB shape MainActivity -->
     <style name="FabDiamondOverlay" parent="">
         <item name="cornerFamily">cut</item>
         <item name="cornerSize">8dp</item>
     </style>
 
+
+    <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
 
 </resources>

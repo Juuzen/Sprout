@@ -30,7 +30,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-
             <fragment
                 android:id="@+id/habitTypeFragment"
                 android:name="com.hcifedii.sprout.fragment.HabitTypeFragment"
@@ -74,7 +73,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
-
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabEditButton"
