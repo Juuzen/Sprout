@@ -1,5 +1,6 @@
 package com.hcifedii.sprout;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
@@ -15,6 +16,8 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.dialog.MaterialDialogs;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.shape.MaterialShapeDrawable;
 
@@ -51,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         String data = "";
         Realm realm = Realm.getDefaultInstance();
         RealmResults<Habit> habits = realm.where(Habit.class).findAll();
-        for (Habit habit: habits) {
+        for (Habit habit : habits) {
             data = data + habit.getTitle() + " " + habit.getId() + "\n";
         }
         tv.setText(data);
@@ -78,7 +81,18 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.aboutMenuItem:
-                Toast.makeText(this, "Sono il secondo", Toast.LENGTH_LONG).show();
+
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+
+                builder.setTitle(getString(R.string.about_us_title));
+                builder.setMessage(getString(R.string.about_us_message));
+                builder.setIcon(R.drawable.ic_sprout_fg_small);
+
+                builder.setPositiveButton("OK", (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                });
+
+                builder.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

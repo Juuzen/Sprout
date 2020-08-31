@@ -96,4 +96,8 @@
     <string name="theme_title">Tema dell\'applicazione</string>
 
 
+    <string name="about_us_title">Sprout (HCI 2020)</string>
+    <string name="about_us_message">Prodotto da Michele e Salvatore.\n</string>
+
+
 </resources>
