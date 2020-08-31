@@ -8,31 +8,27 @@
 
     <!-- Content here -->
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="94dp"
-        android:layout_margin="50dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="32dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="@string/emptyMainActivityMessage"
-        app:layout_anchor="@+id/scrollView2"
-        app:layout_anchorGravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
-
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_gravity="clip_vertical">
 
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="50dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="32dp"
+            android:gravity="clip_vertical"
+            android:text="@string/emptyMainActivityMessage"
+            app:layout_constraintEnd_toEndOf="@id/scrollView2"
+            app:layout_constraintStart_toStartOf="@id/scrollView2" />
     </ScrollView>
 
     <com.google.android.material.bottomappbar.BottomAppBar
