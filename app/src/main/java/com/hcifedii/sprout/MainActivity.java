@@ -1,15 +1,22 @@
 package com.hcifedii.sprout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -17,15 +24,22 @@ import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.shape.MaterialShapeDrawable;
+import com.hcifedii.sprout.adapter.HabitCardAdapter;
 
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import model.Habit;
+import utils.HabitConverter;
 import utils.SproutBottomAppBarCutCornersTopEdge;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String logcatTag = "Sprout - MainActivity";
+    RecyclerView rv;
+    HabitConverter converter;
+    RealmChangeListener realmChangeListener;
+    Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,18 +61,18 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        TextView tv = findViewById(R.id.textView);
-        String data = "";
-        Realm realm = Realm.getDefaultInstance();
-        RealmResults<Habit> habits = realm.where(Habit.class).findAll();
-        for (Habit habit : habits) {
-            data = data + habit.getTitle() + " " + habit.getId() + "\n";
-        }
-        tv.setText(data);
+        realm = Realm.getDefaultInstance();
+        rv = findViewById(R.id.habitCardRecyclerView);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        converter = new HabitConverter(realm);
+        converter.loadItemsFromDB();
+        HabitCardAdapter adapter = new HabitCardAdapter(this, converter.getList());
+        rv.setAdapter(adapter);
+        redraw();
+        //TODO: quando il converter è vuoto, mostra una textview invece della recyclerview
+
         BottomAppBar bar = findViewById(R.id.bottomAppBar);
         cutBottomAppEdge(bar);
-
-
     }
 
 
@@ -127,5 +141,21 @@ public class MainActivity extends AppCompatActivity {
                         .build());
     }
 
+    private void redraw() {
+        realmChangeListener = new RealmChangeListener() {
+            @Override
+            public void onChange(Object o) {
+                HabitCardAdapter adapter = new HabitCardAdapter(MainActivity.this, converter.getList());
+                rv.setAdapter(adapter);
+            }
+        };
+        realm.addChangeListener(realmChangeListener);
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.removeAllChangeListeners();
+        realm.close();
+    }
 }
