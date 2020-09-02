@@ -100,6 +100,18 @@
     <string name="about_us_message">Prodotto da Michele e Salvatore.\n</string>
     <string name="title_activity_stats">Statistiche</string>
     <string name="title_activity_edit_habit">Modifica l\'abitudine</string>
+    <string name="global_stats_title_card">Statistiche globali</string>
+    <string name="time_textview">Tempo di utilizzo</string>
+    <string name="time_placeholder">10</string>
+    <string name="habit_created_textview">Abitudini create</string>
+    <string name="habit_created_placeholder">24</string>
+    <string name="habit_completed_textview">Abitudini completate</string>
+    <string name="habit_completed_placeholder">12</string>
+    <string name="habit_list_textview">Lista delle abitudini</string>
+    <string name="hour_textview">ore</string>
+    <string name="neutral_permission_dialog_button">Annulla</string>
+    <string name="positive_permission_dialog_button">Si</string>
+    <string name="permission_dialog_message">Vuoi consentire l\'accesso alle statistiche sull\'uso del dispositivo da parte dell\'app?</string>
 
 
 </resources>

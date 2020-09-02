@@ -14,6 +14,23 @@ public class HabitRealmManager {
 
     private static final String LOG_TAG = "DBManager";
 
+
+    public static long getHabitCount() {
+        Realm realm = null;
+        long count = 0;
+
+        try {
+            realm = Realm.getDefaultInstance();
+            count = realm.where(Habit.class).count();
+
+        } finally {
+            if (realm != null)
+                realm.close();
+        }
+        return count;
+    }
+
+
     /**
      * @param id
      * @return Habit with the selected id or null.
