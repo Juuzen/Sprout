@@ -21,8 +21,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import utils.HabitRealmManager;
 
@@ -72,7 +72,7 @@ public class StatsActivity extends AppCompatActivity {
     /**
      * Show a dialog requesting the usage stats permission from the user
      */
-    private void showPermissionDialog(){
+    private void showPermissionDialog() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle("Sprout");
         builder.setMessage(R.string.permission_dialog_message);
@@ -89,6 +89,7 @@ public class StatsActivity extends AppCompatActivity {
 
     /**
      * Check if the usage stats permission is granted.
+     *
      * @return true if the permission is granted. False otherwise.
      */
     private boolean isAccessGranted() {
@@ -106,6 +107,7 @@ public class StatsActivity extends AppCompatActivity {
 
     /**
      * Return the usage time in HH:MM format
+     *
      * @return A string with usage time for this app
      */
     private String getUsageTimeString() {
@@ -114,14 +116,15 @@ public class StatsActivity extends AppCompatActivity {
         Calendar beginTime = Calendar.getInstance();
         beginTime.set(Calendar.YEAR, 2019);
 
-        Calendar endTime = Calendar.getInstance();
+        // This method return a map with ALL the packages on the device
+        Map<String, UsageStats> usageStatsMap = manager.queryAndAggregateUsageStats(beginTime.getTimeInMillis(), System.currentTimeMillis());
 
-        List<UsageStats> usageStats = manager.queryUsageStats(UsageStatsManager.INTERVAL_YEARLY, beginTime.getTimeInMillis(), endTime.getTimeInMillis());
+        // Select this package: com.hcifedii.sprout
+        UsageStats usageStats = usageStatsMap.get(getPackageName());
 
         long timeInForeground = 0;
-        for (UsageStats us : usageStats) {
-            // Sum of each usage time, in milliseconds
-            timeInForeground += us.getTotalTimeInForeground();
+        if (usageStats != null) {
+            timeInForeground = usageStats.getTotalTimeInForeground();
         }
 
         // Minutes: 1000 * 60
