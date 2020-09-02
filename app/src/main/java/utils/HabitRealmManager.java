@@ -19,7 +19,6 @@ public class HabitRealmManager {
      * @return Habit with the selected id or null.
      */
     public Habit getHabit(int id) {
-
         if (id < 0)
             return null;
 
@@ -49,9 +48,7 @@ public class HabitRealmManager {
         Realm realm = null;
 
         try {
-
             realm = Realm.getDefaultInstance();
-
             realm.executeTransaction(realmInstance -> {
                 Habit habit = realmInstance.where(Habit.class).equalTo("id", id).findFirst();
                 if (habit != null) {
@@ -59,15 +56,11 @@ public class HabitRealmManager {
                     Log.i(LOG_TAG, "Habit deleted: " + id);
                 }
             });
-
-
         } finally {
             if (realm != null)
                 realm.close();
         }
-
-
-        return true;
+        return true; //FIXME: dovrebbe tornare l'esito della cancellazione
     }
 
     /**
@@ -77,13 +70,10 @@ public class HabitRealmManager {
 
         Realm realm = null;
         List<Habit> habitsList;
-
         try {
             realm = Realm.getDefaultInstance();
             RealmResults<Habit> realmResults = realm.where(Habit.class).findAll();
-
             habitsList = realm.copyFromRealm(realmResults);
-
         } finally {
             if (realm != null)
                 realm.close();
@@ -92,18 +82,13 @@ public class HabitRealmManager {
     }
 
     public void saveOrUpdateHabit(@NonNull Habit habit) {
-
         Realm realm = null;
-
         try {
             realm = Realm.getDefaultInstance();
-
             realm.executeTransactionAsync(realmInstance -> {
-
                 if (habit.getId() < 0) {
                     // Have to save a new Habit
                     habit.setId(getNextId(realmInstance));
-
                 }//else{
                 // Update an existent Habit
 
@@ -135,7 +120,6 @@ public class HabitRealmManager {
      */
     private int getNextId(Realm realm) {
         Number newId = realm.where(Habit.class).max("id");
-
         if (newId != null)
             return newId.intValue() + 1;
         return 0;

@@ -126,8 +126,8 @@ public class CreateHabitActivity extends AppCompatActivity {
                 // Save habit
                 HabitRealmManager manager = new HabitRealmManager();
                 manager.saveOrUpdateHabit(habit);
-
-                
+                Toast.makeText(this, "Nuova abitudine creata con successo!", Toast.LENGTH_SHORT).show();
+                finish();
             } else {
                 titleFragment.setErrorMessage(getString(R.string.error_title_is_empty));
                 showErrorSnackbar(saveFab, R.string.error_title_is_empty);

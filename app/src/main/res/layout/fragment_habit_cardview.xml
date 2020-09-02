@@ -13,6 +13,10 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="16dp"
+        android:id="@+id/habitCardView"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:selectableItemBackground"
         app:cardCornerRadius="16dp"
         app:cardElevation="8dp">
 
