@@ -12,13 +12,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".StatsActivity"
+            android:label="@string/title_activity_stats"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity"/>
-        <activity android:name=".EditHabitActivity" />
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".EditHabitActivity"
+            android:label="@string/title_activity_edit_habit"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".CreateHabitActivity"
-            android:label="@string/CreateHabitActivityTitle"
+            android:label="@string/title_activity_create_habit"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

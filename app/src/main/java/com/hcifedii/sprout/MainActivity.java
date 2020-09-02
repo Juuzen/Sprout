@@ -44,21 +44,36 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        // Light / dark theme setup
         setUIMode();
 
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
         // Set the title inside the top bar for this activity.
         // I'm not doing it inside the Manifest because it changes the app's name
         setTitle(R.string.MainActivityTitle);
 
+        // Bottom App Bar setup
+        BottomAppBar bottomAppBar = findViewById(R.id.bottomAppBar);
+        cutBottomAppEdge(bottomAppBar);     // Diamond shape
+
+        // Add listener to Stats button inside the bottom app bar
+        MenuItem statsMenuItem = bottomAppBar.getMenu().findItem(R.id.statsMenuItem);
+        statsMenuItem.setOnMenuItemClickListener(item -> {
+            if(item.getItemId() == R.id.statsMenuItem){
+                Intent i = new Intent(getApplicationContext(), StatsActivity.class);
+                startActivity(i);
+                return true;
+            }
+            return false;
+        });
+
+        // FAB button setup
         FloatingActionButton fab = findViewById(R.id.fabAddButton);
         fab.setOnClickListener(view -> {
-            Intent intent = new Intent(getBaseContext(), CreateHabitActivity.class);
-
-            startActivity(intent);
+            Intent i = new Intent(getBaseContext(), CreateHabitActivity.class);
+            startActivity(i);
         });
 
         realm = Realm.getDefaultInstance();
@@ -71,8 +86,6 @@ public class MainActivity extends AppCompatActivity {
         redraw();
         //TODO: quando il converter è vuoto, mostra una textview invece della recyclerview
 
-        BottomAppBar bar = findViewById(R.id.bottomAppBar);
-        cutBottomAppEdge(bar);
     }
 
 

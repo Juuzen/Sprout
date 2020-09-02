@@ -48,7 +48,7 @@
     </string>
 
 
-    <string name="CreateHabitActivityTitle">Nuova abitudine</string>
+    <string name="title_activity_create_habit">Nuova abitudine</string>
     <string name="MainActivityTitle">Le mie abitudini</string>
 
     <string name="snooze_title">Rinvii</string>
@@ -98,6 +98,8 @@
 
     <string name="about_us_title">Sprout (HCI 2020)</string>
     <string name="about_us_message">Prodotto da Michele e Salvatore.\n</string>
+    <string name="title_activity_stats">Statistiche</string>
+    <string name="title_activity_edit_habit">Modifica l\'abitudine</string>
 
 
 </resources>
