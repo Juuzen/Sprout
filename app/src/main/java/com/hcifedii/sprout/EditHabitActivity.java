@@ -28,7 +28,9 @@ import com.hcifedii.sprout.fragment.TitleFragment;
 
 import java.util.List;
 
+import model.Habit;
 import model.Reminder;
+import utils.HabitRealmManager;
 
 public class EditHabitActivity extends AppCompatActivity {
 
@@ -133,7 +135,16 @@ public class EditHabitActivity extends AppCompatActivity {
         // getting the habits informations from DB
         int habitId = getIntent().getIntExtra("HABIT_ID", -1);
         if (habitId != -1) {
-
+            Habit habit = HabitRealmManager.getHabit(habitId);
+            if (habit != null) {
+                //the habit informations are now accessible
+                titleFragment.setTitle(habit.getTitle());
+                habitTypeFragment.setHabitType(habit.getHabitType());
+                frequencyFragment.setFrequency(habit.getFrequency());
+                remindersFragment.setReminderList(habit.getReminders());
+                snoozeFragment.setSnooze(habit.getMaxSnoozes());
+                goalFragment.setGoalType(habit.getGoalType());
+            }
         } else {
             //TODO: Raise an exception
         }

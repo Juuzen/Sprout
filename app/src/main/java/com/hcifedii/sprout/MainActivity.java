@@ -34,13 +34,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         setUIMode();
-
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
-
         // Set the title inside the top bar for this activity.
         // I'm not doing it inside the Manifest because it changes the app's name
         setTitle(R.string.MainActivityTitle);
