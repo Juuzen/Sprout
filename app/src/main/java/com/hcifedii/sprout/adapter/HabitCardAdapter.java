@@ -1,5 +1,6 @@
 package com.hcifedii.sprout.adapter;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -47,6 +48,7 @@ public class HabitCardAdapter extends RecyclerView.Adapter<HabitCardAdapter.View
             public void onClick(View view) {
                 Intent intent = new Intent(myContext, EditHabitActivity.class);
                 intent.putExtra("HABIT_ID", habit.getId());
+                //TODO: Aggiungere l'animazione
                 myContext.startActivity(intent);
             }
         });

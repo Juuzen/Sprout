@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -45,19 +46,15 @@ public class EditHabitActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_habit);
-
         enableTopBackButton();
 
         // FAB - Floating Action Button
         ExtendedFloatingActionButton editFab = findViewById(R.id.fabEditButton);
         editFab.setOnClickListener(fabView -> {
-
             String title = titleFragment.getTitle();
-
             if (title.length() > 0) {
                 // Clear error message
                 titleFragment.setErrorMessage(null);
-
                 // Recover the data from the fragments
                 // Habit type
                 HabitType habitType = habitTypeFragment.getHabitType();
@@ -133,7 +130,13 @@ public class EditHabitActivity extends AppCompatActivity {
             });
         });
 
+        // getting the habits informations from DB
+        int habitId = getIntent().getIntExtra("HABIT_ID", -1);
+        if (habitId != -1) {
 
+        } else {
+            //TODO: Raise an exception
+        }
     }
 
     @Override
