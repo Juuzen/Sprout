@@ -114,6 +114,8 @@
     <string name="permission_dialog_message">Vuoi consentire l\'accesso alle statistiche sull\'uso del dispositivo da parte dell\'app?</string>
     <string name="habit_item_title_placeholder">Titolo dell\'abitudine</string>
     <string name="habit_item_date_placeholder">22/08/2020</string>
+    <string name="habit_item_creation_content_description">Creato in data</string>
+    <string name="habit_item_end_content_description">Archiviato in data</string>
 
 
 </resources>
