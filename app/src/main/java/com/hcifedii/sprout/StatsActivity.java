@@ -1,7 +1,12 @@
 package com.hcifedii.sprout;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.AppOpsManager;
@@ -16,9 +21,12 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
+import com.hcifedii.sprout.adapter.HabitListAdapter;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -65,6 +73,26 @@ public class StatsActivity extends AppCompatActivity {
 
         MaterialTextView habitCreatedTextView = findViewById(R.id.habitCreatedTextView);
         habitCreatedTextView.setText(Long.toString(habitCount));
+
+        HabitRealmManager realmManager = new HabitRealmManager();
+
+        RecyclerView recyclerView = findViewById(R.id.habitRecyclerView);
+
+        // Adapter setup
+        HabitListAdapter adapter = new HabitListAdapter(realmManager.getAllHabits());
+        adapter.setListener(habitId -> {
+            Intent intent = new Intent(this, HabitStatsActivity.class);
+            intent.putExtra(HabitStatsActivity.EXTRA_HABIT_ID, habitId);
+            startActivity(intent);
+        });
+
+        recyclerView.setAdapter(adapter);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+
+
 
 
     }

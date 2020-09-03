@@ -1,137 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".StatsActivity">
+    android:layout_height="match_parent">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="5dp"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        tools:context=".StatsActivity">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="5dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/globalTitleTextView"
-                style="@style/SproutTitle"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/global_stats_title_card"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:padding="16dp">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/timeTitleTextView"
-                style="@style/SproutInfo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="24dp"
-                android:text="@string/time_textview"
-                app:layout_constraintEnd_toStartOf="@+id/timeTextView"
-                app:layout_constraintStart_toStartOf="@+id/globalTitleTextView"
-                app:layout_constraintTop_toBottomOf="@+id/globalTitleTextView" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/globalTitleTextView"
+                    style="@style/SproutTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/global_stats_title_card"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/timeTextView"
-                style="@style/SproutInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:text="@string/time_placeholder"
-                android:textAlignment="center"
-                app:layout_constraintEnd_toStartOf="@+id/hourTextView"
-                app:layout_constraintTop_toTopOf="@+id/timeTitleTextView" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/timeTitleTextView"
+                    style="@style/SproutInfo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="@string/time_textview"
+                    app:layout_constraintEnd_toStartOf="@+id/timeTextView"
+                    app:layout_constraintStart_toStartOf="@+id/globalTitleTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/globalTitleTextView" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/hourTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/hour_textview"
-                app:layout_constraintEnd_toEndOf="@+id/globalTitleTextView"
-                app:layout_constraintTop_toTopOf="@+id/timeTextView" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/timeTextView"
+                    style="@style/SproutInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:text="@string/time_placeholder"
+                    android:textAlignment="center"
+                    app:layout_constraintEnd_toStartOf="@+id/hourTextView"
+                    app:layout_constraintTop_toTopOf="@+id/timeTitleTextView" />
 
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/habitCreatedTitleTextView"
-                style="@style/SproutInfo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="24dp"
-                android:text="@string/habit_created_textview"
-                app:layout_constraintEnd_toStartOf="@+id/habitCreatedTextView"
-                app:layout_constraintStart_toStartOf="@+id/timeTitleTextView"
-                app:layout_constraintTop_toBottomOf="@+id/timeTitleTextView" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/habitCreatedTextView"
-                style="@style/SproutInfo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/habit_created_placeholder"
-                android:textAlignment="center"
-                app:layout_constraintEnd_toEndOf="@+id/hourTextView"
-                app:layout_constraintStart_toStartOf="@+id/timeTextView"
-                app:layout_constraintTop_toTopOf="@+id/habitCreatedTitleTextView" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/habitCompletedTitleTextView"
-                style="@style/SproutInfo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="24dp"
-                android:text="@string/habit_completed_textview"
-                app:layout_constraintEnd_toStartOf="@+id/habitCompletedTextView"
-                app:layout_constraintStart_toStartOf="@+id/habitCreatedTitleTextView"
-                app:layout_constraintTop_toBottomOf="@+id/habitCreatedTitleTextView" />
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/habitCompletedTextView"
-                style="@style/SproutInfo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/habit_completed_placeholder"
-                android:textAlignment="center"
-                app:layout_constraintEnd_toEndOf="@+id/habitCreatedTextView"
-                app:layout_constraintStart_toStartOf="@+id/habitCreatedTextView"
-                app:layout_constraintTop_toTopOf="@+id/habitCompletedTitleTextView" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/hourTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hour_textview"
+                    app:layout_constraintEnd_toEndOf="@+id/globalTitleTextView"
+                    app:layout_constraintTop_toTopOf="@+id/timeTextView" />
 
 
-    <com.google.android.material.textview.MaterialTextView
-        style="@style/SproutTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/habit_list_textview"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/cardView"
-        app:layout_constraintStart_toStartOf="@+id/cardView"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/habitCreatedTitleTextView"
+                    style="@style/SproutInfo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="@string/habit_created_textview"
+                    app:layout_constraintEnd_toStartOf="@+id/habitCreatedTextView"
+                    app:layout_constraintStart_toStartOf="@+id/timeTitleTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/timeTitleTextView" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/habitCreatedTextView"
+                    style="@style/SproutInfo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/habit_created_placeholder"
+                    android:textAlignment="center"
+                    app:layout_constraintEnd_toEndOf="@+id/hourTextView"
+                    app:layout_constraintStart_toStartOf="@+id/timeTextView"
+                    app:layout_constraintTop_toTopOf="@+id/habitCreatedTitleTextView" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/habitCompletedTitleTextView"
+                    style="@style/SproutInfo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="@string/habit_completed_textview"
+                    app:layout_constraintEnd_toStartOf="@+id/habitCompletedTextView"
+                    app:layout_constraintStart_toStartOf="@+id/habitCreatedTitleTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/habitCreatedTitleTextView" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/habitCompletedTextView"
+                    style="@style/SproutInfo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/habit_completed_placeholder"
+                    android:textAlignment="center"
+                    app:layout_constraintEnd_toEndOf="@+id/habitCreatedTextView"
+                    app:layout_constraintStart_toStartOf="@+id/habitCreatedTextView"
+                    app:layout_constraintTop_toTopOf="@+id/habitCompletedTitleTextView" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/materialTextView2"
+            style="@style/SproutTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/habit_list_textview"
+            app:layout_constraintEnd_toEndOf="@+id/cardView"
+            app:layout_constraintStart_toStartOf="@+id/cardView"
+            app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/habitRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/materialTextView2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
