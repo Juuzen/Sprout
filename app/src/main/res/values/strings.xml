@@ -116,6 +116,8 @@
     <string name="habit_item_date_placeholder">22/08/2020</string>
     <string name="habit_item_creation_content_description">Creato in data</string>
     <string name="habit_item_end_content_description">Archiviato in data</string>
+    <string name="no_item_message">Non ci sono elementi da visualizzare.</string>
+    <string name="no_item_found_message">Nessun elemento trovato</string>
 
 
 </resources>

@@ -15,10 +15,12 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/habitItemTitle"
         style="@style/SproutBoldSubtitle"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/habit_item_title_placeholder"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/icon1"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,13 +28,13 @@
         android:id="@+id/icon1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
+        android:layout_marginEnd="8dp"
         android:adjustViewBounds="false"
         android:contentDescription="@string/habit_item_creation_content_description"
         android:cropToPadding="false"
         android:src="@drawable/ic_add_24"
-        app:layout_constraintStart_toStartOf="@+id/habitItemTitle"
-        app:layout_constraintTop_toBottomOf="@+id/habitItemTitle"
+        app:layout_constraintEnd_toStartOf="@+id/habitItemCreationDate"
+        app:layout_constraintTop_toTopOf="parent"
         app:tint="#696969" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -40,22 +42,21 @@
         style="@style/SproutInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
         android:text="@string/habit_item_date_placeholder"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/icon1"
-        app:layout_constraintStart_toEndOf="@+id/icon1"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/icon1" />
 
     <ImageView
         android:id="@+id/icon2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
         android:contentDescription="@string/habit_item_end_content_description"
-        app:layout_constraintBottom_toBottomOf="@+id/icon1"
-        app:layout_constraintStart_toEndOf="@+id/habitItemCreationDate"
-        app:layout_constraintTop_toTopOf="@+id/icon1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/icon1"
+        app:layout_constraintTop_toBottomOf="@+id/icon1"
         app:srcCompat="@drawable/ic_archive_24"
         app:tint="#696969" />
 
@@ -64,12 +65,10 @@
         style="@style/SproutInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="8dp"
         android:text="-"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/icon2"
-        app:layout_constraintEnd_toEndOf="@+id/habitItemTitle"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/icon2"
         app:layout_constraintTop_toTopOf="@+id/icon2"
         tools:ignore="HardcodedText" />

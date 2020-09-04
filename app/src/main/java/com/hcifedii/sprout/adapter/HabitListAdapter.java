@@ -1,18 +1,19 @@
 package com.hcifedii.sprout.adapter;
 
 import android.content.Context;
-import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textview.MaterialTextView;
 import com.hcifedii.sprout.R;
+import com.hcifedii.sprout.filter.HabitFilterHelper;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -20,7 +21,7 @@ import java.util.List;
 
 import model.Habit;
 
-public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.ViewHolder> {
+public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.ViewHolder> implements Filterable {
 
     public interface OnClickListener {
         void onClick(int habitId);
@@ -28,15 +29,24 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
 
     private OnClickListener listener;
 
-    private List<Habit> habitList;
+    /**
+     * List showed inside the recycler view
+     */
+    private List<Habit> currentList;
+
+    /**
+     * Original unmodified List
+     */
+    private List<Habit> originalList;
+
     private Context context;
 
-
-    public HabitListAdapter(List<Habit> habitList) {
-        this.habitList = habitList;
+    public HabitListAdapter(@NonNull List<Habit> habitList) {
+        this.currentList = habitList;
+        this.originalList = habitList;
     }
 
-    public void setListener(OnClickListener listener){
+    public void setListener(OnClickListener listener) {
         this.listener = listener;
     }
 
@@ -55,7 +65,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
     @Override
     public void onBindViewHolder(@NonNull HabitListAdapter.ViewHolder holder, int position) {
 
-        Habit habit = habitList.get(position);
+        Habit habit = currentList.get(position);
 
         holder.habitId = habit.getId();
 
@@ -70,9 +80,24 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
 
     @Override
     public int getItemCount() {
-        return habitList.size();
+        return currentList.size();
     }
 
+    @Override
+    public Filter getFilter() {
+        return new HabitFilterHelper(originalList) {
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                currentList = (List<Habit>) filterResults.values;
+                notifyDataSetChanged();
+
+                if (currentList.size() < 1) {
+                    // Show message if no element was found
+                    Toast.makeText(context, R.string.no_item_found_message, Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 

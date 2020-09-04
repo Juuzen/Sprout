@@ -18,25 +18,32 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
+
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.SearchView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 import com.hcifedii.sprout.adapter.HabitListAdapter;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import model.Habit;
 import utils.HabitRealmManager;
 
 
 public class StatsActivity extends AppCompatActivity {
 
-    private static final String logcatTag = "StatsActivity";
-
     public static final String SHARED_PREFS_PERMISSION_SHOWED = "UsageDialogShowed";
 
+    HabitListAdapter adapter;
+    MaterialTextView noItemMessage;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -46,12 +53,63 @@ public class StatsActivity extends AppCompatActivity {
 
         enableTopBackButton();
 
+        // Info inside the card
+        MaterialTextView timeTextView = findViewById(R.id.timeTextView);
+        timeTextView.setText(getUsageTimeString());
+
+        long habitCount = HabitRealmManager.getHabitCount();
+
+        MaterialTextView habitCreatedTextView = findViewById(R.id.habitCreatedTextView);
+        habitCreatedTextView.setText(Long.toString(habitCount));
+
+
+        // TODO: aggiungere il numero di abitudini completate nella card
+
+
+        // Recycler View
+        HabitRealmManager realmManager = new HabitRealmManager();
+
+        noItemMessage = findViewById(R.id.noItemMessage);
+
+        RecyclerView recyclerView = findViewById(R.id.habitRecyclerView);
+
+        List<Habit> habitList = realmManager.getAllHabits();
+
+        if (habitList.size() > 0) {
+            recyclerView.setVisibility(View.VISIBLE);
+            noItemMessage.setVisibility(View.GONE);
+
+            // Adapter setup
+            adapter = new HabitListAdapter(habitList);
+            adapter.setListener(habitId -> {
+                Intent intent = new Intent(this, HabitStatsActivity.class);
+                intent.putExtra(HabitStatsActivity.EXTRA_HABIT_ID, habitId);
+                startActivity(intent);
+            });
+
+            recyclerView.setAdapter(adapter);
+
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+        } else {
+            // Show a message if there are no habits
+            recyclerView.setVisibility(View.GONE);
+            noItemMessage.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    /**
+     * @return A string representing the time spent by the user on this application
+     */
+    private String getUsageTimeString() {
         SharedPreferences pref = getSharedPreferences(SettingsActivity.SHARED_PREFS_FILE, MODE_PRIVATE);
 
         String usageTimeString = "0";
         // Need android.permission.PACKAGE_USAGE_STATS to get usage time stats
         if (isAccessGranted()) {
-            usageTimeString = getUsageTimeString();
+            usageTimeString = getUsageTimeFromUsageStatsManager();
         } else if (!pref.getBoolean(SHARED_PREFS_PERMISSION_SHOWED, false)) {
             // First access. Then show this dialog
             showPermissionDialog();
@@ -61,36 +119,7 @@ public class StatsActivity extends AppCompatActivity {
             editor.putBoolean(SHARED_PREFS_PERMISSION_SHOWED, true);
             editor.apply();
         }
-
-        MaterialTextView timeTextView = findViewById(R.id.timeTextView);
-        timeTextView.setText(usageTimeString);
-
-        long habitCount = HabitRealmManager.getHabitCount();
-
-        MaterialTextView habitCreatedTextView = findViewById(R.id.habitCreatedTextView);
-        habitCreatedTextView.setText(Long.toString(habitCount));
-
-        HabitRealmManager realmManager = new HabitRealmManager();
-
-        RecyclerView recyclerView = findViewById(R.id.habitRecyclerView);
-
-        // Adapter setup
-        HabitListAdapter adapter = new HabitListAdapter(realmManager.getAllHabits());
-        adapter.setListener(habitId -> {
-            Intent intent = new Intent(this, HabitStatsActivity.class);
-            intent.putExtra(HabitStatsActivity.EXTRA_HABIT_ID, habitId);
-            startActivity(intent);
-        });
-
-        recyclerView.setAdapter(adapter);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-
-
-
-
-
+        return usageTimeString;
     }
 
     /**
@@ -134,7 +163,7 @@ public class StatsActivity extends AppCompatActivity {
      *
      * @return A string with usage time for this app
      */
-    private String getUsageTimeString() {
+    private String getUsageTimeFromUsageStatsManager() {
         UsageStatsManager manager = (UsageStatsManager) this.getSystemService(Context.USAGE_STATS_SERVICE);
 
         Calendar beginTime = Calendar.getInstance();
@@ -159,14 +188,44 @@ public class StatsActivity extends AppCompatActivity {
         return String.format(Locale.getDefault(), "%2d:%02d", hour, minute);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.top_app_bar_stats, menu);
+
+        SearchView searchView = (SearchView) menu.findItem(R.id.searchMenuItem).getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (adapter != null) {
+                    adapter.getFilter().filter(newText);
+                    return true;
+                }
+                return false;
+            }
+        });
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.searchMenuItem) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     private void enableTopBackButton() {
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
-        } else {
-            Log.e(logcatTag, "getSupportActionBar() returned null");
         }
     }
 }
