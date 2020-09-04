@@ -48,6 +48,8 @@ public class CreateHabitActivity extends AppCompatActivity {
     SnoozeFragment snoozeFragment;
     GoalFragment goalFragment;
 
+    //TODO: aggiungere la funzione onBackPressed per l'animazione
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,8 +128,8 @@ public class CreateHabitActivity extends AppCompatActivity {
                 // Save habit
                 HabitRealmManager manager = new HabitRealmManager();
                 manager.saveOrUpdateHabit(habit);
-
-                
+                Toast.makeText(this, "Nuova abitudine creata con successo!", Toast.LENGTH_SHORT).show();
+                finish(); //FIXME: aggiungere l'animazione
             } else {
                 titleFragment.setErrorMessage(getString(R.string.error_title_is_empty));
                 showErrorSnackbar(saveFab, R.string.error_title_is_empty);

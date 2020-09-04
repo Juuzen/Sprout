@@ -6,12 +6,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -27,7 +31,9 @@ import com.hcifedii.sprout.fragment.TitleFragment;
 
 import java.util.List;
 
+import model.Habit;
 import model.Reminder;
+import utils.HabitRealmManager;
 
 public class EditHabitActivity extends AppCompatActivity {
 
@@ -41,23 +47,23 @@ public class EditHabitActivity extends AppCompatActivity {
     SnoozeFragment snoozeFragment;
     GoalFragment goalFragment;
 
+    int habitId;
+    Habit habit;
+    Context myContext = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_habit);
-
         enableTopBackButton();
 
         // FAB - Floating Action Button
         ExtendedFloatingActionButton editFab = findViewById(R.id.fabEditButton);
         editFab.setOnClickListener(fabView -> {
-
             String title = titleFragment.getTitle();
-
             if (title.length() > 0) {
                 // Clear error message
                 titleFragment.setErrorMessage(null);
-
                 // Recover the data from the fragments
                 // Habit type
                 HabitType habitType = habitTypeFragment.getHabitType();
@@ -133,7 +139,22 @@ public class EditHabitActivity extends AppCompatActivity {
             });
         });
 
-
+        // getting the habits informations from DB
+        habitId = getIntent().getIntExtra("HABIT_ID", -1);
+        if (habitId != -1) {
+            habit = HabitRealmManager.getHabit(habitId);
+            if (habit != null) {
+                //the habit informations are now accessible
+                titleFragment.setTitle(habit.getTitle());
+                habitTypeFragment.setHabitType(habit.getHabitType());
+                frequencyFragment.setFrequency(habit.getFrequency());
+                remindersFragment.setReminderList(habit.getReminders());
+                snoozeFragment.setSnooze(habit.getMaxSnoozes());
+                goalFragment.setGoalType(habit.getGoalType());
+            }
+        } else {
+            //TODO: Raise an exception
+        }
     }
 
     @Override
@@ -147,7 +168,19 @@ public class EditHabitActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.deleteHabitButton:
-                // Delete the selected habit
+                new AlertDialog.Builder(this)
+                        .setTitle("Cancellare l'abitudine?")
+                        .setMessage("Non potrai tornare indietro!")
+                        .setPositiveButton("Sì, cancella", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                HabitRealmManager.deleteHabit(habitId);
+                                Toast.makeText(myContext, "Abitudine eliminata!", Toast.LENGTH_SHORT).show();
+                                finish(); //FIXME: transizioni
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
 
             default:
                 return super.onOptionsItemSelected(item);

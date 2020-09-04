@@ -1,7 +1,6 @@
 package com.hcifedii.sprout;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -9,15 +8,11 @@ import androidx.appcompat.app.AppCompatDelegate;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment;
@@ -28,28 +23,21 @@ import com.hcifedii.sprout.adapter.HabitCardAdapter;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
-import io.realm.RealmResults;
-import model.Habit;
-import utils.HabitConverter;
+import utils.HabitRealmManager;
 import utils.SproutBottomAppBarCutCornersTopEdge;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String logcatTag = "Sprout - MainActivity";
     RecyclerView rv;
-    HabitConverter converter;
     RealmChangeListener realmChangeListener;
     Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        // Light / dark theme setup
         setUIMode();
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         // Set the title inside the top bar for this activity.
         // I'm not doing it inside the Manifest because it changes the app's name
         setTitle(R.string.MainActivityTitle);
@@ -72,16 +60,14 @@ public class MainActivity extends AppCompatActivity {
         // FAB button setup
         FloatingActionButton fab = findViewById(R.id.fabAddButton);
         fab.setOnClickListener(view -> {
-            Intent i = new Intent(getBaseContext(), CreateHabitActivity.class);
-            startActivity(i);
+            Intent intent = new Intent(getBaseContext(), CreateHabitActivity.class);
+            startActivity(intent);
         });
 
         realm = Realm.getDefaultInstance();
         rv = findViewById(R.id.habitCardRecyclerView);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        converter = new HabitConverter(realm);
-        converter.loadItemsFromDB();
-        HabitCardAdapter adapter = new HabitCardAdapter(this, converter.getList());
+        HabitCardAdapter adapter = new HabitCardAdapter(this, HabitRealmManager.getAllHabits());
         rv.setAdapter(adapter);
         redraw();
         //TODO: quando il converter è vuoto, mostra una textview invece della recyclerview
@@ -158,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
         realmChangeListener = new RealmChangeListener() {
             @Override
             public void onChange(Object o) {
-                HabitCardAdapter adapter = new HabitCardAdapter(MainActivity.this, converter.getList());
+                HabitCardAdapter adapter = new HabitCardAdapter(MainActivity.this, HabitRealmManager.getAllHabits());
                 rv.setAdapter(adapter);
             }
         };
