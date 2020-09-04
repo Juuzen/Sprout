@@ -126,8 +126,7 @@ public class CreateHabitActivity extends AppCompatActivity {
                 printHabitInfoOnLog(habit);
 
                 // Save habit
-                HabitRealmManager manager = new HabitRealmManager();
-                manager.saveOrUpdateHabit(habit);
+                HabitRealmManager.saveOrUpdateHabit(habit);
                 Toast.makeText(this, "Nuova abitudine creata con successo!", Toast.LENGTH_SHORT).show();
                 finish(); //FIXME: aggiungere l'animazione
             } else {

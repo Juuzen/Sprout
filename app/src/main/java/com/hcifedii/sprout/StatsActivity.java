@@ -67,13 +67,12 @@ public class StatsActivity extends AppCompatActivity {
 
 
         // Recycler View
-        HabitRealmManager realmManager = new HabitRealmManager();
 
         noItemMessage = findViewById(R.id.noItemMessage);
 
         RecyclerView recyclerView = findViewById(R.id.habitRecyclerView);
 
-        List<Habit> habitList = realmManager.getAllHabits();
+        List<Habit> habitList = HabitRealmManager.getAllHabits();
 
         if (habitList.size() > 0) {
             recyclerView.setVisibility(View.VISIBLE);

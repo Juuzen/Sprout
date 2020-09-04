@@ -17,15 +17,16 @@ import com.hcifedii.sprout.EditHabitActivity;
 import com.hcifedii.sprout.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import model.Habit;
 
 
 public class HabitCardAdapter extends RecyclerView.Adapter<HabitCardAdapter.ViewHolder> {
-    ArrayList<Habit> habitList;
+    List<Habit> habitList;
     Context myContext;
 
-    public HabitCardAdapter(Context ct, ArrayList<Habit> list) {
+    public HabitCardAdapter(Context ct, List<Habit> list) {
         myContext = ct;
         habitList = list;
     }

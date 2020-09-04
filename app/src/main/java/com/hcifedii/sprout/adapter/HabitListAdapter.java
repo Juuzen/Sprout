@@ -91,7 +91,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
                 currentList = (List<Habit>) filterResults.values;
                 notifyDataSetChanged();
 
-                if (currentList.size() < 1) {
+                if (currentList == null || currentList.size() < 1) {
                     // Show message if no element was found
                     Toast.makeText(context, R.string.no_item_found_message, Toast.LENGTH_SHORT).show();
                 }

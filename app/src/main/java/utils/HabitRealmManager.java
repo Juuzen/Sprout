@@ -15,6 +15,21 @@ public class HabitRealmManager {
 
     private static final String LOG_TAG = "DBManager";
 
+    public static long getHabitCount() {
+        Realm realm = null;
+        long count = 0;
+
+        try {
+            realm = Realm.getDefaultInstance();
+            count = realm.where(Habit.class).count();
+
+        } finally {
+            if (realm != null)
+                realm.close();
+        }
+        return count;
+    }
+
     public static Habit getHabit(int id) {
         if (id < 0)
             return null;
@@ -50,13 +65,14 @@ public class HabitRealmManager {
         return true; //FIXME: dovrebbe tornare l'esito della cancellazione
     }
 
-    public static ArrayList<Habit> getAllHabits() {
+    public static List<Habit> getAllHabits() {
         Realm realm = null;
-        ArrayList<Habit> habitList;
+        List<Habit> habitList;
         try {
             realm = Realm.getDefaultInstance();
-            RealmResults<Habit> results = realm.where(Habit.class).findAll();
-            habitList = new ArrayList<>(results);
+            RealmResults<Habit> realmResults = realm.where(Habit.class).findAll();
+            habitList = realm.copyFromRealm(realmResults);
+
         } finally {
             if (realm != null)
                 realm.close();

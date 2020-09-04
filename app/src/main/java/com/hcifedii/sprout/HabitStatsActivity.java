@@ -27,8 +27,7 @@ public class HabitStatsActivity extends AppCompatActivity {
         int habitId = getHabitIdFromBundles(savedInstanceState);
 
         if (habitId >= 0) {
-            HabitRealmManager manager = new HabitRealmManager();
-            habit = manager.getHabit(habitId);
+            habit = HabitRealmManager.getHabit(habitId);
 
             CalendarView calendarView = findViewById(R.id.calendarView);
 
