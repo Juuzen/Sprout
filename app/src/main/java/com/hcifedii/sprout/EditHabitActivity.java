@@ -31,6 +31,7 @@ import com.hcifedii.sprout.fragment.TitleFragment;
 
 import java.util.List;
 
+import io.realm.RealmList;
 import model.Habit;
 import model.Reminder;
 import utils.HabitRealmManager;
@@ -64,6 +65,7 @@ public class EditHabitActivity extends AppCompatActivity {
             if (title.length() > 0) {
                 // Clear error message
                 titleFragment.setErrorMessage(null);
+
                 // Recover the data from the fragments
                 // Habit type
                 HabitType habitType = habitTypeFragment.getHabitType();
@@ -98,16 +100,31 @@ public class EditHabitActivity extends AppCompatActivity {
                     goalLongValue = goalFragment.getLong();
 
                     if (goalLongValue < 0) {
-                        showErrorSnackbar(editFab, R.string.error_deadline_is_empty);
+                        //showErrorSnackbar(saveFab, R.string.error_deadline_is_empty);
                         return;
                     }
                 } else {
                     goalIntValue = goalFragment.getInt();
                 }
 
-                // Update the habit
+                // Set the habit fields
+                Habit newHabit = new Habit();
+                newHabit.setId(habitId);
+                newHabit.setTitle(title);
+                newHabit.setHabitType(habitType);
+                newHabit.setRepetitions(repetitions);
+                newHabit.setFrequency(frequency);
+                newHabit.setReminders((RealmList<Reminder>) reminders);
+                newHabit.setMaxSnoozes(snooze);
+                newHabit.setGoalType(goalType);
+                newHabit.setMaxAction(goalIntValue);
+                newHabit.setMaxStreakValue(goalIntValue);
+                newHabit.setFinalDate(goalLongValue);
 
-
+                // Save habit
+                HabitRealmManager.saveOrUpdateHabit(newHabit);
+                Toast.makeText(this, "Abitudine aggiornata!", Toast.LENGTH_SHORT).show();
+                finish(); //FIXME: aggiungere l'animazione
             } else {
                 titleFragment.setErrorMessage(getString(R.string.error_title_is_empty));
                 showErrorSnackbar(editFab, R.string.error_title_is_empty);

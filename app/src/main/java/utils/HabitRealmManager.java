@@ -66,31 +66,14 @@ public class HabitRealmManager {
 
     public static void saveOrUpdateHabit(@NonNull Habit habit) {
         Realm realm = null;
+
         try {
             realm = Realm.getDefaultInstance();
-            realm.executeTransactionAsync(realmInstance -> {
-                if (habit.getId() < 0) {
-                    // Have to save a new Habit
-                    habit.setId(getNextId(realmInstance));
-                }//else{
-                // Update an existent Habit
-
-                //}
-
-                realmInstance.insertOrUpdate(habit);
-
-            }, new Realm.Transaction.OnSuccess() {
-                @Override
-                public void onSuccess() {
-                    Log.i(LOG_TAG, "Transaction success! - ID: " + habit.getId());
-                }
-            }, new Realm.Transaction.OnError() {
-                @Override
-                public void onError(@NonNull Throwable error) {
-                    Log.i(LOG_TAG, "Transaction error! - ID: " + habit.getId() + "\n" + error.getMessage());
-                }
-            });
-
+            realm.executeTransactionAsync(
+                    realmInstance -> realmInstance.insertOrUpdate(habit),
+                    () -> Log.i(LOG_TAG, "Transaction success! - ID: " + habit.getId()),
+                    error -> Log.i(LOG_TAG, "Transaction error! - ID: " + habit.getId() + "\n" + error.getMessage()
+                    ));
         } finally {
             if (realm != null)
                 realm.close();
