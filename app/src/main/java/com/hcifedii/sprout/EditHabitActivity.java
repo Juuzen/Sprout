@@ -44,6 +44,9 @@ public class EditHabitActivity extends AppCompatActivity {
     SnoozeFragment snoozeFragment;
     GoalFragment goalFragment;
 
+    int habitId;
+    Habit habit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,9 +136,9 @@ public class EditHabitActivity extends AppCompatActivity {
         });
 
         // getting the habits informations from DB
-        int habitId = getIntent().getIntExtra("HABIT_ID", -1);
+        habitId = getIntent().getIntExtra("HABIT_ID", -1);
         if (habitId != -1) {
-            Habit habit = HabitRealmManager.getHabit(habitId);
+            habit = HabitRealmManager.getHabit(habitId);
             if (habit != null) {
                 //the habit informations are now accessible
                 titleFragment.setTitle(habit.getTitle());
@@ -161,7 +164,10 @@ public class EditHabitActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.deleteHabitButton:
-                // Delete the selected habit
+                //Toast.makeText(this, "Stai eliminando l'abitudine " + habit.getTitle(), Toast.LENGTH_SHORT).show();
+                HabitRealmManager.deleteHabit(habitId);
+                Toast.makeText(this, "Abitudine eliminata!", Toast.LENGTH_SHORT).show();
+                finish(); //FIXME: transizioni
 
             default:
                 return super.onOptionsItemSelected(item);
