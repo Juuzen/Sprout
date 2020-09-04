@@ -13,6 +13,10 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="16dp"
+        android:id="@+id/habitCardView"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:selectableItemBackground"
         app:cardCornerRadius="16dp"
         app:cardElevation="8dp">
 
@@ -20,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/habitCardTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
