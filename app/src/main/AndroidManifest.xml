@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.hcifedii.sprout">
+
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
 
     <application
         android:name=".MyApplication"
@@ -12,13 +17,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".HabitStatsActivity"
+            android:parentActivityName=".StatsActivity" />
+        <activity
+            android:name=".StatsActivity"
+            android:label="@string/title_activity_stats"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity"/>
-        <activity android:name=".EditHabitActivity" />
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".EditHabitActivity"
+            android:label="@string/title_activity_edit_habit"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".CreateHabitActivity"
-            android:label="@string/CreateHabitActivityTitle"
+            android:label="@string/title_activity_create_habit"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.hcifedii.sprout.adapter.HabitCardAdapter;
@@ -41,6 +42,22 @@ public class MainActivity extends AppCompatActivity {
         // I'm not doing it inside the Manifest because it changes the app's name
         setTitle(R.string.MainActivityTitle);
 
+        // Bottom App Bar setup
+        BottomAppBar bottomAppBar = findViewById(R.id.bottomAppBar);
+        cutBottomAppEdge(bottomAppBar);     // Diamond shape
+
+        // Add listener to Stats button inside the bottom app bar
+        MenuItem statsMenuItem = bottomAppBar.getMenu().findItem(R.id.statsMenuItem);
+        statsMenuItem.setOnMenuItemClickListener(item -> {
+            if(item.getItemId() == R.id.statsMenuItem){
+                Intent i = new Intent(getApplicationContext(), StatsActivity.class);
+                startActivity(i);
+                return true;
+            }
+            return false;
+        });
+
+        // FAB button setup
         FloatingActionButton fab = findViewById(R.id.fabAddButton);
         fab.setOnClickListener(view -> {
             Intent intent = new Intent(getBaseContext(), CreateHabitActivity.class);
@@ -55,8 +72,6 @@ public class MainActivity extends AppCompatActivity {
         redraw();
         //TODO: quando il converter è vuoto, mostra una textview invece della recyclerview
 
-        BottomAppBar bar = findViewById(R.id.bottomAppBar);
-        cutBottomAppEdge(bar);
     }
 
 
@@ -71,12 +86,27 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+            case R.id.searchMenuItem:
+
+
+                return true;
             case R.id.settingMenuItem:
                 Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
                 startActivity(intent);
                 return true;
             case R.id.aboutMenuItem:
-                Toast.makeText(this, "Sono il secondo", Toast.LENGTH_LONG).show();
+
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+
+                builder.setTitle(getString(R.string.about_us_title));
+                builder.setMessage(getString(R.string.about_us_message));
+                builder.setIcon(R.drawable.ic_sprout_fg_small);
+
+                builder.setPositiveButton("OK", (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                });
+
+                builder.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

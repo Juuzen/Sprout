@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:paddingLeft="16dp"
+    android:paddingTop="8dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="8dp">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/habitItemTitle"
+        style="@style/SproutBoldSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/habit_item_title_placeholder"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/icon1"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/icon1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:adjustViewBounds="false"
+        android:contentDescription="@string/habit_item_creation_content_description"
+        android:cropToPadding="false"
+        android:src="@drawable/ic_add_24"
+        app:layout_constraintEnd_toStartOf="@+id/habitItemCreationDate"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="#696969" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/habitItemCreationDate"
+        style="@style/SproutInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/habit_item_date_placeholder"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/icon1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/icon1" />
+
+    <ImageView
+        android:id="@+id/icon2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:contentDescription="@string/habit_item_end_content_description"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/icon1"
+        app:layout_constraintTop_toBottomOf="@+id/icon1"
+        app:srcCompat="@drawable/ic_archive_24"
+        app:tint="#696969" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/habitItemEndDate"
+        style="@style/SproutInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="-"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/icon2"
+        app:layout_constraintStart_toEndOf="@+id/icon2"
+        app:layout_constraintTop_toTopOf="@+id/icon2"
+        tools:ignore="HardcodedText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
