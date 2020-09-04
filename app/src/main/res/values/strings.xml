@@ -118,6 +118,8 @@
     <string name="habit_item_end_content_description">Archiviato in data</string>
     <string name="no_item_message">Non ci sono elementi da visualizzare.</string>
     <string name="no_item_found_message">Nessun elemento trovato</string>
+    <string name="help_menu_item">Aiuto</string>
+    <string name="delete_stats_menu_item">Azzera le statistiche</string>
 
 
 </resources>

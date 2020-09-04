@@ -4,9 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.widget.CalendarView;
+import android.view.Menu;
+import android.view.MenuInflater;
+
+import com.applandeo.materialcalendarview.CalendarView;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 import model.Habit;
 import utils.HabitRealmManager;
@@ -31,6 +37,15 @@ public class HabitStatsActivity extends AppCompatActivity {
 
             CalendarView calendarView = findViewById(R.id.calendarView);
 
+            // TODO: spostare il caricamento dei dati su di un thread
+            List<Calendar> highlight = new ArrayList<>();
+
+            Calendar cal = Calendar.getInstance();
+            cal.set(2020, 9,25);
+            highlight.add(cal);
+
+            calendarView.setHighlightedDays(highlight);
+
             setTitle(habit.getTitle());
 
         }
@@ -41,15 +56,34 @@ public class HabitStatsActivity extends AppCompatActivity {
 
     private int getHabitIdFromBundles(Bundle savedInstance) {
 
+        int id = -1;
         if (savedInstance != null) {
-            return savedInstance.getInt(EXTRA_HABIT_ID, -1);
+            id = savedInstance.getInt(EXTRA_HABIT_ID, -1);
         } else {
             Bundle extra = getIntent().getExtras();
             if (extra != null) {
-                return extra.getInt(EXTRA_HABIT_ID, -1);
+                id = extra.getInt(EXTRA_HABIT_ID, -1);
             }
         }
-        return -1;
+        return id;
+    }
+
+
+    private List<Calendar> getPassedDays(@NonNull Habit habit){
+
+        return null;
+    }
+
+    private List<Calendar> getSnoozedDays(@NonNull Habit habit){
+
+        return null;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.top_app_bar_habit_stats, menu);
+        return true;
     }
 
     private void enableTopBackButton() {
@@ -59,16 +93,5 @@ public class HabitStatsActivity extends AppCompatActivity {
             actionBar.setHomeButtonEnabled(true);
         }
     }
-
-
-    public class MyCalendar extends CalendarView {
-
-        public MyCalendar(@NonNull Context context) {
-            super(context);
-        }
-
-
-    }
-
 
 }
