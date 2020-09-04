@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -46,6 +49,7 @@ public class EditHabitActivity extends AppCompatActivity {
 
     int habitId;
     Habit habit;
+    Context myContext = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,10 +168,19 @@ public class EditHabitActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.deleteHabitButton:
-                //Toast.makeText(this, "Stai eliminando l'abitudine " + habit.getTitle(), Toast.LENGTH_SHORT).show();
-                HabitRealmManager.deleteHabit(habitId);
-                Toast.makeText(this, "Abitudine eliminata!", Toast.LENGTH_SHORT).show();
-                finish(); //FIXME: transizioni
+                new AlertDialog.Builder(this)
+                        .setTitle("Cancellare l'abitudine?")
+                        .setMessage("Non potrai tornare indietro!")
+                        .setPositiveButton("Sì, cancella", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                HabitRealmManager.deleteHabit(habitId);
+                                Toast.makeText(myContext, "Abitudine eliminata!", Toast.LENGTH_SHORT).show();
+                                finish(); //FIXME: transizioni
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
 
             default:
                 return super.onOptionsItemSelected(item);
