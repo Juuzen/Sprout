@@ -72,7 +72,6 @@ public class HabitRealmManager {
             realm = Realm.getDefaultInstance();
             RealmResults<Habit> realmResults = realm.where(Habit.class).findAll();
             habitList = realm.copyFromRealm(realmResults);
-
         } finally {
             if (realm != null)
                 realm.close();
@@ -82,14 +81,12 @@ public class HabitRealmManager {
 
     public static void saveOrUpdateHabit(@NonNull Habit habit) {
         Realm realm = null;
-
         try {
             realm = Realm.getDefaultInstance();
             realm.executeTransactionAsync(
                     realmInstance -> realmInstance.insertOrUpdate(habit),
                     () -> Log.i(LOG_TAG, "Transaction success! - ID: " + habit.getId()),
-                    error -> Log.i(LOG_TAG, "Transaction error! - ID: " + habit.getId() + "\n" + error.getMessage()
-                    ));
+                    error -> Log.i(LOG_TAG, "Transaction error! - ID: " + habit.getId() + "\n" + error.getMessage()));
         } finally {
             if (realm != null)
                 realm.close();

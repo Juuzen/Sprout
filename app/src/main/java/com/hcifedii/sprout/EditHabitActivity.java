@@ -212,12 +212,9 @@ public class EditHabitActivity extends AppCompatActivity {
     }
 
     private void enableTopBackButton() {
-
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
-        } else {
-            Log.e(logcatTag, "getSupportActionBar() returned null");
         }
     }
 }

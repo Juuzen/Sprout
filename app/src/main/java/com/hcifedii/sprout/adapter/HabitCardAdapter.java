@@ -35,6 +35,7 @@ public class HabitCardAdapter extends RecyclerView.Adapter<HabitCardAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(myContext);
+        //TODO: inflatare diversi tipi di carte a seconda del habitType
         View view = inflater.inflate(R.layout.fragment_habit_cardview, parent, false);
         return new ViewHolder(view);
     }
@@ -44,14 +45,11 @@ public class HabitCardAdapter extends RecyclerView.Adapter<HabitCardAdapter.View
         Habit habit = habitList.get(position);
         holder.habitTitle.setText(habit.getTitle());
 
-        holder.habitCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(myContext, EditHabitActivity.class);
-                intent.putExtra("HABIT_ID", habit.getId());
-                //TODO: Aggiungere l'animazione
-                myContext.startActivity(intent);
-            }
+        holder.habitCardView.setOnClickListener(view -> {
+            Intent intent = new Intent(myContext, EditHabitActivity.class);
+            intent.putExtra("HABIT_ID", habit.getId());
+            //TODO: Aggiungere l'animazione
+            myContext.startActivity(intent);
         });
     }
 

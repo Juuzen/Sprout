@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String logcatTag = "Sprout - MainActivity";
     RecyclerView rv;
-    RealmChangeListener realmChangeListener;
+    RealmChangeListener<Realm> realmChangeListener;
     Realm realm;
 
     @Override
@@ -141,12 +141,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void redraw() {
-        realmChangeListener = new RealmChangeListener() {
-            @Override
-            public void onChange(Object o) {
-                HabitCardAdapter adapter = new HabitCardAdapter(MainActivity.this, HabitRealmManager.getAllHabits());
-                rv.setAdapter(adapter);
-            }
+        realmChangeListener = o -> {
+            HabitCardAdapter adapter = new HabitCardAdapter(MainActivity.this, HabitRealmManager.getAllHabits());
+            rv.setAdapter(adapter);
         };
         realm.addChangeListener(realmChangeListener);
     }
