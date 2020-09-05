@@ -9,6 +9,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,8 @@ public class GoalFragment extends Fragment {
 
     ViewPager2 cardViewPager;
     ViewPagerFragmentAdapter adapter;
+
+    private static final String TAG = "GoalFragment";
 
     // Container for the fragment's references
     Map<GoalType, GoalInterface> goalFragmentMap = new HashMap<>();
@@ -178,8 +181,10 @@ public class GoalFragment extends Fragment {
 
         if (fragment != null)
             fragment.setLong(value);
+        else{
+            Log.e(TAG, "fragment == null. GoalType = " + goalType.name() + " Value = " + value);
+        }
     }
-
 
     private class ViewPagerFragmentAdapter extends FragmentStateAdapter {
 

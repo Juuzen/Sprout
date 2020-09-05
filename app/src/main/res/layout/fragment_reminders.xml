@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardUseCompatPadding="true"
-    app:cardCornerRadius="16dp">
+    app:cardCornerRadius="16dp"
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="8dp"
         android:paddingLeft="16dp"
+        android:paddingTop="8dp"
         android:paddingRight="16dp"
         android:paddingBottom="16dp">
 
@@ -51,7 +52,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
-            android:focusable="true" />
+            android:focusable="true"
+            tools:itemCount="8"
+            tools:listitem="@layout/fragment_reminders_item" />
 
     </LinearLayout>
 
