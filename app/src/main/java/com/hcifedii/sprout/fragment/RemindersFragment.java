@@ -25,7 +25,7 @@ import java.util.List;
 
 public class RemindersFragment extends Fragment {
 
-    private List<Reminder> reminderList = new RealmList<>();
+    private RealmList<Reminder> reminderList = new RealmList<>();
     private RemindersAdapter remindersAdapter;
 
     private static final String REMINDERS_LIST_KEY = "reminders_list";
@@ -43,6 +43,7 @@ public class RemindersFragment extends Fragment {
 
             if (serializable instanceof List) {
                 List<Reminder> savedReminders = (List<Reminder>) serializable;
+                reminderList.clear();
                 reminderList.addAll(savedReminders);
             }
         }
@@ -89,11 +90,11 @@ public class RemindersFragment extends Fragment {
         return view;
     }
 
-    public List<Reminder> getReminderList() {
+    public RealmList<Reminder> getReminderList() {
         return reminderList;
     }
 
-    public void setReminderList(List<Reminder> reminders) {
+    public void setReminderList(RealmList<Reminder> reminders) {
 
         if (reminders != null && reminders.size() > 0) {
             // Delete the existent reminders and add the new ones

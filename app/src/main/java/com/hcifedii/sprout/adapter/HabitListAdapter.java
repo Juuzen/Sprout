@@ -86,6 +86,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
     @Override
     public Filter getFilter() {
         return new HabitFilterHelper(originalList) {
+
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                 currentList = (List<Habit>) filterResults.values;
@@ -115,13 +116,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
             itemView.setOnClickListener(view -> {
                 listener.onClick(habitId);
             });
-
         }
-
-        public int getHabitId() {
-            return habitId;
-        }
-
 
     }
 

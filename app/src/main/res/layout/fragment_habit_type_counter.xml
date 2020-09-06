@@ -1,44 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
     <TextView
+        android:id="@+id/textView11"
         style="@style/SproutBoldSubtitle"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/counter_habit_subtitle" />
+        android:layout_marginBottom="6dp"
+        android:text="@string/counter_habit_subtitle"
+        app:layout_constraintBottom_toTopOf="@+id/informationMessage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <TextView
         android:id="@+id/informationMessage"
         style="@style/SproutInfo"
-        android:text="@string/counter_habit_info" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="1dp"
+        android:text="@string/counter_habit_info"
+        app:layout_constraintBottom_toTopOf="@+id/repetitionsPicker"
+        app:layout_constraintEnd_toEndOf="@+id/repetitionsPicker"
+        app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="horizontal">
+    <TextView
+        android:id="@+id/textView12"
+        style="@style/SproutBoldSubtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:layout_marginBottom="23dp"
+        android:text="@string/counter_habit_repetition_subtitle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/repetitionsPicker"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/informationMessage" />
 
-        <TextView
-            style="@style/SproutBoldSubtitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/counter_habit_repetition_subtitle" />
+    <com.shawnlin.numberpicker.NumberPicker
+        android:id="@+id/repetitionsPicker"
+        style="@style/SproutNumberPicker"
 
-        <com.shawnlin.numberpicker.NumberPicker
-            android:id="@+id/repetitionsPicker"
-            style="@style/SproutNumberPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView12"
+        app:layout_constraintTop_toBottomOf="@+id/informationMessage"
+        app:np_max="59"
+        app:np_min="1"
+        app:np_value="3" />
 
-            app:np_max="59"
-            app:np_min="1"
-            app:np_value="3" />
-
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
