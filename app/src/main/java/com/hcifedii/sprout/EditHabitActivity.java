@@ -147,6 +147,41 @@ public class EditHabitActivity extends AppCompatActivity {
             // Select habit from the database
             habit = HabitRealmManager.getHabit(habitId);
 
+            if (habit != null) {
+
+                GoalType goalType = habit.getGoalType();
+
+                // TODO: queste due card non visualizzano correttamente i propri dati
+                // Set ViewPager2 pages
+                goalFragment.setGoalType(goalType);
+                habitTypeFragment.setHabitType(habit.getHabitType());
+
+                this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        // Set Habit information
+                        titleFragment.setTitle(habit.getTitle());
+                        habitTypeFragment.setRepetitions(habit.getRepetitions());
+                        frequencyFragment.setFrequency(habit.getFrequency());
+                        remindersFragment.setReminderList(habit.getReminders());
+                        snoozeFragment.setSnooze(habit.getMaxSnoozes());
+
+                        // Goal
+                        if (goalType == GoalType.ACTION)
+                            goalFragment.setInt(habit.getMaxAction());
+                        else if (goalType == GoalType.STREAK)
+                            goalFragment.setInt(habit.getMaxStreakValue());
+                        else if (goalType == GoalType.DEADLINE)
+                            goalFragment.setLong(habit.getFinalDate());
+
+
+
+                    }
+                });
+
+
+            }
 
 
         } else {
@@ -159,47 +194,7 @@ public class EditHabitActivity extends AppCompatActivity {
 
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
 
-        if (habit != null) {
-
-            GoalType goalType = habit.getGoalType();
-
-            // TODO: queste due card non visualizzano correttamente i propri dati
-            // Set ViewPager2 pages
-            goalFragment.setGoalType(goalType);
-            habitTypeFragment.setHabitType(habit.getHabitType());
-
-            this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-
-                    // Set Habit information
-                    titleFragment.setTitle(habit.getTitle());
-                    habitTypeFragment.setRepetitions(habit.getRepetitions());
-                    frequencyFragment.setFrequency(habit.getFrequency());
-                    remindersFragment.setReminderList(habit.getReminders());
-                    snoozeFragment.setSnooze(habit.getMaxSnoozes());
-
-                    // Goal
-                    if (goalType == GoalType.ACTION)
-                        goalFragment.setInt(habit.getMaxAction());
-                    else if (goalType == GoalType.STREAK)
-                        goalFragment.setInt(habit.getMaxStreakValue());
-                    else if (goalType == GoalType.DEADLINE)
-                        goalFragment.setLong(habit.getFinalDate());
-
-
-
-                }
-            });
-
-            
-        }
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

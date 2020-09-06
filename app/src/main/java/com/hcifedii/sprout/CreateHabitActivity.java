@@ -84,7 +84,7 @@ public class CreateHabitActivity extends AppCompatActivity {
                 }
 
                 // Reminders
-                List<Reminder> reminders = remindersFragment.getReminderList();
+                RealmList<Reminder> reminders = remindersFragment.getReminderList();
 
                 // Snooze
                 boolean isSnoozeEnabled = snoozeFragment.isSnoozeEnabled();
@@ -115,7 +115,7 @@ public class CreateHabitActivity extends AppCompatActivity {
                 habit.setHabitType(habitType);
                 habit.setRepetitions(repetitions);
                 habit.setFrequency(frequency);
-                habit.setReminders((RealmList<Reminder>) reminders);
+                habit.setReminders(reminders);
                 habit.setMaxSnoozes(snooze);
                 habit.setGoalType(goalType);
                 habit.setMaxAction(goalIntValue);
