@@ -39,6 +39,7 @@ import utils.HabitRealmManager;
 public class EditHabitActivity extends AppCompatActivity {
 
     private static final String logcatTag = "Sprout - EditHabitActivity";
+    private static final String IS_ALREADY_SHOWED = "alreadyShowed";
 
     // Fragments of this activity
     TitleFragment titleFragment;
@@ -158,51 +159,55 @@ public class EditHabitActivity extends AppCompatActivity {
 
         // getting the habits informations from DB
 
-        habitId = getIntent().getIntExtra("HABIT_ID", -1);
+        // If savedInstance is null then get the data from the database. Else (ex. on screen
+        // rotation) each fragments will recover the data they saved.
+        if (savedInstanceState == null) {
+            habitId = getIntent().getIntExtra("HABIT_ID", -1);
 
-        if (habitId >= 0) {
-            // Select habit from the database
-            habit = HabitRealmManager.getHabit(habitId);
+            if (habitId >= 0) {
+                // Select habit from the database
+                habit = HabitRealmManager.getHabit(habitId);
 
-            if (habit != null) {
+                if (habit != null) {
 
-                GoalType goalType = habit.getGoalType();
+                    GoalType goalType = habit.getGoalType();
 
-                // TODO: queste due card non visualizzano correttamente i propri dati
-                // Set ViewPager2 pages
-                goalFragment.setGoalType(goalType);
-                habitTypeFragment.setHabitType(habit.getHabitType());
+                    // TODO: queste due card non visualizzano correttamente i propri dati
+                    // Set ViewPager2 pages
+                    goalFragment.setGoalType(goalType);
+                    habitTypeFragment.setHabitType(habit.getHabitType());
 
-                this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+                    this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
 
-                        // Set Habit information
-                        titleFragment.setTitle(habit.getTitle());
-                        habitTypeFragment.setRepetitions(habit.getRepetitions());
-                        frequencyFragment.setFrequency(habit.getFrequency());
-                        remindersFragment.setReminderList(habit.getReminders());
-                        snoozeFragment.setSnooze(habit.getMaxSnoozes());
+                            // Set Habit information
+                            titleFragment.setTitle(habit.getTitle());
+                            habitTypeFragment.setRepetitions(habit.getRepetitions());
+                            frequencyFragment.setFrequency(habit.getFrequency());
+                            remindersFragment.setReminderList(habit.getReminders());
+                            snoozeFragment.setSnooze(habit.getMaxSnoozes());
 
-                        // Goal
-                        if (goalType == GoalType.ACTION)
-                            goalFragment.setInt(habit.getMaxAction());
-                        else if (goalType == GoalType.STREAK)
-                            goalFragment.setInt(habit.getMaxStreakValue());
-                        else if (goalType == GoalType.DEADLINE)
-                            goalFragment.setLong(habit.getFinalDate());
+                            // Goal
+                            if (goalType == GoalType.ACTION)
+                                goalFragment.setInt(habit.getMaxAction());
+                            else if (goalType == GoalType.STREAK)
+                                goalFragment.setInt(habit.getMaxStreakValue());
+                            else if (goalType == GoalType.DEADLINE)
+                                goalFragment.setLong(habit.getFinalDate());
 
 
+                        }
+                    });
 
-                    }
-                });
 
+                }
+
+
+            } else {
+                // Go to MainActivity with log error message
 
             }
-
-
-        } else {
-            // Go to MainActivity with log error message
 
         }
 
@@ -210,8 +215,12 @@ public class EditHabitActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
 
-
+        outState.putBoolean(IS_ALREADY_SHOWED, true);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
