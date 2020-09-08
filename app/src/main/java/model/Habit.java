@@ -31,46 +31,42 @@ public class Habit extends RealmObject {
 
     @PrimaryKey
     private int id;
-
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
 
     @Required
     private String title;
-
     public String getTitle() {
         return title;
     }
-
     public void setTitle(String title) {
         this.title = title;
     }
 
     // Habit type + repetitions
     private HabitTypeEnum habitTypeEnum;
-
     public HabitType getHabitType() {
         return habitTypeEnum.getEnum();
     }
-
     public void setHabitType(HabitType habitType) {
         habitTypeEnum.saveType(habitType);
     }
 
-    private int repetitions = 1;    // 1 default value
-
+    private int repetitions = 0;
     public int getRepetitions() {
         return repetitions;
     }
-
     public void setRepetitions(int repetitions) {
         this.repetitions = repetitions;
     }
+
+    private int maxRepetitions = 5; //if the habitType is "COUNTER", then this should be replaced with the new value
+    public int getMaxRepetitions() { return maxRepetitions; }
+    public void setMaxRepetitions(int maxRepetitions) { this.maxRepetitions = maxRepetitions; }
 
     // Week frequency
     private RealmList<DaysEnum> frequency;

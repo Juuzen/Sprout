@@ -1,6 +1,7 @@
 package utils;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -45,24 +46,23 @@ public class HabitRealmManager {
         return habit;
     }
 
-    public static boolean deleteHabit(int id) {
-        if (id < 0)
-            return false;
-        Realm realm = null;
-        try {
-            realm = Realm.getDefaultInstance();
-            realm.executeTransaction(realmInstance -> {
-                Habit habit = realmInstance.where(Habit.class).equalTo("id", id).findFirst();
-                if (habit != null) {
-                    habit.deleteFromRealm();
-                    Log.i(LOG_TAG, "Habit deleted: " + id); //FIXME: rimuovere in produzione
-                }
-            });
-        } finally {
-            if (realm != null)
-                realm.close();
+    public static void deleteHabit(int id) {
+        if (id >= 0) {
+            Realm realm = null;
+            try {
+                realm = Realm.getDefaultInstance();
+                realm.executeTransaction(realmInstance -> {
+                    Habit habit = realmInstance.where(Habit.class).equalTo("id", id).findFirst();
+                    if (habit != null) {
+                        habit.deleteFromRealm();
+                        Log.i(LOG_TAG, "Habit deleted: " + id);
+                    }
+                });
+            } finally {
+                if (realm != null)
+                    realm.close();
+            }
         }
-        return true; //FIXME: dovrebbe tornare l'esito della cancellazione
     }
 
     public static List<Habit> getAllHabits() {
@@ -84,7 +84,10 @@ public class HabitRealmManager {
         try {
             realm = Realm.getDefaultInstance();
             realm.executeTransactionAsync(
-                    realmInstance -> realmInstance.insertOrUpdate(habit),
+                    realmInstance -> {
+                        habit.setId(HabitRealmManager.getNextId(realmInstance));
+                        realmInstance.insertOrUpdate(habit);
+                        },
                     () -> Log.i(LOG_TAG, "Transaction success! - ID: " + habit.getId()),
                     error -> Log.i(LOG_TAG, "Transaction error! - ID: " + habit.getId() + "\n" + error.getMessage()));
         } finally {
@@ -93,14 +96,45 @@ public class HabitRealmManager {
         }
     }
 
-    /**
-     * @param realm
-     * @return The next available id. it's 0 if there are no habits.
-     */
     private static int getNextId(Realm realm) {
+        Log.d("getNextId", "1");
         Number newId = realm.where(Habit.class).max("id");
-        if (newId != null)
+        if (newId != null) {
+            Log.d("getNextId", "ID MAX: " + newId.toString());
             return newId.intValue() + 1;
+        }
+        Log.d("getNextId", "2");
         return 0;
+    }
+
+    public static void setHabitRepetition (int habitId, int newValue) {
+        Realm realm = null;
+        Habit habit;
+        try {
+            realm = Realm.getDefaultInstance();
+            habit = realm.where(Habit.class).equalTo("id", habitId).findFirst();
+            if (habit != null) {
+                Habit finalHabit = habit;
+                if (newValue <= finalHabit.getMaxRepetitions()) {
+                    //FIXME: gestione degli eventuali errori della transazione
+                    realm.executeTransaction(
+                            realmInstance -> {
+                                finalHabit.setRepetitions(newValue);
+                                //TODO: status del task completato
+                                realmInstance.insertOrUpdate(finalHabit);
+                                Log.d("SetHabitRepetition", "Aggiornato");
+                            });
+                } else {
+                    Log.d("SetHabitRepetition", "Repetitions già al massimo");
+                }
+
+            } else {
+                Log.d("SetHabitRepetition", "Non ho trovato l'abitudine");
+            }
+        } finally {
+            if (realm != null) {
+                realm.close();
+            }
+        }
     }
 }

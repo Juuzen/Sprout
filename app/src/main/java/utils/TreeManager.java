@@ -2,7 +2,12 @@ package utils;
 
 import android.util.Log;
 
+import com.hcifedii.sprout.BuildConfig;
+
+import java.util.ArrayList;
+
 import io.realm.Realm;
+import io.realm.RealmResults;
 import model.Tree;
 
 
@@ -27,6 +32,21 @@ public class TreeManager {
             }
         }
         return result;
+    }
+
+    public static ArrayList<Tree> getAllTrees() {
+        Realm realm = null;
+        ArrayList<Tree> list = null;
+        try {
+            realm = Realm.getDefaultInstance();
+            RealmResults<Tree> trees = realm.where(Tree.class).findAll();
+            list = new ArrayList<>(trees);
+        } finally {
+            if (realm != null) {
+                realm.close();
+            }
+        }
+        return list;
     }
 
     // adds 1 to the tree's experience
@@ -74,6 +94,35 @@ public class TreeManager {
         }
     }
 
+    public static void setTreeHealth(int treeId, Tree.Health health) {
+        Tree tree = getTree(treeId);
+        if (tree != null) {
+            Realm realm = null;
+            try {
+                realm = Realm.getDefaultInstance();
+                realm.executeTransactionAsync(
+                        realm1 -> {
+                            tree.setHealth(health);
+                            tree.setExperience(0);
+                            realm1.insertOrUpdate(tree); },
+
+                        () -> Log.i(LOG_TAG, "Health level set! - ID: " + tree.getId()),
+
+                        error -> Log.i(LOG_TAG, "Transaction error! - ID: " + tree.getId() + "\n" + error.getMessage()));
+            } finally {
+                if (realm != null)
+                    realm.close();
+            }
+        }
+    }
+
+    private static int getNextId(Realm realm) {
+        Number newId = realm.where(Tree.class).max("id");
+        if (newId != null)
+            return newId.intValue() + 1;
+        return 0;
+    }
+
     public static void grow(int treeId) {
         // Retrieving the tree instance
         Tree tree = getTree(treeId);
@@ -117,10 +166,5 @@ public class TreeManager {
         }
     }
 
-    private static int getNextId(Realm realm) {
-        Number newId = realm.where(Tree.class).max("id");
-        if (newId != null)
-            return newId.intValue() + 1;
-        return 0;
-    }
+
 }

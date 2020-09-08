@@ -1,6 +1,7 @@
 package model;
 
 import io.realm.RealmObject;
+import io.realm.RealmResults;
 import io.realm.annotations.LinkingObjects;
 import io.realm.annotations.PrimaryKey;
 
@@ -21,20 +22,18 @@ public class Tree extends RealmObject {
     }
 
     @PrimaryKey
-    public int id;
-    public String growth;
+    private int id;
+    private String growth;
+    private String health;
+    private int experience;
 
-    public int getId() {
-        return id;
-    }
+    // Inverse relationship (to retrieve the habit that holds the tree instance)
+    //@LinkingObjects("tree")
+    //private final RealmResults<Habit> habit = null;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public int getId() { return id; }
 
-    public String health;
-    public int experience;
-    //TODO: inverse relationship habit <- tree
+    public void setId(int id) { this.id = id; }
 
     public Growth getGrowth() {
         return Growth.valueOf(this.growth);
@@ -59,4 +58,6 @@ public class Tree extends RealmObject {
     public void setExperience(int experience) {
         this.experience = experience;
     }
+
+    //public RealmResults<Habit> getHabit() { return habit; }
 }

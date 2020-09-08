@@ -7,14 +7,12 @@
     android:id="@+id/rootLayout"
     tools:context=".MainActivity">
 
-    <!-- Content here -->
-
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/habitCardRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/habitCardRecyclerView">
-
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="match_parent"
+        android:layout_marginBottom="56dp"
+        />
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
@@ -24,8 +22,8 @@
         app:fabAlignmentMode="end"
         app:fabCradleRoundedCornerRadius="0dp"
         app:fabCradleMargin="10dp"
-        app:hideOnScroll="true"
-        app:menu="@menu/bottom_app_bar_menu"/>
+        app:menu="@menu/bottom_app_bar_menu"
+        />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddButton"

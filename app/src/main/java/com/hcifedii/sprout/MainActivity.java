@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         rv = findViewById(R.id.habitCardRecyclerView);
         rv.setLayoutManager(new LinearLayoutManager(this));
         HabitCardAdapter adapter = new HabitCardAdapter(this, HabitRealmManager.getAllHabits());
+
         rv.setAdapter(adapter);
         redraw();
         //TODO: quando il converter è vuoto, mostra una textview invece della recyclerview
