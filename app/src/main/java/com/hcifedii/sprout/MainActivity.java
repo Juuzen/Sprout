@@ -1,6 +1,8 @@
 package com.hcifedii.sprout;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -23,15 +25,17 @@ import com.hcifedii.sprout.adapter.HabitCardAdapter;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
+import model.Habit;
 import utils.HabitRealmManager;
 import utils.SproutBottomAppBarCutCornersTopEdge;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String logcatTag = "Sprout - MainActivity";
-    RecyclerView rv;
-    RealmChangeListener realmChangeListener;
-    Realm realm;
+    private int lastPosition;
+    private RecyclerView rv;
+    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,15 +69,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         realm = Realm.getDefaultInstance();
+        RealmResults<Habit> results = realm.where(Habit.class).sort("id").findAll();
         rv = findViewById(R.id.habitCardRecyclerView);
-        rv.setLayoutManager(new LinearLayoutManager(this));
-        HabitCardAdapter adapter = new HabitCardAdapter(this, HabitRealmManager.getAllHabits());
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        rv.setLayoutManager(layoutManager);
+        HabitCardAdapter adapter = new HabitCardAdapter(results, true, this);
         rv.setAdapter(adapter);
-        redraw();
         //TODO: quando il converter è vuoto, mostra una textview invece della recyclerview
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -140,21 +143,9 @@ public class MainActivity extends AppCompatActivity {
                         .build());
     }
 
-    private void redraw() {
-        realmChangeListener = new RealmChangeListener() {
-            @Override
-            public void onChange(Object o) {
-                HabitCardAdapter adapter = new HabitCardAdapter(MainActivity.this, HabitRealmManager.getAllHabits());
-                rv.setAdapter(adapter);
-            }
-        };
-        realm.addChangeListener(realmChangeListener);
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        realm.removeAllChangeListeners();
         realm.close();
     }
 }

@@ -1,6 +1,7 @@
 package utils;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -30,47 +31,66 @@ public class HabitRealmManager {
         return count;
     }
 
+    public static Habit getHabit(int habitId) {
+        Habit result = null;
+        if (habitId >= 0) {
+            Realm realm = null;
+            try {
+                realm = Realm.getDefaultInstance();
+                Habit check = realm.where(Habit.class).equalTo("id", habitId).findFirst();
+                if (check != null) {
+                    result = realm.copyFromRealm(check);
+                }
+            } finally {
+                if (realm != null) {
+                    realm.close();
+                }
+            }
+        }
+        return result;
+    }
+
+    /*
     public static Habit getHabit(int id) {
         if (id < 0)
             return null;
         Realm realm = null;
-        Habit habit;
+        Habit habit = null;
         try {
             realm = Realm.getDefaultInstance();
-            habit = realm.where(Habit.class).equalTo("id", id).findFirst();
-
-            if (habit != null) {
+            Habit check = realm.where(Habit.class).equalTo("id", id).findFirst();
+            if (check != null) {
                 // This line is necessary because, by default, if something changes inside the database
                 // the object will automatically know. This thing will cause some crash / bad behaviour
                 // when the activity / fragment saves its state.
-                return realm.copyFromRealm(habit);
+                habit = realm.copyFromRealm(check);
             }
-
         } finally {
             if (realm != null)
                 realm.close();
         }
         return habit;
     }
+    
+     */
 
-    public static boolean deleteHabit(int id) {
-        if (id < 0)
-            return false;
-        Realm realm = null;
-        try {
-            realm = Realm.getDefaultInstance();
-            realm.executeTransaction(realmInstance -> {
-                Habit habit = realmInstance.where(Habit.class).equalTo("id", id).findFirst();
-                if (habit != null) {
-                    habit.deleteFromRealm();
-                    Log.i(LOG_TAG, "Habit deleted: " + id); //FIXME: rimuovere in produzione
-                }
-            });
-        } finally {
-            if (realm != null)
-                realm.close();
+    public static void deleteHabit(int id) {
+        if (id >= 0) {
+            Realm realm = null;
+            try {
+                realm = Realm.getDefaultInstance();
+                realm.executeTransaction(realmInstance -> {
+                    Habit habit = realmInstance.where(Habit.class).equalTo("id", id).findFirst();
+                    if (habit != null) {
+                        habit.deleteFromRealm();
+                        Log.i(LOG_TAG, "Habit deleted: " + id);
+                    }
+                });
+            } finally {
+                if (realm != null)
+                    realm.close();
+            }
         }
-        return true; //FIXME: dovrebbe tornare l'esito della cancellazione
     }
 
     public static List<Habit> getAllHabits() {
@@ -80,7 +100,6 @@ public class HabitRealmManager {
             realm = Realm.getDefaultInstance();
             RealmResults<Habit> realmResults = realm.where(Habit.class).findAll();
             habitList = realm.copyFromRealm(realmResults);
-
         } finally {
             if (realm != null)
                 realm.close();
@@ -90,7 +109,6 @@ public class HabitRealmManager {
 
     public static void saveOrUpdateHabit(@NonNull Habit habit) {
         Realm realm = null;
-
         try {
             realm = Realm.getDefaultInstance();
             realm.executeTransactionAsync(realmInstance -> {
@@ -102,22 +120,21 @@ public class HabitRealmManager {
 
                     },
                     () -> Log.i(LOG_TAG, "Transaction success! - ID: " + habit.getId()),
-                    error -> Log.i(LOG_TAG, "Transaction error! - ID: " + habit.getId() + "\n" + error.getMessage()
-                    ));
+                    error -> Log.i(LOG_TAG, "Transaction error! - ID: " + habit.getId() + "\n" + error.getMessage()));
         } finally {
             if (realm != null)
                 realm.close();
         }
     }
 
-    /**
-     * @param realm
-     * @return The next available id. it's 0 if there are no habits.
-     */
     private static int getNextId(Realm realm) {
+        Log.d("getNextId", "1");
         Number newId = realm.where(Habit.class).max("id");
-        if (newId != null)
+        if (newId != null) {
+            Log.d("getNextId", "ID MAX: " + newId.toString());
             return newId.intValue() + 1;
+        }
+        Log.d("getNextId", "2");
         return 0;
     }
 }
