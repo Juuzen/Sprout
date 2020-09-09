@@ -157,6 +157,7 @@ public class EditHabitActivity extends AppCompatActivity {
             });
         });
 
+
         // getting the habits informations from DB
 
         // If savedInstance is null then get the data from the database. Else (ex. on screen
@@ -174,30 +175,30 @@ public class EditHabitActivity extends AppCompatActivity {
 
                     // TODO: queste due card non visualizzano correttamente i propri dati
                     // Set ViewPager2 pages
-                    goalFragment.setGoalType(goalType);
-                    habitTypeFragment.setHabitType(habit.getHabitType());
-
-                    this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            // Set Habit information
-                            titleFragment.setTitle(habit.getTitle());
-                            habitTypeFragment.setRepetitions(habit.getRepetitions());
-                            frequencyFragment.setFrequency(habit.getFrequency());
-                            remindersFragment.setReminderList(habit.getReminders());
-                            snoozeFragment.setSnooze(habit.getMaxSnoozes());
-
-                            // Goal
-                            if (goalType == GoalType.ACTION)
-                                goalFragment.setInt(habit.getMaxAction());
-                            else if (goalType == GoalType.STREAK)
-                                goalFragment.setInt(habit.getMaxStreakValue());
-                            else if (goalType == GoalType.DEADLINE)
-                                goalFragment.setLong(habit.getFinalDate());
 
 
-                        }
+                    this.runOnUiThread(() -> {
+
+                        // Set Habit information
+
+
+                        titleFragment.setTitle(habit.getTitle());
+                        habitTypeFragment.setHabitType(habit.getHabitType());
+                        habitTypeFragment.setRepetitions(habit.getRepetitions());
+                        frequencyFragment.setFrequency(habit.getFrequency());
+                        remindersFragment.setReminderList(habit.getReminders());
+                        snoozeFragment.setSnooze(habit.getMaxSnoozes());
+
+                        goalFragment.setGoalType(goalType);
+                        // Goal
+                        if (goalType == GoalType.ACTION)
+                            goalFragment.setInt(habit.getMaxAction());
+                        else if (goalType == GoalType.STREAK)
+                            goalFragment.setInt(habit.getMaxStreakValue());
+                        else if (goalType == GoalType.DEADLINE)
+                            goalFragment.setLong(habit.getFinalDate());
+
+
                     });
 
 

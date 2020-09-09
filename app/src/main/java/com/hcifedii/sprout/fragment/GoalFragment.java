@@ -26,13 +26,13 @@ import java.util.Map;
 
 public class GoalFragment extends Fragment {
 
-    ViewPager2 cardViewPager;
-    ViewPagerFragmentAdapter adapter;
+    private ViewPager2 cardViewPager;
 
-    private static final String TAG = "GoalFragment";
+    private long defaultLong = 0;
+    private int defaultInt = 0;
 
     // Container for the fragment's references
-    Map<GoalType, GoalInterface> goalFragmentMap = new HashMap<>();
+    private Map<GoalType, GoalInterface> goalFragmentMap = new HashMap<>();
 
     public GoalFragment() {
         // Required empty public constructor
@@ -94,7 +94,7 @@ public class GoalFragment extends Fragment {
 
         // ViewPager2 set up
         cardViewPager = view.findViewById(R.id.cardViewPager);
-        adapter = new ViewPagerFragmentAdapter(getChildFragmentManager(), getLifecycle());
+        ViewPagerFragmentAdapter adapter = new ViewPagerFragmentAdapter(getChildFragmentManager(), getLifecycle());
 
         cardViewPager.setAdapter(adapter);
         cardViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
@@ -127,8 +127,8 @@ public class GoalFragment extends Fragment {
         }
     }
 
-    private int getPositionByGoalType(GoalType goalType){
-        switch (goalType){
+    private int getPositionByGoalType(GoalType goalType) {
+        switch (goalType) {
             default:
                 return 0;
             case ACTION:
@@ -171,6 +171,8 @@ public class GoalFragment extends Fragment {
         GoalType goalType = getGoalTypeByPosition(cardViewPager.getCurrentItem());
         GoalInterface fragment = goalFragmentMap.get(goalType);
 
+        defaultInt = value;
+
         if (fragment != null)
             fragment.setInt(value);
     }
@@ -179,11 +181,18 @@ public class GoalFragment extends Fragment {
         GoalType goalType = getGoalTypeByPosition(cardViewPager.getCurrentItem());
         GoalInterface fragment = goalFragmentMap.get(goalType);
 
+        defaultLong = value;
+
         if (fragment != null)
             fragment.setLong(value);
-        else{
-            Log.e(TAG, "fragment == null. GoalType = " + goalType.name() + " Value = " + value);
-        }
+    }
+
+    public long getDefaultLong() {
+        return defaultLong;
+    }
+
+    public int getDefaultInt() {
+        return defaultInt;
     }
 
     private class ViewPagerFragmentAdapter extends FragmentStateAdapter {
@@ -213,15 +222,15 @@ public class GoalFragment extends Fragment {
                     goalFragmentMap.put(GoalType.NONE, (GoalInterface) goalFragment);
                     break;
                 case 1:
-                    goalFragment = new GoalActionFragment();
+                    goalFragment = new GoalActionFragment(GoalFragment.this);
                     goalFragmentMap.put(GoalType.ACTION, (GoalInterface) goalFragment);
                     break;
                 case 2:
-                    goalFragment = new GoalDeadlineFragment();
+                    goalFragment = new GoalDeadlineFragment(GoalFragment.this);
                     goalFragmentMap.put(GoalType.DEADLINE, (GoalInterface) goalFragment);
                     break;
                 case 3:
-                    goalFragment = new GoalStreakFragment();
+                    goalFragment = new GoalStreakFragment(GoalFragment.this);
                     goalFragmentMap.put(GoalType.STREAK, (GoalInterface) goalFragment);
                     break;
             }
