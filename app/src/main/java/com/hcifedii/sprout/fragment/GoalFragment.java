@@ -98,7 +98,6 @@ public class GoalFragment extends Fragment {
 
         cardViewPager.setAdapter(adapter);
         cardViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-        cardViewPager.setOffscreenPageLimit(adapter.NUM_PAGES);
 
         TabLayout dots = view.findViewById(R.id.viewPagerDots);
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(dots, cardViewPager, true,

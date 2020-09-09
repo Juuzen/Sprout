@@ -28,6 +28,8 @@ public class HabitTypeFragment extends Fragment {
 
     private ViewPager2 habitTypeViewPager;
 
+    private int defaultValue = -1;
+
     Map<HabitType, HabitTypeInterface> habitTypeFragmentMap = new HashMap<>();
 
     public HabitTypeFragment() {
@@ -83,7 +85,6 @@ public class HabitTypeFragment extends Fragment {
 
         habitTypeViewPager.setAdapter(adapter);
         habitTypeViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-        habitTypeViewPager.setOffscreenPageLimit(adapter.NUM_PAGES);
 
         // Dots under the ViewPager
         TabLayout dots = view.findViewById(R.id.habitTypeViewPagerDots);
@@ -119,7 +120,7 @@ public class HabitTypeFragment extends Fragment {
         return HabitType.CLASSIC;
     }
 
-    private  int getPositionByHabitType(HabitType habitType){
+    private int getPositionByHabitType(HabitType habitType) {
         if (habitType == HabitType.COUNTER)
             return 1;
         return 0;
@@ -136,9 +137,15 @@ public class HabitTypeFragment extends Fragment {
         HabitType habitType = getHabitTypeByPosition(habitTypeViewPager.getCurrentItem());
         HabitTypeInterface fragment = habitTypeFragmentMap.get(habitType);
 
+        defaultValue = repetitions;
+
         if (fragment != null) {
             fragment.setRepetitions(repetitions);
         }
+    }
+
+    public int getDefaultValue() {
+        return defaultValue;
     }
 
     private class ViewPagerFragmentAdapter extends FragmentStateAdapter {
@@ -163,7 +170,7 @@ public class HabitTypeFragment extends Fragment {
             Fragment habitTypeFragment;
 
             if (position == 1) {
-                habitTypeFragment = new CounterTypeFragment();
+                habitTypeFragment = new CounterTypeFragment(HabitTypeFragment.this);
                 habitTypeFragmentMap.put(HabitType.COUNTER, (HabitTypeInterface) habitTypeFragment);
             } else {
                 habitTypeFragment = new ClassicTypeFragment();
