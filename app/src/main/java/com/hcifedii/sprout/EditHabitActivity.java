@@ -122,7 +122,7 @@ public class EditHabitActivity extends AppCompatActivity {
                 newHabit.setFinalDate(goalLongValue);
 
                 // Save habit
-                HabitRealmManager.saveOrUpdateHabit(newHabit);
+                HabitRealmManager.saveOrUpdateHabit(newHabit); //FIXME: l'abitudine viene duplicata
                 Toast.makeText(this, "Abitudine aggiornata!", Toast.LENGTH_SHORT).show();
                 finish(); //FIXME: aggiungere l'animazione
             } else {
