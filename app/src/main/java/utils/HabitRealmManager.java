@@ -31,6 +31,26 @@ public class HabitRealmManager {
         return count;
     }
 
+    public static Habit copyHabit(int habitId) {
+        if (habitId < 0) {
+            return null;
+        }
+        Realm realm = null;
+        Habit habitCopy = null;
+        try {
+            realm = Realm.getDefaultInstance();
+            Habit check = realm.where(Habit.class).equalTo("id", habitId).findFirst();
+            if (check != null) {
+                habitCopy = realm.copyFromRealm(check);
+            }
+        } finally {
+            if (realm != null) {
+                realm.close();
+            }
+        }
+        return habitCopy;
+    }
+
     public static Habit getHabit(int id) {
         if (id < 0)
             return null;
@@ -85,7 +105,6 @@ public class HabitRealmManager {
             realm = Realm.getDefaultInstance();
             realm.executeTransactionAsync(
                     realmInstance -> {
-                        habit.setId(HabitRealmManager.getNextId(realmInstance));
                         realmInstance.insertOrUpdate(habit);
                         },
                     () -> Log.i(LOG_TAG, "Transaction success! - ID: " + habit.getId()),
@@ -105,36 +124,5 @@ public class HabitRealmManager {
         }
         Log.d("getNextId", "2");
         return 0;
-    }
-
-    public static void setHabitRepetition (int habitId, int newValue) {
-        Realm realm = null;
-        Habit habit;
-        try {
-            realm = Realm.getDefaultInstance();
-            habit = realm.where(Habit.class).equalTo("id", habitId).findFirst();
-            if (habit != null) {
-                Habit finalHabit = habit;
-                if (newValue <= finalHabit.getMaxRepetitions()) {
-                    //FIXME: gestione degli eventuali errori della transazione
-                    realm.executeTransaction(
-                            realmInstance -> {
-                                finalHabit.setRepetitions(newValue);
-                                //TODO: status del task completato
-                                realmInstance.insertOrUpdate(finalHabit);
-                                Log.d("SetHabitRepetition", "Aggiornato");
-                            });
-                } else {
-                    Log.d("SetHabitRepetition", "Repetitions già al massimo");
-                }
-
-            } else {
-                Log.d("SetHabitRepetition", "Non ho trovato l'abitudine");
-            }
-        } finally {
-            if (realm != null) {
-                realm.close();
-            }
-        }
     }
 }
