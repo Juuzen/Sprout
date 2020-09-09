@@ -39,10 +39,12 @@ public class HabitRealmManager {
         Habit habitCopy = null;
         try {
             realm = Realm.getDefaultInstance();
+
             Habit check = realm.where(Habit.class).equalTo("id", habitId).findFirst();
             if (check != null) {
                 habitCopy = realm.copyFromRealm(check);
             }
+
         } finally {
             if (realm != null) {
                 realm.close();
@@ -59,6 +61,12 @@ public class HabitRealmManager {
         try {
             realm = Realm.getDefaultInstance();
             habit = realm.where(Habit.class).equalTo("id", id).findFirst();
+            if (habit != null) {
+                // This line is necessary because, by default, if something changes inside the database
+                // the object will automatically know. This thing will cause some crash / bad behaviour
+                // when the activity / fragment saves its state.
+                return realm.copyFromRealm(habit);
+            }
         } finally {
             if (realm != null)
                 realm.close();

@@ -1,22 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
     <TextView
+        android:id="@+id/textView13"
         style="@style/SproutTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/frequency_title"
         android:textSize="14sp"
-        android:text="@string/frequency_title" />
+        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <HorizontalScrollView
+        android:id="@+id/horizontalScrollView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:fadingEdge="horizontal"
         android:requiresFadingEdge="horizontal"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView13"
+        app:layout_constraintTop_toBottomOf="@+id/textView13">
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/frequencyGroup"
@@ -31,6 +41,8 @@
             <com.google.android.material.chip.Chip
                 android:id="@+id/mondayChip"
                 style="@style/SproutChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:checked="true"
                 android:text="@string/mondayString"
                 app:checkedIconEnabled="false"
@@ -39,7 +51,8 @@
             <com.google.android.material.chip.Chip
                 android:id="@+id/tuesdayChip"
                 style="@style/SproutChip"
-
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/tuesdayString"
                 app:checkedIconEnabled="false"
                 app:closeIconEnabled="false" />
@@ -47,6 +60,8 @@
             <com.google.android.material.chip.Chip
                 android:id="@+id/wednesdayChip"
                 style="@style/SproutChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/wednesdayString"
                 app:checkedIconEnabled="false"
                 app:closeIconEnabled="false" />
@@ -54,6 +69,8 @@
             <com.google.android.material.chip.Chip
                 android:id="@+id/thursdayChip"
                 style="@style/SproutChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/thursdayString"
                 app:checkedIconEnabled="false"
                 app:closeIconEnabled="false" />
@@ -61,6 +78,8 @@
             <com.google.android.material.chip.Chip
                 android:id="@+id/fridayChip"
                 style="@style/SproutChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/fridayString"
                 app:checkedIconEnabled="false"
                 app:closeIconEnabled="false" />
@@ -68,6 +87,8 @@
             <com.google.android.material.chip.Chip
                 android:id="@+id/saturdayChip"
                 style="@style/SproutChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/saturdayString"
                 app:checkedIconEnabled="false"
                 app:closeIconEnabled="false" />
@@ -75,6 +96,8 @@
             <com.google.android.material.chip.Chip
                 android:id="@+id/sundayChip"
                 style="@style/SproutChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/sundayString"
                 app:checkedIconEnabled="false"
                 app:closeIconEnabled="false" />
@@ -83,4 +106,4 @@
 
     </HorizontalScrollView>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

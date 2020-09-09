@@ -13,6 +13,8 @@
 
     <color name="surfaceColor">#FFFFFF</color>
 
+    <color name="calendarPageColor">#FFFFFF</color>
+
     <color name="darkOnSurface">#323232</color>
 
     <color name="presetBackground">@color/primaryColor</color>

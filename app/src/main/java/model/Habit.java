@@ -94,7 +94,7 @@ public class Habit extends RealmObject {
     // Reminders
     private RealmList<Reminder> reminders;
 
-    public List<Reminder> getReminders() {
+    public RealmList<Reminder> getReminders() {
         return reminders;
     }
 
