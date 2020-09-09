@@ -97,7 +97,7 @@ public class HabitTypeFragment extends Fragment {
         return view;
     }
 
-    public int getRepetitions() {
+    public int getMaxRepetitions() {
 
         HabitType habitType = getHabitTypeByPosition(habitTypeViewPager.getCurrentItem());
         HabitTypeInterface fragment = habitTypeFragmentMap.get(habitType);
@@ -132,7 +132,7 @@ public class HabitTypeFragment extends Fragment {
         habitTypeViewPager.setCurrentItem(position);
     }
 
-    public void setRepetitions(int repetitions) {
+    public void setMaxRepetitions(int repetitions) {
 
         HabitType habitType = getHabitTypeByPosition(habitTypeViewPager.getCurrentItem());
         HabitTypeInterface fragment = habitTypeFragmentMap.get(habitType);
@@ -140,7 +140,7 @@ public class HabitTypeFragment extends Fragment {
         defaultValue = repetitions;
 
         if (fragment != null) {
-            fragment.setRepetitions(repetitions);
+            fragment.setMaxRepetitions(repetitions);
         }
     }
 

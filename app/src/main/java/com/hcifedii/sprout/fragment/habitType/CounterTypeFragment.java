@@ -51,7 +51,7 @@ public class CounterTypeFragment extends Fragment implements HabitTypeInterface 
         if (parent != null) {
             int defaultValue = parent.getDefaultValue();
             if (defaultValue > 0)
-                setRepetitions(defaultValue);
+                setMaxRepetitions(defaultValue);
         }
     }
 
@@ -78,7 +78,7 @@ public class CounterTypeFragment extends Fragment implements HabitTypeInterface 
     }
 
     @Override
-    public void setRepetitions(int repetitions) {
+    public void setMaxRepetitions(int repetitions) {
         picker.setValue(repetitions);
     }
 }
