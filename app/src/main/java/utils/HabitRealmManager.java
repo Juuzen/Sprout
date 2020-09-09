@@ -31,41 +31,39 @@ public class HabitRealmManager {
         return count;
     }
 
-    public static Habit copyHabit(int habitId) {
-        if (habitId < 0) {
-            return null;
-        }
-        Realm realm = null;
-        Habit habitCopy = null;
-        try {
-            realm = Realm.getDefaultInstance();
-
-            Habit check = realm.where(Habit.class).equalTo("id", habitId).findFirst();
-            if (check != null) {
-                habitCopy = realm.copyFromRealm(check);
-            }
-
-        } finally {
-            if (realm != null) {
-                realm.close();
+    public static Habit getHabit(int habitId) {
+        Habit result = null;
+        if (habitId >= 0) {
+            Realm realm = null;
+            try {
+                realm = Realm.getDefaultInstance();
+                Habit check = realm.where(Habit.class).equalTo("id", habitId).findFirst();
+                if (check != null) {
+                    result = realm.copyFromRealm(check);
+                }
+            } finally {
+                if (realm != null) {
+                    realm.close();
+                }
             }
         }
-        return habitCopy;
+        return result;
     }
 
+    /*
     public static Habit getHabit(int id) {
         if (id < 0)
             return null;
         Realm realm = null;
-        Habit habit;
+        Habit habit = null;
         try {
             realm = Realm.getDefaultInstance();
-            habit = realm.where(Habit.class).equalTo("id", id).findFirst();
-            if (habit != null) {
+            Habit check = realm.where(Habit.class).equalTo("id", id).findFirst();
+            if (check != null) {
                 // This line is necessary because, by default, if something changes inside the database
                 // the object will automatically know. This thing will cause some crash / bad behaviour
                 // when the activity / fragment saves its state.
-                return realm.copyFromRealm(habit);
+                habit = realm.copyFromRealm(check);
             }
         } finally {
             if (realm != null)
@@ -73,6 +71,8 @@ public class HabitRealmManager {
         }
         return habit;
     }
+    
+     */
 
     public static void deleteHabit(int id) {
         if (id >= 0) {

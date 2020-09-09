@@ -107,7 +107,7 @@ public class EditHabitActivity extends AppCompatActivity {
                 }
 
                 // Set the habit fields
-                Habit newHabit = HabitRealmManager.copyHabit(habitId);
+                Habit newHabit = HabitRealmManager.getHabit(habitId);
                 if (newHabit == null) {
                     newHabit = new Habit();
                     newHabit.setId(habitId);
