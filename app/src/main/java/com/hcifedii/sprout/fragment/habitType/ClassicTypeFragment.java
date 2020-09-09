@@ -34,7 +34,7 @@ public class ClassicTypeFragment extends Fragment implements HabitTypeInterface 
     }
 
     @Override
-    public void setRepetitions(int repetitions) {
+    public void setMaxRepetitions(int repetitions) {
         // Do nothing
     }
 }

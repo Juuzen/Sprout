@@ -120,6 +120,8 @@
     <string name="no_item_found_message">Nessun elemento trovato</string>
     <string name="help_menu_item">Aiuto</string>
     <string name="delete_stats_menu_item">Azzera le statistiche</string>
+    <string name="delete_habit_dialog_message">Vuoi eliminare l\'abitudine? Perderai tutti i tuoi progressi!</string>
+    <string name="positive_delete_habit_dialog">Sì, cancella</string>
 
 
 </resources>

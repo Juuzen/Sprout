@@ -11,16 +11,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hcifedii.sprout.R;
+import com.hcifedii.sprout.fragment.HabitTypeFragment;
 import com.shawnlin.numberpicker.NumberPicker;
 
 public class CounterTypeFragment extends Fragment implements HabitTypeInterface {
 
     private NumberPicker picker;
+    private HabitTypeFragment parent;
 
     private static final String PICKER_VALUE_KEY = "pickerValue";
 
     public CounterTypeFragment() {
         // Required empty public constructor
+    }
+
+    public CounterTypeFragment(HabitTypeFragment habitTypeFragment) {
+        parent = habitTypeFragment;
     }
 
     @Override
@@ -36,14 +42,24 @@ public class CounterTypeFragment extends Fragment implements HabitTypeInterface 
 
         picker = view.findViewById(R.id.repetitionsPicker);
 
+        setDefaultValue();
+
         return view;
+    }
+
+    private void setDefaultValue() {
+        if (parent != null) {
+            int defaultValue = parent.getDefaultValue();
+            if (defaultValue > 0)
+                setMaxRepetitions(defaultValue);
+        }
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             int value = savedInstanceState.getInt(PICKER_VALUE_KEY);
             picker.setValue(value);
         }
@@ -62,7 +78,7 @@ public class CounterTypeFragment extends Fragment implements HabitTypeInterface 
     }
 
     @Override
-    public void setRepetitions(int repetitions) {
+    public void setMaxRepetitions(int repetitions) {
         picker.setValue(repetitions);
     }
 }

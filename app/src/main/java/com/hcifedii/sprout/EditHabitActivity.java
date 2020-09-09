@@ -6,17 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.hcifedii.sprout.enumerations.Days;
@@ -39,6 +36,7 @@ import utils.HabitRealmManager;
 public class EditHabitActivity extends AppCompatActivity {
 
     private static final String logcatTag = "Sprout - EditHabitActivity";
+    private static final String IS_ALREADY_SHOWED = "alreadyShowed";
 
     // Fragments of this activity
     TitleFragment titleFragment;
@@ -50,7 +48,6 @@ public class EditHabitActivity extends AppCompatActivity {
 
     int habitId;
     Habit habit;
-    Context myContext = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +66,7 @@ public class EditHabitActivity extends AppCompatActivity {
                 // Recover the data from the fragments
                 // Habit type
                 HabitType habitType = habitTypeFragment.getHabitType();
-                int maxRepetitions = habitTypeFragment.getRepetitions();
+                int maxRepetitions = habitTypeFragment.getMaxRepetitions();
 
                 // Frequency
                 List<Days> frequency = frequencyFragment.getSelectedDays();
@@ -80,7 +77,7 @@ public class EditHabitActivity extends AppCompatActivity {
                 }
 
                 // Reminders
-                List<Reminder> reminders = remindersFragment.getReminderList();
+                RealmList<Reminder> reminders = remindersFragment.getReminderList();
 
                 // Snooze
                 boolean isSnoozeEnabled = snoozeFragment.isSnoozeEnabled();
@@ -106,30 +103,28 @@ public class EditHabitActivity extends AppCompatActivity {
                     goalIntValue = goalFragment.getInt();
                 }
 
-                // Set the habit fields
-                Habit newHabit = HabitRealmManager.getHabit(habitId);
-                if (newHabit == null) {
-                    newHabit = new Habit();
-                    newHabit.setId(habitId);
+                // Set the habit fields. There is no need to create a new object. Just use the old
+                // one and set each fields.
+                habit.setTitle(title);
+                habit.setHabitType(habitType);
+                habit.setMaxRepetitions(maxRepetitions);
+                if (maxRepetitions < habit.getRepetitions()) {
+                    habit.setRepetitions(maxRepetitions);
                 }
-                newHabit.setTitle(title);
-                newHabit.setHabitType(habitType);
-                newHabit.setMaxRepetitions(maxRepetitions);
-                if (maxRepetitions < newHabit.getRepetitions()) {
-                    newHabit.setRepetitions(maxRepetitions);
-                }
-                newHabit.setFrequency(frequency);
-                newHabit.setReminders((RealmList<Reminder>) reminders);
-                newHabit.setMaxSnoozes(snooze);
-                newHabit.setGoalType(goalType);
-                newHabit.setMaxAction(goalIntValue);
-                newHabit.setMaxStreakValue(goalIntValue);
-                newHabit.setFinalDate(goalLongValue);
 
-                // Save habit
-                HabitRealmManager.saveOrUpdateHabit(newHabit);
+                habit.setFrequency(frequency);
+                habit.setReminders(reminders);
+                habit.setMaxSnoozes(snooze);
+                habit.setGoalType(goalType);
+                habit.setMaxAction(goalIntValue);
+                habit.setMaxStreakValue(goalIntValue);
+                habit.setFinalDate(goalLongValue);
+
+                // Update the habit
+                HabitRealmManager.saveOrUpdateHabit(habit);
                 Toast.makeText(this, "Abitudine aggiornata!", Toast.LENGTH_SHORT).show();
                 finish(); //FIXME: aggiungere l'animazione
+
             } else {
                 titleFragment.setErrorMessage(getString(R.string.error_title_is_empty));
                 showErrorSnackbar(editFab, R.string.error_title_is_empty);
@@ -161,34 +156,29 @@ public class EditHabitActivity extends AppCompatActivity {
             });
         });
 
-        // getting the habits informations from DB
+        // If savedInstance is null then get the data from the database. Else (ex. on screen
+        // rotation) each fragments will recover the data they saved.
+        if (savedInstanceState == null) {
+            habitId = getIntent().getIntExtra("HABIT_ID", -1);
 
-        habitId = getIntent().getIntExtra("HABIT_ID", -1);
+            if (habitId >= 0) {
+                // Select habit from the database
+                habit = HabitRealmManager.getHabit(habitId);
 
-        if (habitId >= 0) {
-            // Select habit from the database
-            habit = HabitRealmManager.getHabit(habitId);
+                if (habit != null) {
 
-            if (habit != null) {
-
-                GoalType goalType = habit.getGoalType();
-
-                // TODO: queste due card non visualizzano correttamente i propri dati
-                // Set ViewPager2 pages
-                goalFragment.setGoalType(goalType);
-                habitTypeFragment.setHabitType(habit.getHabitType());
-
-                this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+                    this.runOnUiThread(() -> {
 
                         // Set Habit information
                         titleFragment.setTitle(habit.getTitle());
-                        habitTypeFragment.setRepetitions(habit.getMaxRepetitions());
+                        habitTypeFragment.setHabitType(habit.getHabitType());
+                        habitTypeFragment.setMaxRepetitions(habit.getMaxRepetitions());
                         frequencyFragment.setFrequency(habit.getFrequency());
                         remindersFragment.setReminderList(habit.getReminders());
                         snoozeFragment.setSnooze(habit.getMaxSnoozes());
 
+                        GoalType goalType = habit.getGoalType();
+                        goalFragment.setGoalType(goalType);
                         // Goal
                         if (goalType == GoalType.ACTION)
                             goalFragment.setInt(habit.getMaxAction());
@@ -198,15 +188,16 @@ public class EditHabitActivity extends AppCompatActivity {
                             goalFragment.setLong(habit.getFinalDate());
 
 
+                    });
 
-                    }
-                });
+
+                }
+
+
+            } else {
+                // Go to MainActivity with log error message or throw an exception
 
             }
-
-
-        } else {
-            // Go to MainActivity with log error message
 
         }
 
@@ -214,8 +205,12 @@ public class EditHabitActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
 
-
+        outState.putBoolean(IS_ALREADY_SHOWED, true);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -226,25 +221,22 @@ public class EditHabitActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.deleteHabitButton:
-                new AlertDialog.Builder(this)
-                        .setTitle("Cancellare l'abitudine?")
-                        .setMessage("Non potrai tornare indietro!")
-                        .setPositiveButton("Sì, cancella", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                HabitRealmManager.deleteHabit(habitId);
-                                Toast.makeText(myContext, "Abitudine eliminata!", Toast.LENGTH_SHORT).show();
-                                finish(); //FIXME: transizioni
-                            }
-                        })
-                        .setNegativeButton("No", null)
-                        .show();
+        if (item.getItemId() == R.id.deleteHabitButton) {
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
 
-            default:
-                return super.onOptionsItemSelected(item);
+            builder.setTitle("Sprout");
+            builder.setMessage(R.string.delete_habit_dialog_message);
+            builder.setPositiveButton(R.string.positive_delete_habit_dialog, (dialogInterface, i) -> {
+                HabitRealmManager.deleteHabit(habitId);
+                Toast.makeText(getBaseContext(), "Abitudine eliminata!", Toast.LENGTH_SHORT).show();
+                finish(); //FIXME: transizioni
+            });
+            builder.setNegativeButton("No", (dialogInterface, i) -> {
+                dialogInterface.dismiss();
+            });
+            builder.show();
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private void showErrorSnackbar(View view, int messageResId) {
