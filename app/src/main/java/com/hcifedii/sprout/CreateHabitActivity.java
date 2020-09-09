@@ -60,30 +60,23 @@ public class CreateHabitActivity extends AppCompatActivity {
         // FAB - Floating Action Button
         ExtendedFloatingActionButton saveFab = findViewById(R.id.fabSaveButton);
         saveFab.setOnClickListener(fabView -> {
-
-            Habit habit = new Habit();
-
             String title = titleFragment.getTitle();
-
             if (title.length() > 0) {
                 // Clear error message
                 titleFragment.setErrorMessage(null);
-
                 // Recover the data from the fragments
                 // Habit type
                 HabitType habitType = habitTypeFragment.getHabitType();
-                int repetitions = habitTypeFragment.getRepetitions();
-
+                int maxRepetitions = habitTypeFragment.getRepetitions();
                 // Frequency
                 List<Days> frequency = frequencyFragment.getSelectedDays();
-
                 if (frequency.size() < 1) {
                     // Warning Snackbar. The user hasn't selected any days of the week.
                     showErrorSnackbar(saveFab, R.string.empty_frequency_warning);
                     return;
                 }
-
                 // Reminders
+
                 RealmList<Reminder> reminders = remindersFragment.getReminderList();
 
                 // Snooze
@@ -110,10 +103,11 @@ public class CreateHabitActivity extends AppCompatActivity {
                     goalIntValue = goalFragment.getInt();
                 }
 
+                Habit habit = new Habit();
                 // Set the habit fields
                 habit.setTitle(title);
                 habit.setHabitType(habitType);
-                habit.setRepetitions(repetitions);
+                habit.setMaxRepetitions(maxRepetitions);
                 habit.setFrequency(frequency);
                 habit.setReminders(reminders);
                 habit.setMaxSnoozes(snooze);

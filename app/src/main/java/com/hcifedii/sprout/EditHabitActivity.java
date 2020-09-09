@@ -69,11 +69,10 @@ public class EditHabitActivity extends AppCompatActivity {
                 // Recover the data from the fragments
                 // Habit type
                 HabitType habitType = habitTypeFragment.getHabitType();
-                int repetitions = habitTypeFragment.getRepetitions();
+                int maxRepetitions = habitTypeFragment.getRepetitions();
 
                 // Frequency
                 List<Days> frequency = frequencyFragment.getSelectedDays();
-
                 if (frequency.size() < 1) {
                     // Warning Snackbar. The user hasn't selected any days of the week.
                     showErrorSnackbar(editFab, R.string.empty_frequency_warning);
@@ -108,11 +107,17 @@ public class EditHabitActivity extends AppCompatActivity {
                 }
 
                 // Set the habit fields
-                Habit newHabit = new Habit();
-                newHabit.setId(habitId);
+                Habit newHabit = HabitRealmManager.copyHabit(habitId);
+                if (newHabit == null) {
+                    newHabit = new Habit();
+                    newHabit.setId(habitId);
+                }
                 newHabit.setTitle(title);
                 newHabit.setHabitType(habitType);
-                newHabit.setRepetitions(repetitions);
+                newHabit.setMaxRepetitions(maxRepetitions);
+                if (maxRepetitions < newHabit.getRepetitions()) {
+                    newHabit.setRepetitions(maxRepetitions);
+                }
                 newHabit.setFrequency(frequency);
                 newHabit.setReminders((RealmList<Reminder>) reminders);
                 newHabit.setMaxSnoozes(snooze);
@@ -179,7 +184,7 @@ public class EditHabitActivity extends AppCompatActivity {
 
                         // Set Habit information
                         titleFragment.setTitle(habit.getTitle());
-                        habitTypeFragment.setRepetitions(habit.getRepetitions());
+                        habitTypeFragment.setRepetitions(habit.getMaxRepetitions());
                         frequencyFragment.setFrequency(habit.getFrequency());
                         remindersFragment.setReminderList(habit.getReminders());
                         snoozeFragment.setSnooze(habit.getMaxSnoozes());
@@ -196,7 +201,6 @@ public class EditHabitActivity extends AppCompatActivity {
 
                     }
                 });
-
 
             }
 
@@ -251,12 +255,9 @@ public class EditHabitActivity extends AppCompatActivity {
     }
 
     private void enableTopBackButton() {
-
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
-        } else {
-            Log.e(logcatTag, "getSupportActionBar() returned null");
         }
     }
 }
