@@ -93,8 +93,14 @@ public class HabitRealmManager {
 
         try {
             realm = Realm.getDefaultInstance();
-            realm.executeTransactionAsync(
-                    realmInstance -> realmInstance.insertOrUpdate(habit),
+            realm.executeTransactionAsync(realmInstance -> {
+                        if (habit.getId() < 0) {
+                            // Have to save a new Habit
+                            habit.setId(getNextId(realmInstance));
+                        }
+                        realmInstance.insertOrUpdate(habit);
+
+                    },
                     () -> Log.i(LOG_TAG, "Transaction success! - ID: " + habit.getId()),
                     error -> Log.i(LOG_TAG, "Transaction error! - ID: " + habit.getId() + "\n" + error.getMessage()
                     ));
