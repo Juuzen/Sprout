@@ -123,14 +123,20 @@ public class HabitRealmManager {
         }
     }
 
-    private static int getNextId(Realm realm) {
-        Log.d("getNextId", "1");
-        Number newId = realm.where(Habit.class).max("id");
-        if (newId != null) {
-            Log.d("getNextId", "ID MAX: " + newId.toString());
-            return newId.intValue() + 1;
+    public static int getNextId () {
+        Realm realm = null;
+        int result = -1;
+        try {
+            realm = Realm.getDefaultInstance();
+            Number maxId = realm.where(Habit.class).max("id");
+            if (maxId != null) {
+                result = maxId.intValue() + 1;
+            }
+        } finally {
+            if (realm != null) {
+                realm.close();
+            }
         }
-        Log.d("getNextId", "2");
-        return 0;
+        return result;
     }
 }

@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,19 +20,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hcifedii.sprout.EditHabitActivity;
 import com.hcifedii.sprout.R;
 
+import io.realm.Case;
 import io.realm.OrderedRealmCollection;
+import io.realm.Realm;
 import io.realm.RealmRecyclerViewAdapter;
+import io.realm.RealmResults;
 import model.Habit;
 
-
-public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, HabitCardAdapter.ViewHolder> {
+public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, HabitCardAdapter.ViewHolder> implements Filterable {
     Context ct;
     OrderedRealmCollection<Habit> list;
+    Realm mRealm;
 
-    public HabitCardAdapter(@Nullable OrderedRealmCollection<Habit> data, boolean autoUpdate, Context context) {
-        super(data, autoUpdate); //autoUpdate to true
+    public HabitCardAdapter(@Nullable OrderedRealmCollection<Habit> data, Context context, Realm realm) {
+        super(data, true, true); //autoUpdate to true
         ct = context;
         list = data;
+        mRealm = realm;
+        setHasStableIds(true);
     }
 
     @Override
@@ -50,32 +57,70 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, HabitCardA
     @Override
     public void onBindViewHolder(@NonNull HabitCardAdapter.ViewHolder holder, int position) {
         final Habit habit = getItem(position);
-        holder.setHabit(habit);
+        if (habit != null) {
+            holder.setHabit(habit);
 
-        holder.editHabitButton.setOnClickListener(view -> {
-            Intent intent = new Intent(ct, EditHabitActivity.class);
-            intent.putExtra("HABIT_ID", habit.getId());
-            //TODO: Aggiungere l'animazione
-            ct.startActivity(intent);
-        });
+            holder.editHabitButton.setOnClickListener(view -> {
+                Intent intent = new Intent(ct, EditHabitActivity.class);
+                intent.putExtra("HABIT_ID", habit.getId());
+                //TODO: Aggiungere l'animazione
+                ct.startActivity(intent);
+            });
 
-        holder.checkButton.setOnClickListener(view -> {
-            int habitId = habit.getId();
-            int newRepValue = habit.getRepetitions() + 1;
-            int maxReps = habit.getMaxRepetitions();
-            Log.d("Testing", newRepValue + " - " + maxReps);
-            if (newRepValue <= habit.getMaxRepetitions()) {
-                habit.getRealm().executeTransaction(realm -> {
-                    Habit result = realm.where(Habit.class).equalTo("id", habitId).findFirst();
-                    if (result != null) {
-                        result.setRepetitions(newRepValue);
-                        String newLabel = "Completato " + newRepValue + " volte su " + maxReps;
-                        holder.progressLabel.setText(newLabel);
-                    }
-                });
+            holder.checkButton.setOnClickListener(view -> {
+                int habitId = habit.getId();
+                int newRepValue = habit.getRepetitions() + 1;
+                int maxReps = habit.getMaxRepetitions();
+                Log.d("Testing", newRepValue + " - " + maxReps);
+                if (newRepValue <= habit.getMaxRepetitions()) {
+                    habit.getRealm().executeTransaction(realm -> {
+                        Habit result = realm.where(Habit.class).equalTo("id", habitId).findFirst();
+                        if (result != null) {
+                            result.setRepetitions(newRepValue);
+                            String newLabel = "Completato " + newRepValue + " volte su " + maxReps;
+                            holder.progressLabel.setText(newLabel);
+                        }
+                    });
+                }
+            });
+        }
+
+    }
+
+    public void filterResults(String text) {
+        text = text == null ? null : text.toLowerCase().trim();
+        if (text == null || "".equals(text)) {
+            updateData(list);
+        } else {
+            RealmResults<Habit> filteredList = mRealm.where(Habit.class).beginsWith("title", text, Case.INSENSITIVE).sort("id").findAllAsync();
+            for (Habit habit: filteredList) {
+                Log.d("Filtro", habit.getTitle());
             }
+            updateData(filteredList);
+        }
 
-        });
+    }
+
+    public Filter getFilter() {
+        return new HabitFilter(this);
+    }
+
+    private class HabitFilter extends Filter {
+        private final HabitCardAdapter adapter;
+
+        private HabitFilter(HabitCardAdapter adapter) {
+            this.adapter = adapter;
+        }
+
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            return new FilterResults();
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            adapter.filterResults(charSequence.toString());
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

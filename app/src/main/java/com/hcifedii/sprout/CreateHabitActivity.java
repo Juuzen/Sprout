@@ -106,6 +106,7 @@ public class CreateHabitActivity extends AppCompatActivity {
                 Habit habit = new Habit();
                 // Set the habit fields
                 habit.setTitle(title);
+                habit.setId(HabitRealmManager.getNextId());
                 habit.setHabitType(habitType);
                 habit.setMaxRepetitions(maxRepetitions);
                 habit.setFrequency(frequency);
