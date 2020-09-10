@@ -47,5 +47,5 @@ dependencies {
     implementation "androidx.cardview:cardview:1.0.0"
     implementation 'io.realm:android-adapters:3.1.0'
     implementation 'com.applandeo:material-calendar-view:1.7.0'
-    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

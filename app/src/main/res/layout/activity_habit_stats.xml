@@ -106,10 +106,12 @@
             app:layout_constraintStart_toStartOf="@+id/cardCalendarView"
             app:layout_constraintTop_toBottomOf="@+id/cardCalendarView">
 
-            <com.google.android.material.textview.MaterialTextView
-                style="@style/SproutTitle"
-                android:text="Serie migliori" />
-
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/streakChart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/calendarPageColor"/>
+            
         </androidx.cardview.widget.CardView>
 
 
@@ -124,15 +126,16 @@
             app:layout_constraintStart_toStartOf="@id/cardCalendarView"
             app:layout_constraintTop_toBottomOf="@id/bestStreakView">
 
-            <com.google.android.material.textview.MaterialTextView
-                style="@style/SproutTitle"
-                android:text="Azioni mensili" />
-
-
-            <!-- Tree drawable -->
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/monthlyActionChart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/calendarPageColor"/>
 
 
         </androidx.cardview.widget.CardView>
+
+        <!-- Tree drawable -->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

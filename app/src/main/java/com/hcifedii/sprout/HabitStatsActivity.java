@@ -11,7 +11,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
-
+import android.widget.ProgressBar;
+import android.widget.Toast;
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.google.android.material.textview.MaterialTextView;
@@ -20,6 +21,7 @@ import com.hcifedii.sprout.enumerations.HabitType;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 
 import model.Habit;
@@ -28,6 +30,8 @@ import utils.HabitRealmManager;
 public class HabitStatsActivity extends AppCompatActivity {
 
     public static final String EXTRA_HABIT_ID = "habitID";
+
+    private final String secondaryColorHex = "#FDC210";
 
     private Habit habit;
 
@@ -103,7 +107,8 @@ public class HabitStatsActivity extends AppCompatActivity {
                 calendarView.setHighlightedDays(highlight);
 
 
-
+                // Draw Streak chart
+                drawStreakChart(habit);
 
 
             });
@@ -111,6 +116,16 @@ public class HabitStatsActivity extends AppCompatActivity {
 
 
         }
+
+
+    }
+
+
+    // TODO: i dati devono essere ordinati per numero di azioni in modo crescente
+    private void drawStreakChart(Habit habit) {
+
+
+
 
 
     }
