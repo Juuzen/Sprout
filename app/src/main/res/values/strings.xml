@@ -123,5 +123,14 @@
     <string name="delete_habit_dialog_message">Vuoi eliminare l\'abitudine? Perderai tutti i tuoi progressi!</string>
     <string name="positive_delete_habit_dialog">Sì, cancella</string>
 
+    <string name="title_habit_type_stats">Abitudine:</string>
+    <string name="counter">Contatore</string>
+    <string name="classic">Classica</string>
+
+    <string name="title_goal_stats">Obiettivo:</string>
+    <string name="none">Nessuno</string>
+    <string name="action">Azioni</string>
+    <string name="deadline">Deadline</string>
+    <string name="streak">Serie</string>
 
 </resources>

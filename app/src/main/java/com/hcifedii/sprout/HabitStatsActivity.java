@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
+import com.google.android.material.textview.MaterialTextView;
 import com.hcifedii.sprout.enumerations.GoalType;
 import com.hcifedii.sprout.enumerations.HabitType;
 
@@ -52,7 +53,11 @@ public class HabitStatsActivity extends AppCompatActivity {
                 // Set Activity's title
                 setTitle(habit.getTitle());
 
-                // Get the views
+                MaterialTextView habitTypeTextView = findViewById(R.id.habitTypeTextView);
+
+                habitTypeTextView.setText(habit.getHabitType().getStringResourceId());
+
+                // Get the Calendar
                 CalendarView calendarView = findViewById(R.id.calendarView);
 
                 // List of icons that will be showed inside the calendar
