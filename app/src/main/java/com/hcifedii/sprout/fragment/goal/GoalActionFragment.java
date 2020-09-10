@@ -11,16 +11,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hcifedii.sprout.R;
+import com.hcifedii.sprout.fragment.GoalFragment;
 import com.shawnlin.numberpicker.NumberPicker;
 
 public class GoalActionFragment extends Fragment implements GoalInterface {
 
-    NumberPicker actionPicker;
+    private NumberPicker actionPicker;
+    private GoalFragment parent;
 
     private static final String ACTION_PICKER_VALUE_KEY = "actionVal";
 
     public GoalActionFragment() {
         // Required empty public constructor
+    }
+
+    public GoalActionFragment(GoalFragment goalFragment) {
+        parent = goalFragment;
     }
 
     @Override
@@ -53,7 +59,18 @@ public class GoalActionFragment extends Fragment implements GoalInterface {
 
         actionPicker = view.findViewById(R.id.goalMaxActionPicker);
 
+        setDefaultValue();
+
         return view;
+    }
+
+    private void setDefaultValue() {
+        if (parent != null) {
+            int defaultValue = parent.getDefaultInt();
+            if (defaultValue > 0) {
+                setInt(defaultValue);
+            }
+        }
     }
 
     @Override

@@ -11,16 +11,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hcifedii.sprout.R;
+import com.hcifedii.sprout.fragment.GoalFragment;
 import com.shawnlin.numberpicker.NumberPicker;
 
 public class GoalStreakFragment extends Fragment implements GoalInterface {
 
     private NumberPicker streakPicker;
+    private GoalFragment parent;
 
     private static final String STREAK_PICKER_VALUE_KEY = "streakVal";
 
     public GoalStreakFragment() {
         // Required empty public constructor
+    }
+
+    public GoalStreakFragment(GoalFragment goalFragment) {
+        parent = goalFragment;
     }
 
     @Override
@@ -54,7 +60,18 @@ public class GoalStreakFragment extends Fragment implements GoalInterface {
 
         streakPicker = view.findViewById(R.id.goalStreakPicker);
 
+        setDefaultValue();
+
         return view;
+    }
+
+    private void setDefaultValue() {
+        if (parent != null) {
+            int defaultValue = parent.getDefaultInt();
+            if (defaultValue > 0) {
+                setInt(defaultValue);
+            }
+        }
     }
 
     @Override
