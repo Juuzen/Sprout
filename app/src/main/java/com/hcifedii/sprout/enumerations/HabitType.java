@@ -7,7 +7,7 @@ public enum HabitType {
     CLASSIC(R.string.classic),
     COUNTER(R.string.counter);
 
-    private int resId;
+    private final int resId;
 
     HabitType(int resId) {
         this.resId = resId;

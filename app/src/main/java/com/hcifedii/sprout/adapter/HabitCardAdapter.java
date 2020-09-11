@@ -78,7 +78,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, HabitCardA
         });
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView habitTitle;
         ProgressBar progressBar;
         TextView progressLabel;

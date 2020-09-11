@@ -142,49 +142,44 @@ public class CreateHabitActivity extends AppCompatActivity {
 
         presetFragment = (PresetFragment) fragmentManager.findFragmentById(R.id.presetHabitFragment);
 
-        presetFragment.setAdapterListener(habit -> {
+        presetFragment.setAdapterListener(habit -> this.runOnUiThread(() -> {
 
-            this.runOnUiThread(() -> {
+            titleFragment.setTitle(habit.getTitle());
 
-                titleFragment.setTitle(habit.getTitle());
+            habitTypeFragment.setHabitType(habit.getHabitType());
+            habitTypeFragment.setMaxRepetitions(habit.getRepetitions());
 
-                habitTypeFragment.setHabitType(habit.getHabitType());
-                habitTypeFragment.setMaxRepetitions(habit.getRepetitions());
+            frequencyFragment.setFrequency(habit.getFrequency());
 
-                frequencyFragment.setFrequency(habit.getFrequency());
+            remindersFragment.setReminderList(habit.getReminders());
 
-                remindersFragment.setReminderList(habit.getReminders());
+            snoozeFragment.setSnooze(habit.getMaxSnoozes());
 
-                snoozeFragment.setSnooze(habit.getMaxSnoozes());
-
-                GoalType goalType = habit.getGoalType();
-                goalFragment.setGoalType(goalType);
-                if (goalType == GoalType.ACTION)
-                    goalFragment.setInt(habit.getMaxAction());
-                else if (goalType == GoalType.STREAK)
-                    goalFragment.setInt(habit.getMaxStreakValue());
-                else if (goalType == GoalType.DEADLINE)
-                    goalFragment.setLong(habit.getFinalDate());
+            GoalType goalType = habit.getGoalType();
+            goalFragment.setGoalType(goalType);
+            if (goalType == GoalType.ACTION)
+                goalFragment.setInt(habit.getMaxAction());
+            else if (goalType == GoalType.STREAK)
+                goalFragment.setInt(habit.getMaxStreakValue());
+            else if (goalType == GoalType.DEADLINE)
+                goalFragment.setLong(habit.getFinalDate());
 
 
-                Toast.makeText(getBaseContext(), R.string.preset_habit_loading_snackbar, Toast.LENGTH_SHORT).show();
-            });
-        });
+            Toast.makeText(getBaseContext(), R.string.preset_habit_loading_snackbar, Toast.LENGTH_SHORT).show();
+        }));
 
 
         // Shrinking / extending behaviour of the fab
         NestedScrollView scrollView = findViewById(R.id.nestedScrollView);
-        scrollView.setOnScrollChangeListener((View.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            this.runOnUiThread(() -> {
-                if (scrollY > oldScrollY) {
-                    // Scroll down
-                    saveFab.shrink();
-                } else {
-                    // Scroll up
-                    saveFab.extend();
-                }
-            });
-        });
+        scrollView.setOnScrollChangeListener((View.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> this.runOnUiThread(() -> {
+            if (scrollY > oldScrollY) {
+                // Scroll down
+                saveFab.shrink();
+            } else {
+                // Scroll up
+                saveFab.extend();
+            }
+        }));
 
 
     }

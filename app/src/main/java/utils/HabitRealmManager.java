@@ -1,11 +1,9 @@
 package utils;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;

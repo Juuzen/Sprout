@@ -8,7 +8,7 @@ public enum GoalType {
     STREAK(R.string.streak),
     DEADLINE(R.string.deadline);
 
-    private int resId;
+    private final int resId;
 
     GoalType(int resId){
         this.resId = resId;

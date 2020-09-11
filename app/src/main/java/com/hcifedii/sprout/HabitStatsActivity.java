@@ -44,6 +44,8 @@ public class HabitStatsActivity extends AppCompatActivity {
 
     private Habit habit;
 
+    // TODO: salvare lo stato dell'activity
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,9 +68,12 @@ public class HabitStatsActivity extends AppCompatActivity {
                 // Set Activity's title
                 setTitle(habit.getTitle());
 
+                // Habit info
                 MaterialTextView habitTypeTextView = findViewById(R.id.habitTypeTextView);
-
                 habitTypeTextView.setText(habit.getHabitType().getStringResourceId());
+
+                MaterialTextView goalTypeTextView = findViewById(R.id.goalTextView);
+                goalTypeTextView.setText(habit.getGoalType().getStringResourceId());
 
                 // Get the Calendar
                 CalendarView calendarView = findViewById(R.id.calendarView);

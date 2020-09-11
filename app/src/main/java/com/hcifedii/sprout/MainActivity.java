@@ -1,8 +1,6 @@
 package com.hcifedii.sprout;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -14,8 +12,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import android.widget.Toast;
-
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -24,10 +20,8 @@ import com.google.android.material.shape.MaterialShapeDrawable;
 import com.hcifedii.sprout.adapter.HabitCardAdapter;
 
 import io.realm.Realm;
-import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import model.Habit;
-import utils.HabitRealmManager;
 import utils.SproutBottomAppBarCutCornersTopEdge;
 
 public class MainActivity extends AppCompatActivity {
@@ -105,9 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setMessage(getString(R.string.about_us_message));
                 builder.setIcon(R.drawable.ic_sprout_fg_small);
 
-                builder.setPositiveButton("OK", (dialogInterface, i) -> {
-                    dialogInterface.dismiss();
-                });
+                builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
 
                 builder.show();
                 return true;

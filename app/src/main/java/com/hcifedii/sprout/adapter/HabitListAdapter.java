@@ -113,9 +113,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
 
             titleTextView = itemView.findViewById(R.id.habitItemTitle);
             dateTextView = itemView.findViewById(R.id.habitItemCreationDate);
-            itemView.setOnClickListener(view -> {
-                listener.onClick(habitId);
-            });
+            itemView.setOnClickListener(view -> listener.onClick(habitId));
         }
 
     }

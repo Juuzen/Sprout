@@ -144,17 +144,15 @@ public class EditHabitActivity extends AppCompatActivity {
 
         // Shrinking / extending behaviour of the fab
         NestedScrollView scrollView = findViewById(R.id.nestedScrollView);
-        scrollView.setOnScrollChangeListener((View.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            this.runOnUiThread(() -> {
-                if (scrollY > oldScrollY) {
-                    // Scroll down
-                    editFab.shrink();
-                } else {
-                    // Scroll up
-                    editFab.extend();
-                }
-            });
-        });
+        scrollView.setOnScrollChangeListener((View.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> this.runOnUiThread(() -> {
+            if (scrollY > oldScrollY) {
+                // Scroll down
+                editFab.shrink();
+            } else {
+                // Scroll up
+                editFab.extend();
+            }
+        }));
 
         // If savedInstance is null then get the data from the database. Else (ex. on screen
         // rotation) each fragments will recover the data they saved.
@@ -231,9 +229,7 @@ public class EditHabitActivity extends AppCompatActivity {
                 Toast.makeText(getBaseContext(), "Abitudine eliminata!", Toast.LENGTH_SHORT).show();
                 finish(); //FIXME: transizioni
             });
-            builder.setNegativeButton("No", (dialogInterface, i) -> {
-                dialogInterface.dismiss();
-            });
+            builder.setNegativeButton("No", (dialogInterface, i) -> dialogInterface.dismiss());
             builder.show();
         }
         return super.onOptionsItemSelected(item);

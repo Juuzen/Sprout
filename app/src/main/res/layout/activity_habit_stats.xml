@@ -117,7 +117,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/best_streak_chart_title"
                     android:textAlignment="center"
-                    android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -157,7 +156,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/monthly_chart_title"
                     android:textAlignment="center"
-                    android:textStyle="normal"
 
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
