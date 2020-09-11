@@ -21,12 +21,9 @@ public class Habit extends RealmObject {
     public Habit() {
         id = -1;
         habitCreationDate = Calendar.getInstance().getTimeInMillis();
-
         habitTypeEnum = new HabitTypeEnum();
         goalType = new GoalEnum();
-
         frequency = new RealmList<>();
-
     }
 
     @PrimaryKey
@@ -72,10 +69,8 @@ public class Habit extends RealmObject {
         this.repetitions = repetitions;
     }
 
-    /**
-     * Max number of actions the user needs to do to complete a task
-     */
-    private int maxRepetitions = 3; // Default value. If habitType is "COUNTER", then this should be replaced with the new value
+
+    private int maxRepetitions = 1; //if the habitType is "COUNTER", then this should be replaced with the new value
     public int getMaxRepetitions() { return maxRepetitions; }
     public void setMaxRepetitions(int maxRepetitions) { this.maxRepetitions = maxRepetitions; }
 

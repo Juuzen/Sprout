@@ -14,6 +14,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import android.view.View;
+import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -31,11 +34,8 @@ import utils.HabitRealmManager;
 import utils.SproutBottomAppBarCutCornersTopEdge;
 
 public class MainActivity extends AppCompatActivity {
-
-    private static final String logcatTag = "Sprout - MainActivity";
-    private int lastPosition;
-    private RecyclerView rv;
     private Realm realm;
+    HabitCardAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,20 +68,61 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        RecyclerView rv = findViewById(R.id.habitCardRecyclerView);
+        TextView emptyMessage = findViewById(R.id.mainEmptyHabitListMessage);
         realm = Realm.getDefaultInstance();
         RealmResults<Habit> results = realm.where(Habit.class).sort("id").findAll();
-        rv = findViewById(R.id.habitCardRecyclerView);
+
+        results.addChangeListener(habits -> {
+            if (habits.size() > 0) {
+                rv.setVisibility(View.VISIBLE);
+                emptyMessage.setVisibility(View.GONE);
+            } else {
+                emptyMessage.setVisibility(View.VISIBLE);
+                rv.setVisibility(View.GONE);
+            }
+        });
+
+        //this is necessarily because it is not changed yet
+        if (results.size() > 0) {
+            rv.setVisibility(View.VISIBLE);
+            emptyMessage.setVisibility(View.GONE);
+
+        } else {
+            emptyMessage.setVisibility(View.VISIBLE);
+            rv.setVisibility(View.GONE);
+        }
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rv.setLayoutManager(layoutManager);
-        HabitCardAdapter adapter = new HabitCardAdapter(results, true, this);
+        adapter = new HabitCardAdapter(results, this, realm);
         rv.setAdapter(adapter);
-        //TODO: quando il converter è vuoto, mostra una textview invece della recyclerview
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.top_app_bar_menu, menu);
+
+        SearchView searchView = (SearchView) menu.findItem(R.id.searchMenuItem).getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (adapter != null) {
+                    adapter.getFilter().filter(query);
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                if (adapter != null) {
+                    adapter.getFilter().filter(query);
+                    return true;
+                }
+                return false;
+            }
+        });
         return true;
     }
 
@@ -90,27 +131,24 @@ public class MainActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.searchMenuItem:
-
-
                 return true;
+
             case R.id.settingMenuItem:
                 Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-                startActivity(intent);
+                startActivity(intent); //FIXME: animazione
                 return true;
+
             case R.id.aboutMenuItem:
-
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-
                 builder.setTitle(getString(R.string.about_us_title));
                 builder.setMessage(getString(R.string.about_us_message));
                 builder.setIcon(R.drawable.ic_sprout_fg_small);
-
                 builder.setPositiveButton("OK", (dialogInterface, i) -> {
                     dialogInterface.dismiss();
                 });
-
                 builder.show();
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -146,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        realm.removeAllChangeListeners();
         realm.close();
     }
 }
