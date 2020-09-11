@@ -33,14 +33,14 @@ import model.Habit;
 public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerView.ViewHolder> implements Filterable {
     Context ct;
     OrderedRealmCollection<Habit> list;
-    OrderedRealmCollection<Habit> filteredList;
+    OrderedRealmCollection<Habit> filteredList; /* mandatory for the filter */
     Realm mRealm;
 
     private static int CLASSIC_TYPE = 1;
     private static int REPETITION_TYPE = 2;
 
     public HabitCardAdapter(@Nullable OrderedRealmCollection<Habit> data, Context context, Realm realm) {
-        super(data, true, true); //autoUpdate to true
+        super(data, true, true);
         ct = context;
         list = data;
         filteredList = data;

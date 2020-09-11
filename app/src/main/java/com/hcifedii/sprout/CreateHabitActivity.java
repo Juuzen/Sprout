@@ -88,13 +88,10 @@ public class CreateHabitActivity extends AppCompatActivity {
 
                 // Goal
                 GoalType goalType = goalFragment.getGoalType();
-
                 long goalLongValue = 0;
                 int goalIntValue = 0;
-
                 if (goalType == GoalType.DEADLINE) {
                     goalLongValue = goalFragment.getLong();
-
                     if (goalLongValue < 0) {
                         showErrorSnackbar(saveFab, R.string.error_deadline_is_empty);
                         return;
