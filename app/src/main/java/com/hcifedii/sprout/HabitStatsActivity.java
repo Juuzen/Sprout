@@ -188,7 +188,7 @@ public class HabitStatsActivity extends AppCompatActivity {
 
         entries.add(new BarEntry(0f, 10f));
         entries.add(new BarEntry(1f, 22f));
-        entries.add(new BarEntry(2f, 5f));
+        entries.add(new BarEntry(2f, 1f));
         entries.add(new BarEntry(3f, 11f));
 
         final String[] labels = {"22 ago - 25 ago", "27 ago - 31 ago", "1 set - 3 set", "4 set - 5 set"};
@@ -200,7 +200,12 @@ public class HabitStatsActivity extends AppCompatActivity {
         barDataSet.setValueFormatter(new ValueFormatter() {
             @Override
             public String getBarLabel(BarEntry barEntry) {
-                return format.format(barEntry.getY());
+
+                float value = barEntry.getY();
+                if(value == 1)  // Write singular
+                    return format.format(value) + ' ' + getString(R.string.day);
+
+                return format.format(value) + ' ' + getString(R.string.days);
             }
         });
 
