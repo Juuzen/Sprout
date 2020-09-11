@@ -30,19 +30,21 @@ import model.Habit;
 public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, HabitCardAdapter.ViewHolder> implements Filterable {
     Context ct;
     OrderedRealmCollection<Habit> list;
+    OrderedRealmCollection<Habit> filteredList;
     Realm mRealm;
 
     public HabitCardAdapter(@Nullable OrderedRealmCollection<Habit> data, Context context, Realm realm) {
         super(data, true, true); //autoUpdate to true
         ct = context;
         list = data;
+        filteredList = data;
         mRealm = realm;
         setHasStableIds(true);
     }
 
     @Override
     public int getItemCount() {
-        return this.list.size();
+        return this.filteredList.size();
     }
 
     @NonNull
@@ -90,15 +92,11 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, HabitCardA
     public void filterResults(String text) {
         text = text == null ? null : text.toLowerCase().trim();
         if (text == null || "".equals(text)) {
-            updateData(list);
+            filteredList = list;
         } else {
-            RealmResults<Habit> filteredList = mRealm.where(Habit.class).beginsWith("title", text, Case.INSENSITIVE).sort("id").findAllAsync();
-            for (Habit habit: filteredList) {
-                Log.d("Filtro", habit.getTitle());
-            }
-            updateData(filteredList);
+            filteredList = mRealm.where(Habit.class).beginsWith("title", text, Case.INSENSITIVE).sort("id").findAll();
         }
-
+        updateData(filteredList);
     }
 
     public Filter getFilter() {
