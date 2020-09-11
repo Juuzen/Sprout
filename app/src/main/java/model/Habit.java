@@ -35,6 +35,9 @@ public class Habit extends RealmObject {
         this.id = id;
     }
 
+    /**
+     * Title of the habit
+     */
     @Required
     private String title;
     public String getTitle() {
@@ -44,7 +47,9 @@ public class Habit extends RealmObject {
         this.title = title;
     }
 
-    // Habit type + repetitions
+    /**
+     * Type of the habit (classic or counter)
+     */
     private HabitTypeEnum habitTypeEnum;
     public HabitType getHabitType() {
         return habitTypeEnum.getEnum();
@@ -53,6 +58,9 @@ public class Habit extends RealmObject {
         habitTypeEnum.saveType(habitType);
     }
 
+    /**
+     * Each time the user complete an action.
+     */
     private int repetitions = 0;
     public int getRepetitions() {
         return repetitions;
@@ -60,6 +68,7 @@ public class Habit extends RealmObject {
     public void setRepetitions(int repetitions) {
         this.repetitions = repetitions;
     }
+
 
     private int maxRepetitions = 1; //if the habitType is "COUNTER", then this should be replaced with the new value
     public int getMaxRepetitions() { return maxRepetitions; }

@@ -27,10 +27,8 @@ import com.hcifedii.sprout.fragment.TitleFragment;
 
 import java.util.List;
 
-import io.realm.Realm;
 import model.Habit;
 import io.realm.RealmList;
-import model.Habit;
 import model.Reminder;
 import utils.HabitRealmManager;
 
@@ -65,9 +63,10 @@ public class CreateHabitActivity extends AppCompatActivity {
                 // Clear error message
                 titleFragment.setErrorMessage(null);
                 // Recover the data from the fragments
+
                 // Habit type
                 HabitType habitType = habitTypeFragment.getHabitType();
-                int maxRepetitions = habitTypeFragment.getRepetitions();
+                int maxRepetitions = habitTypeFragment.getMaxRepetitions();
                 // Frequency
                 List<Days> frequency = frequencyFragment.getSelectedDays();
                 if (frequency.size() < 1) {
@@ -75,8 +74,8 @@ public class CreateHabitActivity extends AppCompatActivity {
                     showErrorSnackbar(saveFab, R.string.empty_frequency_warning);
                     return;
                 }
-                // Reminders
 
+                // Reminders
                 RealmList<Reminder> reminders = remindersFragment.getReminderList();
 
                 // Snooze
@@ -148,7 +147,7 @@ public class CreateHabitActivity extends AppCompatActivity {
                 titleFragment.setTitle(habit.getTitle());
 
                 habitTypeFragment.setHabitType(habit.getHabitType());
-                habitTypeFragment.setRepetitions(habit.getRepetitions());
+                habitTypeFragment.setMaxRepetitions(habit.getRepetitions());
 
                 frequencyFragment.setFrequency(habit.getFrequency());
 

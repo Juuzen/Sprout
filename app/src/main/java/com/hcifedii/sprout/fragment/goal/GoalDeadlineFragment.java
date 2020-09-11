@@ -14,6 +14,7 @@ import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.hcifedii.sprout.R;
+import com.hcifedii.sprout.fragment.GoalFragment;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -29,8 +30,14 @@ public class GoalDeadlineFragment extends Fragment implements GoalInterface {
 
     private MaterialButton dateButton;
 
-    public GoalDeadlineFragment() {
+    private GoalFragment parent;
+
+    public GoalDeadlineFragment(){
         // Required empty public constructor
+    }
+
+    public GoalDeadlineFragment(GoalFragment goalFragment) {
+        parent = goalFragment;
     }
 
     @Override
@@ -67,6 +74,8 @@ public class GoalDeadlineFragment extends Fragment implements GoalInterface {
 
         dateButton = view.findViewById(R.id.dateButton);
 
+        setDefaultValue();
+
         dateButton.setOnClickListener(view1 -> {
             MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
 
@@ -77,9 +86,10 @@ public class GoalDeadlineFragment extends Fragment implements GoalInterface {
             // Set date picker's title and default date
             builder.setTitleText(R.string.deadline_picker_button);
 
-            long timeInMills = Calendar.getInstance().getTimeInMillis();
-
-            builder.setSelection(timeInMills);
+            if(timeInMills > 0)
+                builder.setSelection(timeInMills);
+            else
+                builder.setSelection(Calendar.getInstance().getTimeInMillis());
 
             // Build the picker
             builder.setCalendarConstraints(calendarConstraint.build());
@@ -98,6 +108,15 @@ public class GoalDeadlineFragment extends Fragment implements GoalInterface {
         });
 
         return view;
+    }
+
+    private void setDefaultValue() {
+        if (parent != null) {
+            long defaultValue = parent.getDefaultLong();
+            if (defaultValue > 0) {
+                setLong(defaultValue);
+            }
+        }
     }
 
     @Override

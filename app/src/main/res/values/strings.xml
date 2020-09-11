@@ -120,6 +120,39 @@
     <string name="no_item_found_message">Nessun elemento trovato</string>
     <string name="help_menu_item">Aiuto</string>
     <string name="delete_stats_menu_item">Azzera le statistiche</string>
+    <string name="delete_habit_dialog_message">Vuoi eliminare l\'abitudine? Perderai tutti i tuoi progressi!</string>
+    <string name="positive_delete_habit_dialog">Sì, cancella</string>
 
+    <string name="title_habit_type_stats">Abitudine:</string>
+    <string name="counter">Contatore</string>
+    <string name="classic">Classica</string>
+
+    <string name="title_goal_stats">Obiettivo:</string>
+    <string name="none">Nessuno</string>
+    <string name="action">Azioni</string>
+    <string name="deadline">Deadline</string>
+    <string name="streak">Serie</string>
+    <string name="no_data_available">Nessun dato disponibile per la visualizzazione</string>
+
+    <string name="days">Giorni</string>
+    <string name="month">Mesi</string>
+    <string name="best_streak_chart_title">Serie migliori</string>
+    <string name="monthly_chart_title">Azioni mensili</string>
+    <string name="day">Giorno</string>
+
+    <string-array name="months">
+        <item>G</item>
+        <item>F</item>
+        <item>M</item>
+        <item>A</item>
+        <item>M</item>
+        <item>G</item>
+        <item>L</item>
+        <item>A</item>
+        <item>S</item>
+        <item>O</item>
+        <item>N</item>
+        <item>D</item>
+    </string-array>
 
 </resources>
