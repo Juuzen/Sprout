@@ -132,5 +132,8 @@
     <string name="action">Azioni</string>
     <string name="deadline">Deadline</string>
     <string name="streak">Serie</string>
+    <string name="no_data_available">Nessun dato disponibile per la visualizzazione</string>
+
+    <string name="days">Giorni</string>
 
 </resources>
