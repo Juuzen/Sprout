@@ -33,6 +33,9 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, HabitCardA
     OrderedRealmCollection<Habit> filteredList;
     Realm mRealm;
 
+    private static int CLASSIC_TYPE = 1;
+    private static int REPETITION_TYPE = 2;
+
     public HabitCardAdapter(@Nullable OrderedRealmCollection<Habit> data, Context context, Realm realm) {
         super(data, true, true); //autoUpdate to true
         ct = context;
@@ -61,7 +64,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, HabitCardA
         final Habit habit = getItem(position);
         if (habit != null) {
             holder.setHabit(habit);
-
+            Log.d("ViewType", habit.getHabitType().toString());
             holder.editHabitButton.setOnClickListener(view -> {
                 Intent intent = new Intent(ct, EditHabitActivity.class);
                 intent.putExtra("HABIT_ID", habit.getId());
@@ -86,8 +89,22 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, HabitCardA
                 }
             });
         }
-
     }
+
+
+    @Override
+    public int getItemViewType(int position) {
+        int type = 0;
+        Habit habit = filteredList.get(position);
+        if (habit != null) {
+            String habitType = habit.getHabitType().toString();
+            if (habitType.equals("CLASSIC")) type = CLASSIC_TYPE;
+            else if (habitType.equals("COUNTER")) type = REPETITION_TYPE;
+        }
+        return type;
+    }
+
+
 
     public void filterResults(String text) {
         text = text == null ? null : text.toLowerCase().trim();
@@ -121,6 +138,19 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, HabitCardA
         }
     }
 
+    /*
+    public class ClassicViewHolder extends RecyclerView.ViewHolder {
+        TextView habitTitle;
+        ImageButton editHabitButton;
+        Button checkButton;
+
+        public ClassicViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+        }
+    }
+    */
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView habitTitle;
         ProgressBar progressBar;
@@ -131,10 +161,10 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, HabitCardA
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            habitTitle = itemView.findViewById(R.id.habitCardTitle);
+            habitTitle = itemView.findViewById(R.id.counterHabitCardTitle);
             editHabitButton = itemView.findViewById(R.id.counterHabitEditButton);
             progressBar = itemView.findViewById(R.id.counterHabitProgressBar);
-            checkButton = itemView.findViewById(R.id.checkButton);
+            checkButton = itemView.findViewById(R.id.counterHabitCheckButton);
             progressLabel = itemView.findViewById(R.id.counterHabitProgressLabel);
         }
 
