@@ -59,7 +59,7 @@
     <string name="deadline_picker_button">Seleziona una data</string>
     <string name="goal_deadline_picker">Aggiungi una data</string>
     <string name="reminder_info">Con le notifiche non ti dimenticherai dell\'abitudine.</string>
-    <string name="counter_habit_subtitle">Abitudine a \"Contatore\"</string>
+    <string name="counter_habit_subtitle">Abitudine ripetuta</string>
     <string name="empty_frequency_warning">Seleziona almeno un giorno della settimana.</string>
     <string name="classic_habit_subtitle">Abitudine Classica</string>
     <string name="goal_fragment_title">Scegli un obiettivo</string>
