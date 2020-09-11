@@ -13,7 +13,7 @@ public class HabitRealmManager {
 
     public static long getHabitCount() {
         Realm realm = null;
-        long count = 0;
+        long count;
         try {
             realm = Realm.getDefaultInstance();
             count = realm.where(Habit.class).count();
@@ -76,7 +76,7 @@ public class HabitRealmManager {
 
     public static int getNextId () {
         Realm realm = null;
-        int result = -1;
+        int result;
         try {
             realm = Realm.getDefaultInstance();
             Number maxId = realm.where(Habit.class).max("id");
