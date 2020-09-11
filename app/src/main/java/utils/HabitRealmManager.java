@@ -82,6 +82,8 @@ public class HabitRealmManager {
             Number maxId = realm.where(Habit.class).max("id");
             if (maxId != null) {
                 result = maxId.intValue() + 1;
+            } else {
+                result = 0;
             }
         } finally {
             if (realm != null) {
