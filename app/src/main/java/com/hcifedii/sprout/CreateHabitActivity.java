@@ -87,13 +87,10 @@ public class CreateHabitActivity extends AppCompatActivity {
 
                 // Goal
                 GoalType goalType = goalFragment.getGoalType();
-
                 long goalLongValue = 0;
                 int goalIntValue = 0;
-
                 if (goalType == GoalType.DEADLINE) {
                     goalLongValue = goalFragment.getLong();
-
                     if (goalLongValue < 0) {
                         showErrorSnackbar(saveFab, R.string.error_deadline_is_empty);
                         return;
@@ -105,6 +102,7 @@ public class CreateHabitActivity extends AppCompatActivity {
                 Habit habit = new Habit();
                 // Set the habit fields
                 habit.setTitle(title);
+                habit.setId(HabitRealmManager.getNextId());
                 habit.setHabitType(habitType);
                 habit.setMaxRepetitions(maxRepetitions);
                 habit.setFrequency(frequency);
