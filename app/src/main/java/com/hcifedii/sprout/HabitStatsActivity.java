@@ -1,43 +1,36 @@
 package com.hcifedii.sprout;
 
-import androidx.annotation.IntRange;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.widget.ProgressBar;
-import android.widget.Toast;
-
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.BarLineChartBase;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.textview.MaterialTextView;
 import com.hcifedii.sprout.enumerations.GoalType;
-import com.hcifedii.sprout.enumerations.HabitType;
 
-import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.List;
 
 import model.Habit;
@@ -115,8 +108,9 @@ public class HabitStatsActivity extends AppCompatActivity {
                 calendarView.setHighlightedDays(highlight);
 
 
-                // Draw Streak chart
+                // Draw charts
                 drawStreakChart(habit);
+                drawMonthlyChart(habit);
 
 
             });
@@ -127,12 +121,68 @@ public class HabitStatsActivity extends AppCompatActivity {
 
     }
 
+    // TODO: mostra il numero di azioni negli ultimi 12 mesi. Quindi accetta un arraylist di 12 elementi.
+    private void drawMonthlyChart(@NonNull Habit habit) {
+
+        LineChart chart = findViewById(R.id.monthlyActionChart);
+
+        setNoDataAvailableMessage(chart);
+
+        // X-axis labels
+        final String[] months = getResources().getStringArray(R.array.months);
+
+        ArrayList<Entry> entries = new ArrayList<>();
+        entries.add(new Entry(0f, 1));
+        entries.add(new Entry(1f, 5));
+        entries.add(new Entry(2f, 4));
+        entries.add(new Entry(3f, 8));
+        entries.add(new Entry(4f, 10));
+        entries.add(new Entry(5f, 15));
+        entries.add(new Entry(6f, 15));
+        entries.add(new Entry(7f, 12));
+        entries.add(new Entry(8f, 11));
+        entries.add(new Entry(9f, 0));
+        entries.add(new Entry(10f, 6));
+        entries.add(new Entry(11f, 9));
+
+        LineDataSet lineDataSet = new LineDataSet(entries, getString(R.string.month));
+
+        lineDataSet.setColor(getColor(R.color.secondaryColor));
+        lineDataSet.setCircleColor(getColor(R.color.secondaryColor));
+        lineDataSet.setValueTextColor(getColor(R.color.primaryTextColor));
+        lineDataSet.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getPointLabel(Entry entry) {
+                return format.format(entry.getY());
+            }
+        });
+
+        LineData lineData = new LineData(lineDataSet);
+
+        chart.animateX(2000);
+
+        setChartAttributes(chart);
+
+        chart.getXAxis().setGranularity(1f);
+        chart.getXAxis().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+                return months[(int) value];
+            }
+        });
+
+        chart.setData(lineData);
+
+    }
+
 
     // TODO: i dati devono essere ordinati per numero di azioni in modo crescente
     // TODO: max 4
-    private void drawStreakChart(Habit habit) {
+    private void drawStreakChart(@NonNull Habit habit) {
 
         BarChart chart = findViewById(R.id.streakChart);
+
+        setNoDataAvailableMessage(chart);
 
         ArrayList<BarEntry> entries = new ArrayList<>();
 
@@ -143,30 +193,32 @@ public class HabitStatsActivity extends AppCompatActivity {
 
         final String[] labels = {"22 ago - 25 ago", "27 ago - 31 ago", "1 set - 3 set", "4 set - 5 set"};
 
-        BarDataSet bardataset = new BarDataSet(entries, getString(R.string.days));
+        BarDataSet barDataSet = new BarDataSet(entries, getString(R.string.days));
 
-        bardataset.setColors(ColorTemplate.JOYFUL_COLORS);
-        bardataset.setValueTextColor(getColor(R.color.primaryTextColor));
-        bardataset.setValueFormatter(new ValueFormatter() {
+        barDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        barDataSet.setValueTextColor(getColor(R.color.primaryTextColor));
+        barDataSet.setValueFormatter(new ValueFormatter() {
             @Override
             public String getBarLabel(BarEntry barEntry) {
                 return format.format(barEntry.getY());
             }
         });
 
-        BarData barData = new BarData(bardataset);
+        BarData barData = new BarData(barDataSet);
 
         setChartAttributes(chart);
 
         chart.animateY(2000);
-        
-        chart.getXAxis().setTextSize(7);
-        chart.getXAxis().setGranularity(1f);
 
-        chart.getXAxis().setCenterAxisLabels(true);
-        chart.getXAxis().setLabelCount(5, true);
+        XAxis xAxis = chart.getXAxis();
 
-        chart.getXAxis().setValueFormatter(new ValueFormatter() {
+        xAxis.setTextSize(7);
+        xAxis.setGranularity(1f);
+
+        xAxis.setCenterAxisLabels(true);
+        xAxis.setLabelCount(5, true);
+
+        xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getAxisLabel(float value, AxisBase axis) {
                 return labels[(int) value];
@@ -174,6 +226,11 @@ public class HabitStatsActivity extends AppCompatActivity {
         });
 
         chart.setData(barData);
+    }
+
+    private void setNoDataAvailableMessage(@NonNull BarLineChartBase<?> chart) {
+        chart.setNoDataTextColor(getColor(R.color.primaryTextColor));
+        chart.setNoDataText(getString(R.string.no_data_available));
     }
 
     private void setChartAttributes(@NonNull BarLineChartBase<?> chart) {
@@ -208,6 +265,7 @@ public class HabitStatsActivity extends AppCompatActivity {
     }
 
 
+    // TODO: elementi da mostrare nel calendario
     private List<Calendar> getPassedDays(@NonNull Habit habit) {
 
         return null;

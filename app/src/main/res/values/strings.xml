@@ -135,5 +135,23 @@
     <string name="no_data_available">Nessun dato disponibile per la visualizzazione</string>
 
     <string name="days">Giorni</string>
+    <string name="month">Mesi</string>
+    <string name="best_streak_chart_title">Serie migliori</string>
+    <string name="monthly_chart_title">Azioni mensili</string>
+
+    <string-array name="months">
+        <item>G</item>
+        <item>F</item>
+        <item>M</item>
+        <item>A</item>
+        <item>M</item>
+        <item>G</item>
+        <item>L</item>
+        <item>A</item>
+        <item>S</item>
+        <item>O</item>
+        <item>N</item>
+        <item>D</item>
+    </string-array>
 
 </resources>
