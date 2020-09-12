@@ -140,6 +140,10 @@
     <string name="monthly_chart_title">Azioni mensili</string>
     <string name="day">Giorno</string>
     <string name="tree_content_description">Albero</string>
+    <string name="main_activity_habit_title_placeholder">Titolo abitudine</string>
+    <string name="completed_button">Completato</string>
+    <string name="snooze_button">Rinvia</string>
+    <string name="main_activity_habit_counter_placeholder">Completato 0 volte su 5</string>
 
     <string-array name="months">
         <item>G</item>

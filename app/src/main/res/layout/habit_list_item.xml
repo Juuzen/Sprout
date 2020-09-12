@@ -35,7 +35,7 @@
         android:src="@drawable/ic_add_24"
         app:layout_constraintEnd_toStartOf="@+id/habitItemCreationDate"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="#696969" />
+        app:tint="#757575" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/habitItemCreationDate"
@@ -58,7 +58,7 @@
         app:layout_constraintStart_toStartOf="@+id/icon1"
         app:layout_constraintTop_toBottomOf="@+id/icon1"
         app:srcCompat="@drawable/ic_archive_24"
-        app:tint="#696969" />
+        app:tint="#757575" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/habitItemEndDate"

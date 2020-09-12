@@ -2,47 +2,49 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rootLayout"
     tools:context=".MainActivity">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/mainEmptyHabitListMessage"
+        style="@style/SproutInfo"
         android:layout_gravity="center"
-        android:padding="40dp"
         android:layout_marginBottom="56dp"
+        android:padding="40dp"
         android:text="@string/emptyMainActivityMessage"
-        android:id="@+id/mainEmptyHabitListMessage"/>
+        android:textAlignment="center" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/habitCardRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="80dp"
-        />
+        android:paddingBottom="100dp"
+        android:clipToPadding="false"
+
+        tools:listitem="@layout/fragment_habit_classic_card"
+        tools:itemCount="4"/>
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
+        style="@style/SproutBottomAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/SproutBottomAppBar"
         app:fabAlignmentMode="end"
-        app:fabCradleRoundedCornerRadius="0dp"
         app:fabCradleMargin="10dp"
-        app:menu="@menu/bottom_app_bar_menu"
-        />
+        app:fabCradleRoundedCornerRadius="0dp"
+        app:menu="@menu/bottom_app_bar_menu" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:shapeAppearance="@style/FabDiamondOverlay"
-        app:fabCustomSize="70dp"
-        app:maxImageSize="35dp"
         android:src="@drawable/ic_add_24"
+        app:fabCustomSize="70dp"
         app:layout_anchor="@id/bottomAppBar"
+        app:maxImageSize="35dp"
+        app:shapeAppearance="@style/FabDiamondOverlay"
         app:tint="@color/whiteColor" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

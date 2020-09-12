@@ -24,7 +24,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
+
 import com.google.android.material.textview.MaterialTextView;
 import com.hcifedii.sprout.enumerations.GoalType;
 
@@ -200,14 +200,22 @@ public class HabitStatsActivity extends AppCompatActivity {
 
         BarDataSet barDataSet = new BarDataSet(entries, getString(R.string.days));
 
-        barDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        final int[] chartColor = new int[]{
+                getColor(R.color.primaryLightColor),
+                getColor(R.color.primaryColor),
+                getColor(R.color.secondaryLightColor),
+                getColor(R.color.secondaryColor)
+        };
+
+        barDataSet.setColors(chartColor);
+
         barDataSet.setValueTextColor(getColor(R.color.primaryTextColor));
         barDataSet.setValueFormatter(new ValueFormatter() {
             @Override
             public String getBarLabel(BarEntry barEntry) {
 
                 float value = barEntry.getY();
-                if(value == 1)  // Write singular
+                if (value == 1)  // Write singular
                     return format.format(value) + ' ' + getString(R.string.day);
 
                 return format.format(value) + ' ' + getString(R.string.days);
