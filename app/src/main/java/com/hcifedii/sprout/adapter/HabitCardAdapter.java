@@ -21,13 +21,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hcifedii.sprout.EditHabitActivity;
 import com.hcifedii.sprout.R;
 
-import java.util.List;
-
 import io.realm.Case;
 import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
 import io.realm.RealmRecyclerViewAdapter;
-import io.realm.RealmResults;
 import model.Habit;
 
 public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerView.ViewHolder> implements Filterable {
@@ -135,7 +132,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         return new HabitFilter(this);
     }
 
-    private class HabitFilter extends Filter {
+    private static class HabitFilter extends Filter {
         private final HabitCardAdapter adapter;
 
         private HabitFilter(HabitCardAdapter adapter) {

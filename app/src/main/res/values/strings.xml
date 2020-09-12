@@ -139,6 +139,7 @@
     <string name="best_streak_chart_title">Serie migliori</string>
     <string name="monthly_chart_title">Azioni mensili</string>
     <string name="day">Giorno</string>
+    <string name="tree_content_description">Albero</string>
 
     <string-array name="months">
         <item>G</item>
