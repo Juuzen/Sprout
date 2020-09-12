@@ -5,7 +5,6 @@ import io.realm.RealmResults;
 import io.realm.annotations.LinkingObjects;
 import io.realm.annotations.PrimaryKey;
 
-
 public class Tree extends RealmObject {
     public enum Growth {
         SPROUT,
@@ -40,7 +39,7 @@ public class Tree extends RealmObject {
     }
 
     public void setGrowth(Growth val) {
-        this.growth = val.toString();
+        this.growth = val.name();
     }
 
     public Health getHealth() {
@@ -48,7 +47,7 @@ public class Tree extends RealmObject {
     }
 
     public void setHealth(Health val) {
-        this.health = val.toString();
+        this.health = val.name();
     }
 
     public int getExperience() {

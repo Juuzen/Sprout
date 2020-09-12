@@ -68,8 +68,7 @@ public class Habit extends RealmObject {
     public void setRepetitions(int repetitions) {
         this.repetitions = repetitions;
     }
-
-
+    
     private int maxRepetitions = 1; //if the habitType is "COUNTER", then this should be replaced with the new value
     public int getMaxRepetitions() { return maxRepetitions; }
     public void setMaxRepetitions(int maxRepetitions) { this.maxRepetitions = maxRepetitions; }
@@ -108,7 +107,21 @@ public class Habit extends RealmObject {
         this.reminders = reminders;
     }
 
-    // Snoozes
+    // Snoozed status
+    private boolean isSnoozed = false;
+
+    public boolean getIsSnoozed() { return isSnoozed; }
+
+    public void setIsSnoozed(boolean snoozed) { isSnoozed = snoozed; }
+
+    // Snoozed made during a X (week/month/etc)
+    private int snoozedMade = 0;
+
+    public int getSnoozedMade() { return snoozedMade; }
+
+    public void setSnoozedMade(int snoozed) { snoozedMade = snoozed; }
+
+    // Max snoozes (in a week? in a month?) TODO: specificare la logica per i rinvii
     private int maxSnoozes = 0;
 
     public int getMaxSnoozes() {
@@ -134,6 +147,7 @@ public class Habit extends RealmObject {
     // un singolo valore intero (visto che un goal può essere di una sola tipologia alla volta) ed usare
     // goalType per decidere quale valore è al momento utilizzato.
 
+    // Max completed actions while having an habit TODO: col counter, gestire la logica
     private int maxAction;
 
     public int getMaxAction() {
@@ -144,6 +158,7 @@ public class Habit extends RealmObject {
         this.maxAction = maxAction;
     }
 
+    // Max value of streak while having an habit
     private int maxStreakValue;
 
     public int getMaxStreakValue() {
@@ -176,7 +191,7 @@ public class Habit extends RealmObject {
         this.imageResId = image;
     }
 
-    // Stats data TODO
+    // Stats data
     private RealmList<Task> taskHistory;
 
     public RealmList<Task> getTaskHistory() {
@@ -188,10 +203,21 @@ public class Habit extends RealmObject {
     }
 
     private long habitCreationDate;     // Creation date in milliseconds
+
+    public long getHabitCreationDate() {
+        return habitCreationDate;
+    }
+
+    /*
+    public void setHabitCreationDate(long date) {
+        habitCreationDate = date;
+    }
+     */
+
+    /*
     private int bestStreak;
     private int currentStreak;
     private int completedTasks;
-
 
     public int getBestStreak() {
         return bestStreak;
@@ -216,8 +242,7 @@ public class Habit extends RealmObject {
     public void setCompletedTasks(int completedTasks) {
         this.completedTasks = completedTasks;
     }
+     */
 
-    public long getHabitCreationDate() {
-        return habitCreationDate;
-    }
+
 }
