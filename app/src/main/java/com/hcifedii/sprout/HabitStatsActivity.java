@@ -310,6 +310,12 @@ public class HabitStatsActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
     private void enableTopBackButton() {
 
         ActionBar actionBar = getSupportActionBar();

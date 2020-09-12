@@ -37,6 +37,9 @@
         <item name="snackbarStyle">@style/SproutSnackBar</item>
 
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+
+        <item name="android:windowActivityTransitions">true</item>
+
     </style>
 
 

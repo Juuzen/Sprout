@@ -5,14 +5,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.transition.Fade;
+import android.transition.Slide;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import android.view.View;
+import android.view.Window;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,8 +54,11 @@ public class MainActivity extends AppCompatActivity {
         MenuItem statsMenuItem = bottomAppBar.getMenu().findItem(R.id.statsMenuItem);
         statsMenuItem.setOnMenuItemClickListener(item -> {
             if(item.getItemId() == R.id.statsMenuItem){
+
                 Intent i = new Intent(getApplicationContext(), StatsActivity.class);
-                startActivity(i);
+                Bundle bundle = ActivityOptions.makeCustomAnimation(this, android.R.anim.fade_in,
+                        android.R.anim.fade_out).toBundle();
+                startActivity(i, bundle);
                 return true;
             }
             return false;
@@ -61,7 +68,9 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fabAddButton);
         fab.setOnClickListener(view -> {
             Intent intent = new Intent(getBaseContext(), CreateHabitActivity.class);
-            startActivity(intent);
+            Bundle bundle = ActivityOptions.makeCustomAnimation(this, android.R.anim.fade_in,
+                    android.R.anim.fade_out).toBundle();
+            startActivity(intent, bundle);
         });
 
         RecyclerView rv = findViewById(R.id.habitCardRecyclerView);
@@ -131,7 +140,9 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.settingMenuItem:
                 Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-                startActivity(intent); //FIXME: animazione
+                Bundle bundle = ActivityOptions.makeCustomAnimation(this, android.R.anim.fade_in,
+                        android.R.anim.fade_out).toBundle();
+                startActivity(intent, bundle);
                 return true;
 
             case R.id.aboutMenuItem:

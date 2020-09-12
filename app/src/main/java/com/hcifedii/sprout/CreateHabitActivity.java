@@ -7,6 +7,9 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.Slide;
 import android.util.Log;
 
 import android.view.View;
@@ -45,8 +48,6 @@ public class CreateHabitActivity extends AppCompatActivity {
     RemindersFragment remindersFragment;
     SnoozeFragment snoozeFragment;
     GoalFragment goalFragment;
-
-    //TODO: aggiungere la funzione onBackPressed per l'animazione
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,8 +119,8 @@ public class CreateHabitActivity extends AppCompatActivity {
 
                 // Save habit
                 HabitRealmManager.saveOrUpdateHabit(habit);
-                Toast.makeText(this, "Nuova abitudine creata con successo!", Toast.LENGTH_SHORT).show();
-                finish(); //FIXME: aggiungere l'animazione
+                Toast.makeText(this, R.string.new_habit_success_message, Toast.LENGTH_SHORT).show();
+                finish();
             } else {
                 titleFragment.setErrorMessage(getString(R.string.error_title_is_empty));
                 showErrorSnackbar(saveFab, R.string.error_title_is_empty);
@@ -161,7 +162,6 @@ public class CreateHabitActivity extends AppCompatActivity {
                 goalFragment.setInt(habit.getMaxStreakValue());
             else if (goalType == GoalType.DEADLINE)
                 goalFragment.setLong(habit.getFinalDate());
-
 
             Toast.makeText(getBaseContext(), R.string.preset_habit_loading_snackbar, Toast.LENGTH_SHORT).show();
         }));
@@ -244,5 +244,16 @@ public class CreateHabitActivity extends AppCompatActivity {
         Log.i(logcatTag, testData.toString());
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
 
 }

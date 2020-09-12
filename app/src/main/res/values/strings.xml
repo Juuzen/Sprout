@@ -51,7 +51,7 @@
     <string name="title_activity_create_habit">Nuova abitudine</string>
     <string name="MainActivityTitle">Le mie abitudini</string>
 
-    <string name="snooze_title">Rinvii</string>
+    <string name="snooze_title">Rinvii settimanali</string>
     <string name="snooze_info">I rinvii ti permettono di non segnare come completata l’abitudine, mantenendo però la serie.</string>
     <string name="max_snoozes_subtitle">Rinvii massimi</string>
     <string name="counter_habit_repetition_subtitle">Ripetizioni</string>
@@ -144,6 +144,9 @@
     <string name="completed_button">Completato</string>
     <string name="snooze_button">Rinvia</string>
     <string name="main_activity_habit_counter_placeholder">Completato 0 volte su 5</string>
+    <string name="new_habit_success_message">Nuova abitudine creata con successo!</string>
+    <string name="completed">Completato</string>
+    <string name="n_times">volte su</string>
 
     <string-array name="months">
         <item>G</item>

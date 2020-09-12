@@ -13,16 +13,12 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
 import utils.DaysEnum;
-import utils.GoalEnum;
-import utils.HabitTypeEnum;
 
 public class Habit extends RealmObject {
 
     public Habit() {
         id = -1;
         habitCreationDate = Calendar.getInstance().getTimeInMillis();
-        habitTypeEnum = new HabitTypeEnum();
-        goalType = new GoalEnum();
         frequency = new RealmList<>();
     }
 
@@ -50,12 +46,14 @@ public class Habit extends RealmObject {
     /**
      * Type of the habit (classic or counter)
      */
-    private HabitTypeEnum habitTypeEnum;
+    private String habitType = HabitType.CLASSIC.name();
+
     public HabitType getHabitType() {
-        return habitTypeEnum.getEnum();
+        return HabitType.valueOf(habitType);
     }
+
     public void setHabitType(HabitType habitType) {
-        habitTypeEnum.saveType(habitType);
+        this.habitType = habitType.name();
     }
 
     /**
@@ -120,19 +118,17 @@ public class Habit extends RealmObject {
     }
 
     // Goal
-    private GoalEnum goalType;
+    private String goalType = GoalType.NONE.name();
 
     public GoalType getGoalType() {
-        return goalType.getEnum();
+        return GoalType.valueOf(goalType);
     }
 
     public void setGoalType(GoalType val) {
-        goalType.saveType(val);
+        goalType = val.name();
     }
 
-    // TODO: volendo potremmo ridurre i campi interi di goal (maxAction e maxStreakValue) ad
-    // un singolo valore intero (visto che un goal può essere di una sola tipologia alla volta) ed usare
-    // goalType per decidere quale valore è al momento utilizzato.
+
 
     private int maxAction;
 

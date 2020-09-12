@@ -123,7 +123,7 @@ public class EditHabitActivity extends AppCompatActivity {
                 // Update the habit
                 HabitRealmManager.saveOrUpdateHabit(habit);
                 Toast.makeText(this, "Abitudine aggiornata!", Toast.LENGTH_SHORT).show();
-                finish(); //FIXME: aggiungere l'animazione
+                finish();
 
             } else {
                 titleFragment.setErrorMessage(getString(R.string.error_title_is_empty));
@@ -227,7 +227,7 @@ public class EditHabitActivity extends AppCompatActivity {
             builder.setPositiveButton(R.string.positive_delete_habit_dialog, (dialogInterface, i) -> {
                 HabitRealmManager.deleteHabit(habitId);
                 Toast.makeText(getBaseContext(), "Abitudine eliminata!", Toast.LENGTH_SHORT).show();
-                finish(); //FIXME: transizioni
+                finish();
             });
             builder.setNegativeButton("No", (dialogInterface, i) -> dialogInterface.dismiss());
             builder.show();
@@ -240,6 +240,18 @@ public class EditHabitActivity extends AppCompatActivity {
                 .setBackgroundTint(getResources().getColor(R.color.redColor, getTheme()))
                 .setAnchorView(view)
                 .show();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     private void enableTopBackButton() {

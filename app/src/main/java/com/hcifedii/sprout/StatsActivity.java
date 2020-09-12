@@ -1,29 +1,28 @@
 package com.hcifedii.sprout;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
+import android.app.ActivityOptions;
 import android.app.AppOpsManager;
-
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.Settings;
-
+import android.transition.Fade;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
@@ -81,9 +80,11 @@ public class StatsActivity extends AppCompatActivity {
             // Adapter setup
             adapter = new HabitListAdapter(habitList);
             adapter.setListener(habitId -> {
-                Intent intent = new Intent(this, HabitStatsActivity.class);
-                intent.putExtra(HabitStatsActivity.EXTRA_HABIT_ID, habitId);
-                startActivity(intent);
+                Intent i = new Intent(this, HabitStatsActivity.class);
+                i.putExtra(HabitStatsActivity.EXTRA_HABIT_ID, habitId);
+
+                Bundle bundle = ActivityOptions.makeCustomAnimation(this, android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+                startActivity(i, bundle);
             });
 
             recyclerView.setAdapter(adapter);
@@ -218,6 +219,12 @@ public class StatsActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     private void enableTopBackButton() {

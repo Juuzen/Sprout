@@ -1,7 +1,9 @@
 package com.hcifedii.sprout.adapter;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -168,8 +170,11 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             editHabitButton.setOnClickListener(view -> {
                 Intent intent = new Intent(context, EditHabitActivity.class);
                 intent.putExtra("HABIT_ID", habit.getId());
-                //TODO: Aggiungere l'animazione
-                ct.startActivity(intent);
+
+                Bundle bundle = ActivityOptions.makeCustomAnimation(ct, android.R.anim.fade_in,
+                        android.R.anim.fade_out).toBundle();
+                
+                ct.startActivity(intent, bundle);
             });
 
             checkButton.setOnClickListener(view -> {
@@ -199,13 +204,20 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             this.habitTitle.setText(habit.getTitle());
             this.progressBar.setProgress(habit.getRepetitions());
             this.progressBar.setMax(habit.getMaxRepetitions());
-            this.progressLabel.setText("Completato " + habit.getRepetitions() + " volte su " + habit.getMaxRepetitions()); //FIXME: sposta la stringa
+
+
+            String message = context.getString(R.string.completed) + ' ' + habit.getRepetitions() + ' ' + context.getString(R.string.n_times) + ' ' + habit.getMaxRepetitions();
+
+            this.progressLabel.setText(message);
 
             editHabitButton.setOnClickListener(view -> {
                 Intent intent = new Intent(context, EditHabitActivity.class);
                 intent.putExtra("HABIT_ID", habit.getId());
-                //TODO: Aggiungere l'animazione
-                ct.startActivity(intent);
+
+                Bundle bundle = ActivityOptions.makeCustomAnimation(ct, android.R.anim.fade_in,
+                        android.R.anim.fade_out).toBundle();
+
+                ct.startActivity(intent, bundle);
             });
 
             checkButton.setOnClickListener(view -> {
