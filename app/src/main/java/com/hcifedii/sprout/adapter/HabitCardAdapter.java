@@ -75,39 +75,6 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         }
     }
 
-    /*
-    @Override
-    public void onBindViewHolder(@NonNull HabitCardAdapter.ViewHolder holder, int position) {
-        final Habit habit = getItem(position);
-        if (habit != null) {
-            holder.setHabit(habit);
-            holder.editHabitButton.setOnClickListener(view -> {
-                Intent intent = new Intent(ct, EditHabitActivity.class);
-                intent.putExtra("HABIT_ID", habit.getId());
-                //TODO: Aggiungere l'animazione
-                ct.startActivity(intent);
-            });
-
-            holder.checkButton.setOnClickListener(view -> {
-                int habitId = habit.getId();
-                int newRepValue = habit.getRepetitions() + 1;
-                int maxReps = habit.getMaxRepetitions();
-                Log.d("Testing", newRepValue + " - " + maxReps);
-                if (newRepValue <= habit.getMaxRepetitions()) {
-                    habit.getRealm().executeTransaction(realm -> {
-                        Habit result = realm.where(Habit.class).equalTo("id", habitId).findFirst();
-                        if (result != null) {
-                            result.setRepetitions(newRepValue);
-                            String newLabel = "Completato " + newRepValue + " volte su " + maxReps;
-                            holder.progressLabel.setText(newLabel);
-                        }
-                    });
-                }
-            });
-        }
-    }
-    */
-
     @Override
     public int getItemViewType(int position) {
         int type = 0;

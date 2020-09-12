@@ -4,6 +4,7 @@ import com.hcifedii.sprout.enumerations.TaskStatus;
 
 import io.realm.RealmObject;
 
+/*
 public class TaskStatusEnum extends RealmObject {
     private String taskStatus = TaskStatus.UNCOMPLETED.name();
 
@@ -15,3 +16,4 @@ public class TaskStatusEnum extends RealmObject {
         return TaskStatus.valueOf(taskStatus);
     }
 }
+*/
