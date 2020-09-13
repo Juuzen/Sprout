@@ -10,15 +10,8 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import model.Tree;
 
-
-enum Health {
-    HEALTHY,
-    DRYING,
-    WITHERED
-}
-
 public class TreeManager {
-    private static final String LOG_TAG = "DBTreeManager";
+    private static final String TAG = "TreeManager";
 
     public static Tree getTree(int treeId) {
         Tree result = null;
@@ -53,21 +46,14 @@ public class TreeManager {
     public static void gainExperience(int treeId) {
         Tree tree = getTree(treeId);
         if (tree != null) {
-            Realm realm = null;
-            try {
-                realm = Realm.getDefaultInstance();
+            try (Realm realm = Realm.getDefaultInstance()) {
                 realm.executeTransactionAsync(
                         realm1 -> {
-                    tree.setExperience(tree.getExperience() + 1);
-                    realm1.insertOrUpdate(tree); },
-
-                        () -> Log.i(LOG_TAG, "Experience Gained! - ID: " + tree.getId()),
-
-                        error -> Log.i(LOG_TAG, "Transaction unsuccessful! - ID: " + tree.getId() + "\n" + error.getMessage()));
-            } finally {
-                if (realm != null) {
-                    realm.close();
-                }
+                            tree.setExperience(tree.getExperience() + 1);
+                            realm1.insertOrUpdate(tree);
+                        },
+                        () -> Log.i(TAG, "Experience Gained! - ID: " + tree.getId()),
+                        error -> Log.i(TAG, "Transaction unsuccessful! - ID: " + tree.getId() + "\n" + error.getMessage()));
             }
         }
     }
@@ -75,21 +61,15 @@ public class TreeManager {
     public static void setTreeGrowth(int treeId, Tree.Growth growth) {
         Tree tree = getTree(treeId);
         if (tree != null) {
-            Realm realm = null;
-            try {
-                realm = Realm.getDefaultInstance();
+            try (Realm realm = Realm.getDefaultInstance()) {
                 realm.executeTransactionAsync(
                         realm1 -> {
-                    tree.setGrowth(growth);
-                    tree.setExperience(0);
-                    realm1.insertOrUpdate(tree); },
-
-                        () -> Log.i(LOG_TAG, "Growth level set! - ID: " + tree.getId()),
-
-                        error -> Log.i(LOG_TAG, "Transaction error! - ID: " + tree.getId() + "\n" + error.getMessage()));
-            } finally {
-                if (realm != null)
-                    realm.close();
+                            tree.setGrowth(growth);
+                            tree.setExperience(0);
+                            realm1.insertOrUpdate(tree);
+                        },
+                        () -> Log.i(TAG, "Growth level set! - ID: " + tree.getId()),
+                        error -> Log.i(TAG, "Transaction error! - ID: " + tree.getId() + "\n" + error.getMessage()));
             }
         }
     }
@@ -105,10 +85,8 @@ public class TreeManager {
                             tree.setHealth(health);
                             tree.setExperience(0);
                             realm1.insertOrUpdate(tree); },
-
-                        () -> Log.i(LOG_TAG, "Health level set! - ID: " + tree.getId()),
-
-                        error -> Log.i(LOG_TAG, "Transaction error! - ID: " + tree.getId() + "\n" + error.getMessage()));
+                        () -> Log.i(TAG, "Health level set! - ID: " + tree.getId()),
+                        error -> Log.i(TAG, "Transaction error! - ID: " + tree.getId() + "\n" + error.getMessage()));
             } finally {
                 if (realm != null)
                     realm.close();
@@ -116,11 +94,14 @@ public class TreeManager {
         }
     }
 
-    private static int getNextId(Realm realm) {
-        Number newId = realm.where(Tree.class).max("id");
-        if (newId != null)
-            return newId.intValue() + 1;
-        return 0;
+    private static int getNextId() {
+        try (Realm realm = Realm.getDefaultInstance()) {
+            Number newId = realm.where(Tree.class).max("id");
+            if (newId != null)
+                return newId.intValue() + 1;
+            return 0;
+        }
+
     }
 
     public static void grow(int treeId) {
