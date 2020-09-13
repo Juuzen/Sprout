@@ -12,13 +12,18 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/settingMenuItem"
+        android:title="@string/settingsMenuString"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/aboutMenuItem"
         android:title="@string/aboutMenuString"
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/settingMenuItem"
-        android:title="@string/settingsMenuString"
+        android:id="@+id/debugMenuItemButton1"
+        android:title="Store test"
         app:showAsAction="never" />
 
 </menu>
