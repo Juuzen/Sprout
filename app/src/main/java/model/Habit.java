@@ -113,11 +113,11 @@ public class Habit extends RealmObject {
     public void setIsSnoozed(boolean snoozed) { isSnoozed = snoozed; }
 
     // Snoozed made during a X (week/month/etc)
-    private int snoozedMade = 0;
+    private int snoozesMade = 0;
 
-    public int getSnoozedMade() { return snoozedMade; }
+    public int getSnoozesMade() { return snoozesMade; }
 
-    public void setSnoozedMade(int snoozed) { snoozedMade = snoozed; }
+    public void setSnoozesMade(int snoozed) { snoozesMade = snoozed; }
 
     // Max snoozes (in a week? in a month?) TODO: specificare la logica per i rinvii
     private int maxSnoozes = 0;
@@ -129,6 +129,9 @@ public class Habit extends RealmObject {
     public void setMaxSnoozes(int maxSnoozes) {
         this.maxSnoozes = maxSnoozes;
     }
+
+    /* TODO: Un boolean per sapere se è possibile fare uno snooze oppure no invece di
+    *   fare il controllo tra maxSnoozes e snoozesMade */
 
     // Goal
     private String goalType = GoalType.NONE.name();
@@ -191,7 +194,11 @@ public class Habit extends RealmObject {
     private RealmList<Task> taskHistory;
 
     public RealmList<Task> getTaskHistory() {
-        return null;
+        return taskHistory;
+    }
+
+    public void addTaskToHistory(Task task) {
+        taskHistory.add(task);
     }
 
     public void setTaskHistory(RealmList<Task> taskHistory) {
