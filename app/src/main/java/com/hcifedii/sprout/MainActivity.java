@@ -9,6 +9,7 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.transition.Fade;
 import android.transition.Slide;
 import android.view.Menu;
@@ -32,6 +33,7 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import model.Habit;
 import utils.SproutBottomAppBarCutCornersTopEdge;
+import utils.SproutNotification;
 
 public class MainActivity extends AppCompatActivity {
     private Realm realm;
@@ -135,6 +137,20 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+
+            case R.id.testNotification:
+
+                new Handler().postDelayed(() -> {
+                    SproutNotification notification = SproutNotification.getInstance(this);
+                    notification.setTitle("ciao");
+                    notification.setContent("boh");
+                    notification.showNotification(12);
+
+                }, 2000);
+
+
+                return true;
+
             case R.id.searchMenuItem:
                 return true;
 

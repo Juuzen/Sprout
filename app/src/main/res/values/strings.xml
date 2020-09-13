@@ -147,6 +147,8 @@
     <string name="new_habit_success_message">Nuova abitudine creata con successo!</string>
     <string name="completed">Completato</string>
     <string name="n_times">volte su</string>
+    <string name="channel_name">Notifica dell\'abitudine</string>
+    <string name="channel_description">Le notifiche decise dall\'utente.</string>
 
     <string-array name="months">
         <item>G</item>

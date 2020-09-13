@@ -183,10 +183,10 @@
             android:layout_height="300dp"
             android:contentDescription="@string/tree_content_description"
             android:fadingEdge="horizontal"
-
             android:paddingTop="16dp"
             android:requiresFadingEdge="horizontal"
             android:src="@drawable/svg_tree_full_mature"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/monthlyActionsView" />
 
