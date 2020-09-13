@@ -12,7 +12,6 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
-import utils.DaysEnum;
 
 public class Habit extends RealmObject {
 
@@ -24,9 +23,11 @@ public class Habit extends RealmObject {
 
     @PrimaryKey
     private int id;
+
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -36,9 +37,11 @@ public class Habit extends RealmObject {
      */
     @Required
     private String title;
+
     public String getTitle() {
         return title;
     }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -60,25 +63,34 @@ public class Habit extends RealmObject {
      * Each time the user complete an action.
      */
     private int repetitions = 0;
+
     public int getRepetitions() {
         return repetitions;
     }
+
     public void setRepetitions(int repetitions) {
         this.repetitions = repetitions;
     }
-    
+
     private int maxRepetitions = 1; //if the habitType is "COUNTER", then this should be replaced with the new value
-    public int getMaxRepetitions() { return maxRepetitions; }
-    public void setMaxRepetitions(int maxRepetitions) { this.maxRepetitions = maxRepetitions; }
+
+    public int getMaxRepetitions() {
+        return maxRepetitions;
+    }
+
+    public void setMaxRepetitions(int maxRepetitions) {
+        this.maxRepetitions = maxRepetitions;
+    }
 
     // Week frequency
-    private RealmList<DaysEnum> frequency;
+    private RealmList<String> frequency;
 
     public List<Days> getFrequency() {
+
         List<Days> output = new ArrayList<>();
-        // Convert the RealmList of DaysEnum to a List of Days
-        for (DaysEnum en : frequency)
-            output.add(en.getEnum());
+        // Convert the RealmList of String to a List of Days
+        for (String day : frequency)
+            output.add(Days.valueOf(day));
         return output;
     }
 
@@ -86,12 +98,9 @@ public class Habit extends RealmObject {
 
         if (frequency.size() > 0)
             frequency.clear();
-        // Convert the List of Days to a RealmList of DaysEnum
-        for (Days da : input) {
-            DaysEnum daysEnum = new DaysEnum();
-            daysEnum.saveType(da);
-            frequency.add(daysEnum);
-        }
+        // Convert the List of Days to a RealmList of String
+        for (Days day : input)
+            frequency.add(day.name());
     }
 
     // Reminders
@@ -108,16 +117,24 @@ public class Habit extends RealmObject {
     // Snoozed status
     private boolean isSnoozed = false;
 
-    public boolean getIsSnoozed() { return isSnoozed; }
+    public boolean getIsSnoozed() {
+        return isSnoozed;
+    }
 
-    public void setIsSnoozed(boolean snoozed) { isSnoozed = snoozed; }
+    public void setIsSnoozed(boolean snoozed) {
+        isSnoozed = snoozed;
+    }
 
     // Snoozed made during a X (week/month/etc)
     private int snoozedMade = 0;
 
-    public int getSnoozedMade() { return snoozedMade; }
+    public int getSnoozedMade() {
+        return snoozedMade;
+    }
 
-    public void setSnoozedMade(int snoozed) { snoozedMade = snoozed; }
+    public void setSnoozedMade(int snoozed) {
+        snoozedMade = snoozed;
+    }
 
     // Max snoozes (in a week? in a month?) TODO: specificare la logica per i rinvii
     private int maxSnoozes = 0;
@@ -140,7 +157,6 @@ public class Habit extends RealmObject {
     public void setGoalType(GoalType val) {
         goalType = val.name();
     }
-
 
 
     // Max completed actions while having an habit TODO: col counter, gestire la logica
