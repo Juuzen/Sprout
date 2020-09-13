@@ -18,9 +18,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hcifedii.sprout.EditHabitActivity;
+import com.hcifedii.sprout.HabitStatsActivity;
 import com.hcifedii.sprout.R;
 
 import io.realm.Case;
@@ -30,13 +32,13 @@ import io.realm.RealmRecyclerViewAdapter;
 import model.Habit;
 
 public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerView.ViewHolder> implements Filterable {
-    Context ct;
-    OrderedRealmCollection<Habit> list;
-    OrderedRealmCollection<Habit> filteredList; /* mandatory for the filter */
-    Realm mRealm;
+    private Context ct;
+    private OrderedRealmCollection<Habit> list;
+    private OrderedRealmCollection<Habit> filteredList; /* mandatory for the filter */
+    private Realm mRealm;
 
-    private static int CLASSIC_TYPE = 1;
-    private static int REPETITION_TYPE = 2;
+    private static final int CLASSIC_TYPE = 1;
+    private static final int REPETITION_TYPE = 2;
 
     public HabitCardAdapter(@Nullable OrderedRealmCollection<Habit> data, Context context, Realm realm) {
         super(data, true, true);
@@ -119,13 +121,18 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         }
     }
 
-    public class ClassicViewHolder extends RecyclerView.ViewHolder {
-        TextView habitTitle;
-        ImageButton editHabitButton;
-        Button checkButton;
+    private static class ClassicViewHolder extends RecyclerView.ViewHolder {
+        private TextView habitTitle;
+        private ImageButton editHabitButton;
+        private Button checkButton;
+
+        private CardView view;
 
         public ClassicViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            view = (CardView) itemView;
+
             habitTitle = itemView.findViewById(R.id.classicHabitCardTitle);
             editHabitButton = itemView.findViewById(R.id.classicHabitEditButton);
             checkButton = itemView.findViewById(R.id.classicHabitCheckButton);
@@ -134,32 +141,47 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         public void setHabit(Habit habit, Context context) {
             habitTitle.setText(habit.getTitle());
 
+            view.setOnClickListener(view -> {
+                // When the card is clicked, go to the habit's stats
+                Intent intent = new Intent(context, HabitStatsActivity.class);
+                intent.putExtra(HabitStatsActivity.EXTRA_HABIT_ID, habit.getId());
+
+                Bundle bundle = ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in,
+                        android.R.anim.fade_out).toBundle();
+                context.startActivity(intent, bundle);
+            });
+
             editHabitButton.setOnClickListener(view -> {
                 Intent intent = new Intent(context, EditHabitActivity.class);
                 intent.putExtra("HABIT_ID", habit.getId());
 
-                Bundle bundle = ActivityOptions.makeCustomAnimation(ct, android.R.anim.fade_in,
+                Bundle bundle = ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in,
                         android.R.anim.fade_out).toBundle();
-                
-                ct.startActivity(intent, bundle);
+
+                context.startActivity(intent, bundle);
             });
 
             checkButton.setOnClickListener(view -> {
                 //TODO: inserire il codice per il listener
-                Toast.makeText(ct, "Funziono", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Funziono", Toast.LENGTH_SHORT).show();
             });
         }
     }
 
-    public class RepetitionViewHolder extends RecyclerView.ViewHolder {
-        TextView habitTitle;
-        ProgressBar progressBar;
-        TextView progressLabel;
-        ImageButton editHabitButton;
-        Button checkButton;
+    private static class RepetitionViewHolder extends RecyclerView.ViewHolder {
+        private TextView habitTitle;
+        private ProgressBar progressBar;
+        private TextView progressLabel;
+        private ImageButton editHabitButton;
+        private Button checkButton;
+
+        private CardView view;
 
         public RepetitionViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            view = (CardView) itemView;
+
             habitTitle = itemView.findViewById(R.id.counterHabitCardTitle);
             editHabitButton = itemView.findViewById(R.id.counterHabitEditButton);
             progressBar = itemView.findViewById(R.id.counterHabitProgressBar);
@@ -177,14 +199,24 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
 
             this.progressLabel.setText(message);
 
+            view.setOnClickListener(view -> {
+                // When the card is clicked, go to the habit's stats
+                Intent intent = new Intent(context, HabitStatsActivity.class);
+                intent.putExtra(HabitStatsActivity.EXTRA_HABIT_ID, habit.getId());
+
+                Bundle bundle = ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in,
+                        android.R.anim.fade_out).toBundle();
+                context.startActivity(intent, bundle);
+            });
+
             editHabitButton.setOnClickListener(view -> {
                 Intent intent = new Intent(context, EditHabitActivity.class);
                 intent.putExtra("HABIT_ID", habit.getId());
 
-                Bundle bundle = ActivityOptions.makeCustomAnimation(ct, android.R.anim.fade_in,
+                Bundle bundle = ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in,
                         android.R.anim.fade_out).toBundle();
 
-                ct.startActivity(intent, bundle);
+                context.startActivity(intent, bundle);
             });
 
             checkButton.setOnClickListener(view -> {
