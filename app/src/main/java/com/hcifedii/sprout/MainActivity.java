@@ -1,6 +1,7 @@
 package com.hcifedii.sprout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -8,6 +9,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.transition.Fade;
@@ -28,6 +30,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.hcifedii.sprout.adapter.HabitCardAdapter;
+
+import java.util.Random;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -144,7 +148,9 @@ public class MainActivity extends AppCompatActivity {
                     SproutNotification notification = SproutNotification.getInstance(this);
                     notification.setTitle("ciao");
                     notification.setContent("boh");
-                    notification.showNotification(12);
+                    Random random = new Random();
+
+                    notification.showNotification(random.nextInt());
 
                 }, 2000);
 
@@ -165,7 +171,13 @@ public class MainActivity extends AppCompatActivity {
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
                 builder.setTitle(getString(R.string.about_us_title));
                 builder.setMessage(getString(R.string.about_us_message));
-                builder.setIcon(R.drawable.ic_sprout_fg_small);
+
+                Drawable sproutIcon = ContextCompat.getDrawable(this, R.drawable.ic_sprout_small);
+
+                if(sproutIcon != null)
+                    sproutIcon.setTint(getColor(R.color.primaryColor));
+
+                builder.setIcon(sproutIcon);
 
                 builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
 
