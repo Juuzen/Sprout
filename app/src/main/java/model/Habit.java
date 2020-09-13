@@ -105,6 +105,15 @@ public class Habit extends RealmObject {
         this.reminders = reminders;
     }
 
+    // Tree
+    private Tree tree;
+
+    public Tree getTree() { return tree; }
+
+    public void setTree(Tree tree) {
+        this.tree = tree;
+    }
+
     // Snoozed status
     private boolean isSnoozed = false;
 
