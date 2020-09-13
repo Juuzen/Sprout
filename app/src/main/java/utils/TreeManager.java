@@ -2,12 +2,15 @@ package utils;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.hcifedii.sprout.BuildConfig;
 
 import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import model.Task;
 import model.Tree;
 
 public class TreeManager {
@@ -25,6 +28,14 @@ public class TreeManager {
             }
         }
         return result;
+    }
+
+    public static void insertTree(@NonNull Tree tree) {
+        try (Realm realm = Realm.getDefaultInstance()) {
+            realm.executeTransaction(
+                    realmInstance -> realmInstance.insertOrUpdate(tree)
+            );
+        }
     }
 
     public static ArrayList<Tree> getAllTrees() {
