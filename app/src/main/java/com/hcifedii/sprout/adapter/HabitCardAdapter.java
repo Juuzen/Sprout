@@ -38,8 +38,6 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
     private static int CLASSIC_TYPE = 1;
     private static int REPETITION_TYPE = 2;
 
-    //TODO: mostrare gli habit attivi nel giorno corrente, gli altri dopo (con un divider?)
-
     public HabitCardAdapter(@Nullable OrderedRealmCollection<Habit> data, Context context, Realm realm) {
         super(data, true, true);
         ct = context;

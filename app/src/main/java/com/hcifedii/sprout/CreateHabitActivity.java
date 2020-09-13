@@ -33,7 +33,9 @@ import java.util.List;
 import model.Habit;
 import io.realm.RealmList;
 import model.Reminder;
+import model.Tree;
 import utils.HabitRealmManager;
+import utils.TreeManager;
 
 public class CreateHabitActivity extends AppCompatActivity {
 
@@ -113,6 +115,12 @@ public class CreateHabitActivity extends AppCompatActivity {
                 habit.setMaxAction(goalIntValue);
                 habit.setMaxStreakValue(goalIntValue);
                 habit.setFinalDate(goalLongValue);
+
+                //Set the tree field
+                Tree tree = new Tree();
+                tree.setId(habit.getId());
+                habit.setTree(tree);
+                TreeManager.insertTree(tree);
 
                 // Print test Message
                 printHabitInfoOnLog(habit);

@@ -28,6 +28,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.hcifedii.sprout.adapter.HabitCardAdapter;
 
+import java.util.Calendar;
+import java.util.Locale;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 import model.Habit;
@@ -73,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent, bundle);
         });
 
+        //TODO: mostrare gli habit attivi nel giorno corrente, gli altri dopo (con un divider?)
         RecyclerView rv = findViewById(R.id.habitCardRecyclerView);
         TextView emptyMessage = findViewById(R.id.mainEmptyHabitListMessage);
         realm = Realm.getDefaultInstance();
@@ -154,6 +158,10 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
 
                 builder.show();
+                return true;
+
+            case R.id.debugMenuItemButton1:
+                Toast.makeText(this, "Oggi è " + Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US).toUpperCase(), Toast.LENGTH_SHORT).show();
                 return true;
 
             default:
