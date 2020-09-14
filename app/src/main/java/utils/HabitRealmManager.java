@@ -1,8 +1,11 @@
 package utils;
 
 import android.util.Log;
+
 import androidx.annotation.NonNull;
+
 import java.util.List;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 import model.Habit;
@@ -12,31 +15,15 @@ public class HabitRealmManager {
     private static final String LOG_TAG = "DBManager";
 
     public static long getHabitCount() {
-        Realm realm = null;
-        long count;
-        try {
-            realm = Realm.getDefaultInstance();
-            count = realm.where(Habit.class).count();
-
-        } finally {
-            if (realm != null)
-                realm.close();
+        try (Realm realm = Realm.getDefaultInstance()) {
+            return realm.where(Habit.class).count();
         }
-        return count;
     }
 
     public static long getCompletedHabitCount() {
-        Realm realm = null;
-        long count;
-        try {
-            realm = Realm.getDefaultInstance();
-            count = realm.where(Habit.class).equalTo("isCompleted", true).count();
-
-        } finally {
-            if (realm != null)
-                realm.close();
+        try (Realm realm = Realm.getDefaultInstance()) {
+            return realm.where(Habit.class).equalTo("isCompleted", true).count();
         }
-        return count;
     }
 
     public static Habit getHabit(int habitId) {
@@ -79,31 +66,22 @@ public class HabitRealmManager {
         return habitList;
     }
 
-    public static void saveOrUpdateHabit(@NonNull Habit habit) {
+    public static Habit saveOrUpdateHabit(@NonNull Habit habit) {
         try (Realm realm = Realm.getDefaultInstance()) {
             realm.executeTransactionAsync(
                     realmInstance -> realmInstance.copyToRealmOrUpdate(habit),
                     () -> Log.i(LOG_TAG, "Transaction success! - ID: " + habit.getId()),
                     error -> Log.i(LOG_TAG, "Transaction error! - ID: " + habit.getId() + "\n" + error.getMessage()));
         }
+        return habit;
     }
 
-    public static int getNextId () {
-        Realm realm = null;
-        int result;
-        try {
-            realm = Realm.getDefaultInstance();
+    public static int getNextId() {
+        try (Realm realm = Realm.getDefaultInstance()) {
             Number maxId = realm.where(Habit.class).max("id");
-            if (maxId != null) {
-                result = maxId.intValue() + 1;
-            } else {
-                result = 0;
-            }
-        } finally {
-            if (realm != null) {
-                realm.close();
-            }
+            if (maxId != null)
+                return maxId.intValue() + 1;
+            else return 0;
         }
-        return result;
     }
 }
