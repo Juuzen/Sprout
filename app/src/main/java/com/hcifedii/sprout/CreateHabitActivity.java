@@ -7,9 +7,6 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
-import android.transition.Explode;
-import android.transition.Fade;
-import android.transition.Slide;
 import android.util.Log;
 
 import android.view.View;
@@ -28,12 +25,14 @@ import com.hcifedii.sprout.fragment.RemindersFragment;
 import com.hcifedii.sprout.fragment.SnoozeFragment;
 import com.hcifedii.sprout.fragment.TitleFragment;
 
+import java.util.Calendar;
 import java.util.List;
 
 import model.Habit;
 import io.realm.RealmList;
 import model.Reminder;
 import utils.HabitRealmManager;
+import utils.NotificationAlarmManager;
 
 public class CreateHabitActivity extends AppCompatActivity {
 
@@ -115,12 +114,17 @@ public class CreateHabitActivity extends AppCompatActivity {
                 habit.setFinalDate(goalLongValue);
 
                 // Print test Message
-                printHabitInfoOnLog(habit);
+                //printHabitInfoOnLog(habit);
 
                 // Save habit
-                HabitRealmManager.saveOrUpdateHabit(habit);
+                habit = HabitRealmManager.saveOrUpdateHabit(habit);
+
+                // Notifications' alarms setup
+                setUpNotification(habit);
+
                 Toast.makeText(this, R.string.new_habit_success_message, Toast.LENGTH_SHORT).show();
                 finish();
+
             } else {
                 titleFragment.setErrorMessage(getString(R.string.error_title_is_empty));
                 showErrorSnackbar(saveFab, R.string.error_title_is_empty);
@@ -182,6 +186,38 @@ public class CreateHabitActivity extends AppCompatActivity {
 
     }
 
+    private void setUpNotification(@NonNull Habit habit) {
+
+        List<Reminder> reminders = habit.getReminders();
+        NotificationAlarmManager manager;
+
+        if (reminders.size() > 0) {
+            manager = new NotificationAlarmManager(this);
+
+            manager.setNotificationData(habit.getTitle(), habit.getId());
+
+            // Now
+            Calendar calendar = Calendar.getInstance();
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minutes = calendar.get(Calendar.MINUTE);
+
+            for (Reminder reminder : reminders) {
+                if (reminder.isActive() && !reminder.isInThePast(hour, minutes)) {
+
+                    int requestCode = manager.setAlarmAt(reminder.getHours(), reminder.getMinutes());
+
+                    // TODO: controllare se salva il codice
+                    // Save request code
+                    reminder.setAlarmRequestCode(requestCode);
+                    //Log.i("set up notification", reminder.toString());
+
+                    // Reset request code
+                    manager.setRequestCode(0);
+                }
+            }
+        }
+    }
+
     /**
      * @param view         The view you want to anchor the Snackbar
      * @param messageResId Resource id of the string you want to use.
@@ -207,9 +243,10 @@ public class CreateHabitActivity extends AppCompatActivity {
 
     /**
      * Print a test message inside logcat
+     *
      * @param habit Habit to be printed
      */
-    private void printHabitInfoOnLog(@NonNull Habit habit){
+    private void printHabitInfoOnLog(@NonNull Habit habit) {
 
         // Start Test message
         StringBuilder testData = new StringBuilder();

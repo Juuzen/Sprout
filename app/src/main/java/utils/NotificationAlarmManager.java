@@ -38,6 +38,10 @@ public class NotificationAlarmManager {
         setNotificationData(habitTitle, habitId, 0);
     }
 
+    public void setRequestCode(int requestCode) {
+        this.requestCode = requestCode;
+    }
+
     /**
      * Set the hour and the minutes when the notification needs to show up. If the trigger time
      * you specify is in the past, the alarm triggers immediately.

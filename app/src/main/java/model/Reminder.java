@@ -14,6 +14,7 @@ public class Reminder extends RealmObject implements Serializable {
     private boolean isActive = true;
 
     private boolean is24HourFormat;
+    private int requestCode;
 
     // Default constructor for Realm
     public Reminder() {
@@ -61,7 +62,7 @@ public class Reminder extends RealmObject implements Serializable {
     }
 
     private static String get24HourFormattedString(int hours, int minutes) {
-        return String.valueOf(hours) + ':' + String.format(Locale.getDefault(),"%02d", minutes);
+        return String.valueOf(hours) + ':' + String.format(Locale.getDefault(), "%02d", minutes);
     }
 
     private static String get12HourFormattedString(int hour, int minutes) {
@@ -79,7 +80,7 @@ public class Reminder extends RealmObject implements Serializable {
 
         time.append(':');
 
-        time.append(String.format(Locale.getDefault(),"%02d", minutes));
+        time.append(String.format(Locale.getDefault(), "%02d", minutes));
 
         time.append(' ').append(timeSet);
 
@@ -89,7 +90,18 @@ public class Reminder extends RealmObject implements Serializable {
     @NonNull
     @Override
     public String toString() {
-        return "[" + hours + ":" + minutes + ", isActive=" + isActive + ", is24Hour=" + is24HourFormat + "]";
+        return "[" + hours + ":" + minutes + ", isActive=" + isActive + ", is24Hour=" + is24HourFormat + ", requestCode=" + requestCode + "]";
     }
 
+    public void setAlarmRequestCode(int alarmRequestCode) {
+        this.requestCode = alarmRequestCode;
+    }
+
+    public int getAlarmRequestCode() {
+        return requestCode;
+    }
+
+    public boolean isInThePast(int otherHours, int otherMinutes) {
+        return this.hours < otherHours || this.minutes < otherMinutes;
+    }
 }
