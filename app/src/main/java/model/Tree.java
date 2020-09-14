@@ -33,8 +33,8 @@ public class Tree extends RealmObject {
     private int experience;
 
     // Inverse relationship (to retrieve the habit that holds the tree instance)
-    //@LinkingObjects("tree")
-    //private final RealmResults<Habit> habit = null;
+    //    //    //@LinkingObjects("tree")
+    //    //    //private final RealmResults<Habit> habit = null;
 
     public int getId() { return id; }
 

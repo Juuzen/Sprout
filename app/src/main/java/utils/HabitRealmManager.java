@@ -140,6 +140,7 @@ public class HabitRealmManager {
                             //TaskManager.insertTask(task);
 
                             habit.addTaskToHistory(task);
+                            Log.d(LOG_TAG, "storeHabitListInfo: " + habit.getTaskHistory());
 
                             /* Parte 2 */
                             habit.setRepetitions(0);
