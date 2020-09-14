@@ -34,6 +34,7 @@ import java.util.Locale;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import model.Habit;
+import utils.HabitRealmManager;
 import utils.SproutBottomAppBarCutCornersTopEdge;
 
 public class MainActivity extends AppCompatActivity {
@@ -161,7 +162,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.debugMenuItemButton1:
-                Toast.makeText(this, "Oggi è " + Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US).toUpperCase(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Oggi è " + Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US).toUpperCase(), Toast.LENGTH_SHORT).show();
+                HabitRealmManager.storeHabitListInfo();
                 return true;
 
             default:
