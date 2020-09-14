@@ -2,6 +2,7 @@ package com.hcifedii.sprout;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 
@@ -44,7 +45,13 @@ public class HabitStatsActivity extends AppCompatActivity {
 
     private Habit habit;
 
-    // TODO: salvare lo stato dell'activity
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if(habit != null)
+            outState.putInt(EXTRA_HABIT_ID, habit.getId());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +69,11 @@ public class HabitStatsActivity extends AppCompatActivity {
                 // Get habit from database
                 habit = HabitRealmManager.getHabit(habitId);
 
-                if (habit == null)
-                    return;         // TODO: forse ci andrebbe meglio un'eccezione
-
+                if (habit == null) {
+                    Log.e(this.getClass().getSimpleName(), "habit == null");
+                    finish();
+                    return;
+                }
                 // Set Activity's title
                 setTitle(habit.getTitle());
 
@@ -121,9 +130,10 @@ public class HabitStatsActivity extends AppCompatActivity {
             });
 
 
+        } else {
+            Log.e(this.getClass().getSimpleName(), "Habit id < 0");
+            finish();
         }
-
-
     }
 
     // TODO: mostra il numero di azioni negli ultimi 12 mesi. Quindi accetta un arraylist di 12 elementi.

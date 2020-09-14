@@ -59,7 +59,6 @@ public class NotificationAlarmManager {
             calendar.set(Calendar.SECOND, 0);
 
             long timeInMillis = calendar.getTimeInMillis();
-            Log.i(this.getClass().getSimpleName(), calendar.getTime().toString());
 
             if (requestCode == 0)
                 requestCode = random.nextInt();
@@ -70,10 +69,11 @@ public class NotificationAlarmManager {
             in.putExtra(NotificationAlarm.HABIT_ID, habitId);
             in.putExtra(NotificationAlarm.REQUEST_CODE, requestCode);
 
-            Log.i("LOG", Integer.toString(requestCode));
+            //Log.i(this.getClass().getSimpleName(), calendar.getTime().toString());
+            //Log.i("LOG", Integer.toString(requestCode));
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, in, PendingIntent.FLAG_CANCEL_CURRENT);
-            alarmManager.setRepeating(AlarmManager.RTC, timeInMillis, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+            alarmManager.setInexactRepeating(AlarmManager.RTC, timeInMillis, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
 
             return requestCode;
 

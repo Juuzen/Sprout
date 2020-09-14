@@ -25,6 +25,20 @@ public class HabitRealmManager {
         return count;
     }
 
+    public static long getCompletedHabitCount() {
+        Realm realm = null;
+        long count;
+        try {
+            realm = Realm.getDefaultInstance();
+            count = realm.where(Habit.class).equalTo("isCompleted", true).count();
+
+        } finally {
+            if (realm != null)
+                realm.close();
+        }
+        return count;
+    }
+
     public static Habit getHabit(int habitId) {
         Habit result = null;
         if (habitId >= 0) {

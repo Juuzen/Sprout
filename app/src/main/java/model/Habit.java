@@ -47,6 +47,20 @@ public class Habit extends RealmObject {
     }
 
     /**
+     * Boolean that say if the habit is completed. A completed habit won't be shown inside the
+     * MainActivity.
+     */
+    private boolean isCompleted = false;
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
+    }
+
+    /**
      * Type of the habit (classic or counter)
      */
     private String habitType = HabitType.CLASSIC.name();

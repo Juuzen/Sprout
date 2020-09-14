@@ -57,13 +57,13 @@ public class StatsActivity extends AppCompatActivity {
         timeTextView.setText(getUsageTimeString());
 
         long habitCount = HabitRealmManager.getHabitCount();
+        long completedHabitCount = HabitRealmManager.getCompletedHabitCount();
 
         MaterialTextView habitCreatedTextView = findViewById(R.id.habitCreatedTextView);
         habitCreatedTextView.setText(Long.toString(habitCount));
 
-
-        // TODO: aggiungere il numero di abitudini completate nella card
-
+        MaterialTextView habitCompletedTextView = findViewById(R.id.habitCompletedTextView);
+        habitCompletedTextView.setText(Long.toString(completedHabitCount));
 
         // Recycler View
 
