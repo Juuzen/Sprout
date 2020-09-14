@@ -11,18 +11,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.transition.Fade;
-import android.transition.Slide;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import android.view.View;
-import android.view.Window;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment;
@@ -31,13 +26,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.hcifedii.sprout.adapter.HabitCardAdapter;
 
-import java.util.Random;
-
 import io.realm.Realm;
 import io.realm.RealmResults;
 import model.Habit;
+import utils.NotificationAlarmManager;
 import utils.SproutBottomAppBarCutCornersTopEdge;
-import utils.SproutNotification;
 
 public class MainActivity extends AppCompatActivity {
     private Realm realm;
@@ -144,15 +137,13 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.testNotification:
 
-                new Handler().postDelayed(() -> {
-                    SproutNotification notification = SproutNotification.getInstance(this);
-                    notification.setTitle("ciao");
-                    notification.setContent("boh");
-                    Random random = new Random();
 
-                    notification.showNotification(random.nextInt());
+                NotificationAlarmManager manager = new NotificationAlarmManager(this);
+                manager.setNotificationData("Titolo 1", 0);
+                manager.setAlarmAt(13, 14);
 
-                }, 2000);
+                manager.setNotificationData("Titolo 2", 1);
+                manager.setAlarmAt(13, 16);
 
 
                 return true;

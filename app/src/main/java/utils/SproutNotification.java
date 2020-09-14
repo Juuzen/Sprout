@@ -59,9 +59,10 @@ public class SproutNotification {
     }
 
     /**
-     * @param notificationId Id of the notification. Use different ids to get different notifications.
+     * @param habitId Id used for the notification. Use the habit's id to get different notification
+     *               based on the habit.
      */
-    public void showNotification(int notificationId) {
+    public void showNotification(int habitId) {
 
         // Open MainActivity when the user click on the notification
         Intent intent = new Intent(context, MainActivity.class);
@@ -71,7 +72,7 @@ public class SproutNotification {
         builder.setContentIntent(pendingIntent);
 
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(notificationId, builder.build());
+        manager.notify(habitId, builder.build());
     }
 
     /**
