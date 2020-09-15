@@ -7,6 +7,7 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,12 +27,15 @@ import com.hcifedii.sprout.fragment.RemindersFragment;
 import com.hcifedii.sprout.fragment.SnoozeFragment;
 import com.hcifedii.sprout.fragment.TitleFragment;
 
+import java.util.Calendar;
 import java.util.List;
 
 import io.realm.RealmList;
 import model.Habit;
 import model.Reminder;
 import utils.HabitRealmManager;
+import utils.NotificationAlarmManager;
+import utils.NotificationAlarmManager.NotificationAlarm;
 
 public class EditHabitActivity extends AppCompatActivity {
 
@@ -78,6 +82,7 @@ public class EditHabitActivity extends AppCompatActivity {
 
                 // Reminders
                 RealmList<Reminder> reminders = remindersFragment.getReminderList();
+                RealmList<Reminder> oldReminders = habit.getReminders();
 
                 // Snooze
                 boolean isSnoozeEnabled = snoozeFragment.isSnoozeEnabled();
@@ -120,8 +125,11 @@ public class EditHabitActivity extends AppCompatActivity {
                 habit.setMaxStreakValue(goalIntValue);
                 habit.setFinalDate(goalLongValue);
 
+                setUpNotifications(habit, oldReminders);
+
                 // Update the habit
                 HabitRealmManager.saveOrUpdateHabit(habit);
+
                 Toast.makeText(this, "Abitudine aggiornata!", Toast.LENGTH_SHORT).show();
                 finish();
 
@@ -185,7 +193,6 @@ public class EditHabitActivity extends AppCompatActivity {
                         else if (goalType == GoalType.DEADLINE)
                             goalFragment.setLong(habit.getFinalDate());
 
-
                     });
 
 
@@ -193,13 +200,80 @@ public class EditHabitActivity extends AppCompatActivity {
 
 
             } else {
-                // Go to MainActivity with log error message or throw an exception
-
+                // Go to MainActivity with log error message
+                Log.e(this.getClass().getSimpleName(), "Invalid habit id.");
+                finish();
             }
+        }
+    }
 
+    private void setUpNotifications(@NonNull Habit habit, @NonNull List<Reminder> oldReminders) {
+
+        List<Reminder> reminders = habit.getReminders();
+
+        if (reminders.size() > 0) {
+            NotificationAlarmManager manager = new NotificationAlarmManager(this);
+            manager.setNotificationData(habit.getTitle(), habit.getId());
+
+            // Now
+            Calendar calendar = Calendar.getInstance();
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minutes = calendar.get(Calendar.MINUTE);
+
+            for (Reminder reminder : reminders) {
+
+                boolean isActive = reminder.isActive();
+                int reminderRequestCode = reminder.getAlarmRequestCode();
+
+                // Two Reminder are equal if they have the same hour, minutes and request code.
+                // If a Reminder has a request code != 0, then it has an alarm setted
+                if (oldReminders.contains(reminder)) {
+
+                    if (!isActive && reminderRequestCode != 0) {
+                        // This alarm needs to be deactivated
+                        NotificationAlarm.cancelAlarm(this, reminderRequestCode);
+                        reminder.setAlarmRequestCode(0);
+
+                    } else if (isActive && !reminder.isInThePast(hour, minutes)) {
+                        // This alarm is active
+                        manager.setRequestCode(reminderRequestCode);
+
+                        reminderRequestCode = manager.setAlarmAt(reminder.getHours(), reminder.getMinutes());
+
+                        reminder.setAlarmRequestCode(reminderRequestCode);
+                    }
+
+                    // Delete this reminder from the old list. This will be useful later
+                    oldReminders.remove(reminder);
+
+                } else {
+                    // This Reminder is new or it needs to be updated
+                    if (isActive && !reminder.isInThePast(hour, minutes)) {
+
+                        manager.setRequestCode(reminder.getAlarmRequestCode());
+
+                        reminderRequestCode = manager.setAlarmAt(reminder.getHours(), reminder.getMinutes());
+
+                        reminder.setAlarmRequestCode(reminderRequestCode);
+                    }
+                }
+                // Reset the mananager request code
+                manager.setRequestCode(0);
+            }
         }
 
+        // Delete the remaining old active alarms
+        if (oldReminders.size() > 0) {
+            for (Reminder r : oldReminders) {
+                //Log.e(this.getClass().getSimpleName(), "Old reminder list element: " + reminder.toString());
+                if (r.getAlarmRequestCode() != 0)
+                    NotificationAlarm.cancelAlarm(this, r.getAlarmRequestCode());
+            }
+            oldReminders.clear();
+        }
 
+        // Print test message
+        //printHabitInfoOnLog(habit);
     }
 
 
@@ -225,6 +299,8 @@ public class EditHabitActivity extends AppCompatActivity {
             builder.setTitle("Sprout");
             builder.setMessage(R.string.delete_habit_dialog_message);
             builder.setPositiveButton(R.string.positive_delete_habit_dialog, (dialogInterface, i) -> {
+
+                // TODO: prima di eliminare l'abitudine, bisogna eliminare gli alarm
                 HabitRealmManager.deleteHabit(habitId);
                 Toast.makeText(getBaseContext(), "Abitudine eliminata!", Toast.LENGTH_SHORT).show();
                 finish();
@@ -259,5 +335,40 @@ public class EditHabitActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
         }
+    }
+
+    private void printHabitInfoOnLog(@NonNull Habit habit) {
+
+        // Start Test message
+        StringBuilder testData = new StringBuilder();
+        testData.append("\nTitle: ").append(habit.getTitle());
+        testData.append("\nHabitType: ")
+                .append(habit.getHabitType()).append(", ")
+                .append(habit.getRepetitions());
+
+        testData.append("\nFrequency: ");
+        for (Days d : habit.getFrequency()) {
+            testData.append(d.name()).append(' ');
+        }
+
+        testData.append("\nReminders: ");
+        for (Reminder r : habit.getReminders()) {
+            testData.append(r.toString()).append("\t");
+        }
+
+        boolean isSnoozeEnabled = habit.getMaxSnoozes() > 0;
+        testData.append("\nSnooze: ").append(isSnoozeEnabled).append(", ")
+                .append(habit.getMaxSnoozes());
+
+        GoalType goalType = habit.getGoalType();
+        testData.append("\nGoal type: ").append(goalType.name()).append(' ');
+        if (goalType == GoalType.DEADLINE)
+            testData.append(habit.getFinalDate());
+        else {
+            int intValue = (habit.getMaxAction() > 0) ? habit.getMaxAction() : habit.getMaxStreakValue();
+            testData.append(intValue);
+        }
+
+        Log.i(logcatTag, testData.toString());
     }
 }

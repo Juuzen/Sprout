@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 import java.util.Locale;
+import java.util.Objects;
 
 import io.realm.RealmObject;
 
@@ -87,12 +88,6 @@ public class Reminder extends RealmObject implements Serializable {
         return time.toString();
     }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return "[" + hours + ":" + minutes + ", isActive=" + isActive + ", is24Hour=" + is24HourFormat + ", requestCode=" + requestCode + "]";
-    }
-
     public void setAlarmRequestCode(int alarmRequestCode) {
         this.requestCode = alarmRequestCode;
     }
@@ -101,7 +96,32 @@ public class Reminder extends RealmObject implements Serializable {
         return requestCode;
     }
 
+    @Override
+    public boolean equals(Object otherReminder) {
+        if (!(otherReminder instanceof Reminder))
+            return false;
+
+        Reminder reminder = (Reminder) otherReminder;
+        return hours == reminder.hours && minutes == reminder.minutes && requestCode == reminder.requestCode;
+    }
+
+    @Override
+    public int hashCode() {
+        return hours ^ minutes ^ requestCode;
+    }
+
+    /**
+     * @param otherHours
+     * @param otherMinutes
+     * @return Return true if this reminder is in the past.
+     */
     public boolean isInThePast(int otherHours, int otherMinutes) {
         return this.hours < otherHours || this.minutes < otherMinutes;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "[" + hours + ":" + minutes + ", isActive=" + isActive + ", is24Hour=" + is24HourFormat + ", requestCode=" + requestCode + "]";
     }
 }

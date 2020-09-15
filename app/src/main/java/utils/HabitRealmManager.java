@@ -66,14 +66,13 @@ public class HabitRealmManager {
         return habitList;
     }
 
-    public static Habit saveOrUpdateHabit(@NonNull Habit habit) {
+    public static void saveOrUpdateHabit(@NonNull Habit habit) {
         try (Realm realm = Realm.getDefaultInstance()) {
             realm.executeTransactionAsync(
                     realmInstance -> realmInstance.copyToRealmOrUpdate(habit),
                     () -> Log.i(LOG_TAG, "Transaction success! - ID: " + habit.getId()),
                     error -> Log.i(LOG_TAG, "Transaction error! - ID: " + habit.getId() + "\n" + error.getMessage()));
         }
-        return habit;
     }
 
     public static int getNextId() {

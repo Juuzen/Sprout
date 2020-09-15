@@ -77,7 +77,7 @@ public class NotificationAlarmManager {
             //Log.i("LOG", Integer.toString(requestCode));
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, in, PendingIntent.FLAG_CANCEL_CURRENT);
-            alarmManager.setInexactRepeating(AlarmManager.RTC, timeInMillis, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC, timeInMillis, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
 
             return requestCode;
 

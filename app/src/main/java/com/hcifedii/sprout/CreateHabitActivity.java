@@ -113,14 +113,10 @@ public class CreateHabitActivity extends AppCompatActivity {
                 habit.setMaxStreakValue(goalIntValue);
                 habit.setFinalDate(goalLongValue);
 
-                // Print test Message
-                //printHabitInfoOnLog(habit);
+                setUpNotification(habit);
 
                 // Save habit
-                habit = HabitRealmManager.saveOrUpdateHabit(habit);
-
-                // Notifications' alarms setup
-                setUpNotification(habit);
+                HabitRealmManager.saveOrUpdateHabit(habit);
 
                 Toast.makeText(this, R.string.new_habit_success_message, Toast.LENGTH_SHORT).show();
                 finish();
@@ -145,31 +141,32 @@ public class CreateHabitActivity extends AppCompatActivity {
 
         presetFragment = (PresetFragment) fragmentManager.findFragmentById(R.id.presetHabitFragment);
 
-        presetFragment.setAdapterListener(habit -> this.runOnUiThread(() -> {
+        if (presetFragment != null) {
+            presetFragment.setAdapterListener(habit -> this.runOnUiThread(() -> {
 
-            titleFragment.setTitle(habit.getTitle());
+                titleFragment.setTitle(habit.getTitle());
 
-            habitTypeFragment.setHabitType(habit.getHabitType());
-            habitTypeFragment.setMaxRepetitions(habit.getRepetitions());
+                habitTypeFragment.setHabitType(habit.getHabitType());
+                habitTypeFragment.setMaxRepetitions(habit.getRepetitions());
 
-            frequencyFragment.setFrequency(habit.getFrequency());
+                frequencyFragment.setFrequency(habit.getFrequency());
 
-            remindersFragment.setReminderList(habit.getReminders());
+                remindersFragment.setReminderList(habit.getReminders());
 
-            snoozeFragment.setSnooze(habit.getMaxSnoozes());
+                snoozeFragment.setSnooze(habit.getMaxSnoozes());
 
-            GoalType goalType = habit.getGoalType();
-            goalFragment.setGoalType(goalType);
-            if (goalType == GoalType.ACTION)
-                goalFragment.setInt(habit.getMaxAction());
-            else if (goalType == GoalType.STREAK)
-                goalFragment.setInt(habit.getMaxStreakValue());
-            else if (goalType == GoalType.DEADLINE)
-                goalFragment.setLong(habit.getFinalDate());
+                GoalType goalType = habit.getGoalType();
+                goalFragment.setGoalType(goalType);
+                if (goalType == GoalType.ACTION)
+                    goalFragment.setInt(habit.getMaxAction());
+                else if (goalType == GoalType.STREAK)
+                    goalFragment.setInt(habit.getMaxStreakValue());
+                else if (goalType == GoalType.DEADLINE)
+                    goalFragment.setLong(habit.getFinalDate());
 
-            Toast.makeText(getBaseContext(), R.string.preset_habit_loading_snackbar, Toast.LENGTH_SHORT).show();
-        }));
-
+                Toast.makeText(getBaseContext(), R.string.preset_habit_loading_snackbar, Toast.LENGTH_SHORT).show();
+            }));
+        }
 
         // Shrinking / extending behaviour of the fab
         NestedScrollView scrollView = findViewById(R.id.nestedScrollView);
@@ -183,16 +180,14 @@ public class CreateHabitActivity extends AppCompatActivity {
             }
         }));
 
-
     }
 
     private void setUpNotification(@NonNull Habit habit) {
 
         List<Reminder> reminders = habit.getReminders();
-        NotificationAlarmManager manager;
 
         if (reminders.size() > 0) {
-            manager = new NotificationAlarmManager(this);
+            NotificationAlarmManager manager = new NotificationAlarmManager(this);
 
             manager.setNotificationData(habit.getTitle(), habit.getId());
 
@@ -206,16 +201,16 @@ public class CreateHabitActivity extends AppCompatActivity {
 
                     int requestCode = manager.setAlarmAt(reminder.getHours(), reminder.getMinutes());
 
-                    // TODO: controllare se salva il codice
-                    // Save request code
+                    // Save the request code for later use
                     reminder.setAlarmRequestCode(requestCode);
-                    //Log.i("set up notification", reminder.toString());
 
                     // Reset request code
                     manager.setRequestCode(0);
                 }
             }
         }
+        // Print a test message
+        //printHabitInfoOnLog(habit);
     }
 
     /**
@@ -236,8 +231,6 @@ public class CreateHabitActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setElevation(0);
-        } else {
-            Log.e(logcatTag, "getSupportActionBar() returned null");
         }
     }
 
