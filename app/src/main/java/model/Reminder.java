@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 import java.util.Locale;
-import java.util.Objects;
 
 import io.realm.RealmObject;
 

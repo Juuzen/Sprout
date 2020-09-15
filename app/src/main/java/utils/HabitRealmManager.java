@@ -7,8 +7,10 @@ import androidx.annotation.NonNull;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 import model.Habit;
+import model.Reminder;
 
 public class HabitRealmManager {
 
@@ -69,7 +71,19 @@ public class HabitRealmManager {
     public static void saveOrUpdateHabit(@NonNull Habit habit) {
         try (Realm realm = Realm.getDefaultInstance()) {
             realm.executeTransactionAsync(
-                    realmInstance -> realmInstance.copyToRealmOrUpdate(habit),
+
+                    realmInstance -> {
+
+                        Habit oldHabit = realmInstance.where(Habit.class).equalTo("id", habit.getId()).findFirst();
+                        if (oldHabit != null) {
+                            // Delete old reminders
+                            RealmList<Reminder> reminder = oldHabit.getReminders();
+                            reminder.deleteAllFromRealm();
+                        }
+
+                        realmInstance.copyToRealmOrUpdate(habit);
+
+                    },
                     () -> Log.i(LOG_TAG, "Transaction success! - ID: " + habit.getId()),
                     error -> Log.i(LOG_TAG, "Transaction error! - ID: " + habit.getId() + "\n" + error.getMessage()));
         }
