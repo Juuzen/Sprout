@@ -16,6 +16,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+
+        <receiver android:process=":remote" android:name="utils.DBAlarmReceiver"/>
+
         <activity
             android:name=".HabitStatsActivity"
             android:parentActivityName=".StatsActivity" />

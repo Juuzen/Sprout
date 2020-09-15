@@ -6,11 +6,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import android.app.ActivityOptions;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.icu.util.TimeUnit;
 import android.os.Bundle;
 import android.transition.Fade;
 import android.transition.Slide;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,6 +39,7 @@ import java.util.Locale;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import model.Habit;
+import utils.DBAlarmReceiver;
 import utils.HabitRealmManager;
 import utils.SproutBottomAppBarCutCornersTopEdge;
 
@@ -163,7 +169,41 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.debugMenuItemButton1:
                 //Toast.makeText(this, "Oggi è " + Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US).toUpperCase(), Toast.LENGTH_SHORT).show();
-                HabitRealmManager.storeHabitListInfo();
+                //HabitRealmManager.storeHabitListInfo();
+                /* TODO: creare l'alarm manager */
+
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                if (alarmManager != null) {
+                    Calendar cal = Calendar.getInstance();
+
+                    if (cal.get(Calendar.MINUTE) == 59) {
+                        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + 1);
+                        cal.set(Calendar.MINUTE, 0);
+                        cal.set(Calendar.SECOND, 0);
+                    } else {
+                        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY));
+                        cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) + 1);
+                        cal.set(Calendar.SECOND, 0);
+                    }
+
+                    long millis = cal.getTimeInMillis();
+                    /*
+                    Log.d("Time", "Current Time: " + Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE));
+                    Log.d("Time", "Scheduled Time: " + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE));
+                    Log.d("Time", "Millis: " + millis);
+
+                     */
+                    Intent mIntent = new Intent (this, DBAlarmReceiver.class);
+                    mIntent.putExtra("Test", 154);
+
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1000, mIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC, millis, pendingIntent);
+                    Toast.makeText(this, "Alarm settato alle ore: " + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE), Toast.LENGTH_SHORT).show();
+                    Log.d("Alarm", "Alarm settato alle ore: " + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE));
+                } else {
+                    Log.e("AlarmManager", "Non sono riuscito a creare l'alarm.");
+                }
+
                 return true;
 
             default:
