@@ -15,15 +15,13 @@ import model.Reminder;
 
 /**
  * You can test this class from command like with:
- *
- *      > adb shell am broadcast -a android.intent.action.BOOT_COMPLETED com.hcifedii.sprout
- *
- *  If it fails, then try first: > adb root
- *
+ * <p>
+ * > adb shell am broadcast -a android.intent.action.BOOT_COMPLETED com.hcifedii.sprout
+ * <p>
+ * If it fails, then try first: > adb root
  */
 public class BootCompletedReceiver extends BroadcastReceiver {
 
-    private Context context;
     private final Calendar calendar = Calendar.getInstance();
 
 
@@ -32,37 +30,34 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 
         if (intent != null) {
 
-            this.context = context;
-
             Log.i(this.getClass().getSimpleName(), "Boot received " + intent.getAction());
 
-
-            Days today = Days.today(calendar);
-
             // Boot detected. Recreate the alarms for today
-            habitsAlarmsSetUp();
+            habitsAlarmsSetUp(context);
 
-            // Do other stuff
+            // Do other stuff here
 
         }
     }
 
 
-    private void habitsAlarmsSetUp() {
+    private void habitsAlarmsSetUp(Context context) {
 
         NotificationAlarmManager manager = new NotificationAlarmManager(context);
 
-        int today = calendar.get(Calendar.DAY_OF_WEEK);
+        Days today = Days.today(calendar);
 
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minutes = calendar.get(Calendar.MINUTE);
-
-        //TODO: aggiungere metodo che restituisce le abitudini di oggi
 
         // Get today's habit list
         List<Habit> habitList = HabitRealmManager.getAllHabits();
 
         for (Habit habit : habitList) {
+
+            if (!habit.getFrequency().contains(today))
+                // This habit is not scheduled for today
+                continue;
 
             List<Reminder> reminderList = habit.getReminders();
 
@@ -96,6 +91,5 @@ public class BootCompletedReceiver extends BroadcastReceiver {
             }
         }
     }
-
 
 }

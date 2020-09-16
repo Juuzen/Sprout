@@ -18,7 +18,7 @@ public class SproutNotification {
 
     private static final int iconResId = R.drawable.ic_sprout_small;
 
-    private Context context;
+    private final Context context;
 
     private Notification.Builder builder;
 

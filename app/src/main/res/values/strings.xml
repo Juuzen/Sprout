@@ -70,11 +70,9 @@
     <string name="goal_streak_info">Quando completi l\'abitudine per un certo numero di giorni di fila, questa viene archiviata.</string>
     <string name="no_goal_subtitle">Nessun Obiettivo</string>
     <string name="no_goal_info">L\'abitudine non verrà mai archiviata.</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="preset_image_content_description">Immagine dell\'abitudine preset.</string>
     <string name="show_more_content_description">Mostra altro</string>
     <string name="preset_habit_title">Abitudini pronte all\'uso</string>
-    <string name="hide_button">Nascondi</string>
     <string name="general_title">Generale</string>
     <string name="preset_habit_title_placeholder">Lorem ipsum dolor sit amet</string>
     <string name="preset_drink_more_water">Bevi più acqua</string>

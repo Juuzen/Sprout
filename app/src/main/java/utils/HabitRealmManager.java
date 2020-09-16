@@ -60,6 +60,7 @@ public class HabitRealmManager {
         try {
             realm = Realm.getDefaultInstance();
             RealmResults<Habit> realmResults = realm.where(Habit.class).findAll();
+
             habitList = realm.copyFromRealm(realmResults);
         } finally {
             if (realm != null)

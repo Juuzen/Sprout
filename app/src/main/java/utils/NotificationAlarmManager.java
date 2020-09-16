@@ -18,7 +18,7 @@ public class NotificationAlarmManager {
 
     private static final Random random = new Random();
 
-    private Context context;
+    private final Context context;
 
     private String habitTitle;
     private int habitId;

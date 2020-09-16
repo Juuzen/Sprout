@@ -135,19 +135,6 @@ public class MainActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
 
-            case R.id.testNotification:
-
-
-                NotificationAlarmManager manager = new NotificationAlarmManager(this);
-                manager.setNotificationData("Titolo 1", 0);
-                manager.setAlarmAt(13, 14);
-
-                manager.setNotificationData("Titolo 2", 1);
-                manager.setAlarmAt(13, 16);
-
-
-                return true;
-
             case R.id.searchMenuItem:
                 return true;
 
