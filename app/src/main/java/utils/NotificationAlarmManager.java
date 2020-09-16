@@ -88,7 +88,6 @@ public class NotificationAlarmManager {
         return 0;
     }
 
-    // TODO: aggiungere un broadcastReceiver che si attiva quando il telefono si accende
     public static class NotificationAlarm extends BroadcastReceiver {
 
         final static String HABIT_ID = "habitId";
@@ -128,7 +127,6 @@ public class NotificationAlarmManager {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
             alarmManager.cancel(pendingIntent);
-
         }
     }
 

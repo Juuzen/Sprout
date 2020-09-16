@@ -16,7 +16,6 @@ import com.hcifedii.sprout.R;
 
 public class SproutNotification {
 
-    // TODO: testare l'app su android più vecchi
     private static final int iconResId = R.drawable.ic_sprout_small;
 
     private Context context;

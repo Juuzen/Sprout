@@ -209,6 +209,13 @@ public class EditHabitActivity extends AppCompatActivity {
 
     private void setUpNotifications(@NonNull Habit habit, @NonNull List<Reminder> oldReminders) {
 
+        Calendar calendar = Calendar.getInstance();
+
+        if(!habit.getFrequency().contains(Days.today(calendar))){
+            // If today is not a marked day inside frequency, then skip the creation of the alarms
+            return;
+        }
+
         List<Reminder> reminders = habit.getReminders();
 
         if (reminders.size() > 0) {
@@ -216,7 +223,6 @@ public class EditHabitActivity extends AppCompatActivity {
             manager.setNotificationData(habit.getTitle(), habit.getId());
 
             // Now
-            Calendar calendar = Calendar.getInstance();
             int hour = calendar.get(Calendar.HOUR_OF_DAY);
             int minutes = calendar.get(Calendar.MINUTE);
 
