@@ -1,6 +1,9 @@
 package utils;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 
 import com.hcifedii.sprout.enumerations.GoalType;
@@ -98,6 +101,10 @@ public class HabitRealmManager {
             }
         }
         return result;
+    }
+
+    public static void test(Context context) {
+        Toast.makeText(context, "Test riuscito", Toast.LENGTH_SHORT).show();
     }
 
     public static void storeHabitListInfo() {

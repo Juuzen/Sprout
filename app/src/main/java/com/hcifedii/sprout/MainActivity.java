@@ -35,7 +35,9 @@ import com.hcifedii.sprout.adapter.HabitCardAdapter;
 
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
 
+import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import model.Habit;
@@ -44,11 +46,16 @@ import utils.HabitRealmManager;
 import utils.SproutBottomAppBarCutCornersTopEdge;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MAINACTIVITY";
     private Realm realm;
     HabitCardAdapter adapter;
+    RealmResults<Habit> results;
+    String day = Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        day = "TUESDAY";
+        Log.d("test", "onCreate: " + day);
         setUIMode();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -87,7 +94,13 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView rv = findViewById(R.id.habitCardRecyclerView);
         TextView emptyMessage = findViewById(R.id.mainEmptyHabitListMessage);
         realm = Realm.getDefaultInstance();
-        RealmResults<Habit> results = realm.where(Habit.class).sort("id").findAll();
+        results = realm
+                .where(Habit.class)
+                .equalTo("isCompleted", false)
+                .and()
+                .contains("frequencyTest", day, Case.INSENSITIVE)
+                .sort("id")
+                .findAll();
 
         results.addChangeListener(habits -> {
             if (habits.size() > 0) {
@@ -169,9 +182,9 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.debugMenuItemButton1:
                 //Toast.makeText(this, "Oggi è " + Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US).toUpperCase(), Toast.LENGTH_SHORT).show();
-                //HabitRealmManager.storeHabitListInfo();
                 /* TODO: creare l'alarm manager */
 
+                /*
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 if (alarmManager != null) {
                     Calendar cal = Calendar.getInstance();
@@ -187,12 +200,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     long millis = cal.getTimeInMillis();
-                    /*
-                    Log.d("Time", "Current Time: " + Calendar.getInstance().get(Calendar.HOUR_OF_DAY) + ":" + Calendar.getInstance().get(Calendar.MINUTE));
-                    Log.d("Time", "Scheduled Time: " + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE));
-                    Log.d("Time", "Millis: " + millis);
 
-                     */
                     Intent mIntent = new Intent (this, DBAlarmReceiver.class);
                     mIntent.putExtra("Test", 154);
 
@@ -203,7 +211,21 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Log.e("AlarmManager", "Non sono riuscito a creare l'alarm.");
                 }
-
+                */
+                day = "WEDNESDAY";
+                Log.d("test", day);
+                results = realm
+                        .where(Habit.class)
+                        .equalTo("isCompleted", false)
+                        .and()
+                        .contains("frequencyTest", day, Case.INSENSITIVE)
+                        .sort("id")
+                        .findAll();
+                if (results != null) {
+                    adapter.updateData(results);
+                } else {
+                    Log.d(TAG, "What");
+                }
                 return true;
 
             default:
@@ -236,6 +258,10 @@ public class MainActivity extends AppCompatActivity {
                         .toBuilder()
                         .setTopEdge(topEdge)
                         .build());
+    }
+
+    public void refreshAdapter() {
+        results = realm.where(Habit.class).equalTo("title", "test").findAll();
     }
 
     @Override

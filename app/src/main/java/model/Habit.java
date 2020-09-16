@@ -71,25 +71,37 @@ public class Habit extends RealmObject {
     public int getMaxRepetitions() { return maxRepetitions; }
     public void setMaxRepetitions(int maxRepetitions) { this.maxRepetitions = maxRepetitions; }
 
+    private String frequencyTest;
+
+    public String getFrequencyTest() { return frequencyTest; }
+
+    public void setFrequencyTest(List<Days> input) {
+        frequencyTest = "";
+        StringBuilder tmp = new StringBuilder();
+        for (Days day : input) {
+            tmp.append(day.name());
+        }
+        frequencyTest = tmp.toString();
+    }
+
+
     // Week frequency
-    private RealmList<DaysEnum> frequency;
+    private RealmList<String> frequency;
+
     public List<Days> getFrequency() {
         List<Days> output = new ArrayList<>();
-        // Convert the RealmList of DaysEnum to a List of Days
-        for (DaysEnum en : frequency)
-            output.add(en.getEnum());
+        // Convert the RealmList of String to a List of Days
+        for (String day : frequency)
+            output.add(Days.valueOf(day));
         return output;
     }
-    public void setFrequency(List<Days> input) {
 
+    public void setFrequency(List<Days> input) {
         if (frequency.size() > 0)
             frequency.clear();
-        // Convert the List of Days to a RealmList of DaysEnum
-        for (Days da : input) {
-            DaysEnum daysEnum = new DaysEnum();
-            daysEnum.saveType(da);
-            frequency.add(daysEnum);
-        }
+        // Convert the List of Days to a RealmList of String
+        for (Days day : input)
+            frequency.add(day.name());
     }
 
     // Reminders
@@ -127,9 +139,6 @@ public class Habit extends RealmObject {
         this.maxSnoozes = maxSnoozes;
     }
 
-    /* TODO: Un boolean per sapere se è possibile fare uno snooze oppure no invece di
-    *   fare il controllo tra maxSnoozes e snoozesMade */
-
     // Goal
     private String goalType = GoalType.NONE.name();
     public GoalType getGoalType() {
@@ -144,7 +153,7 @@ public class Habit extends RealmObject {
      * MainActivity.
      */
     private boolean isCompleted = false;
-    public boolean isCompleted() {
+    public boolean getIsCompleted() {
         return isCompleted;
     }
     public void setIsCompleted(boolean completed) {

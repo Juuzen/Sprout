@@ -150,7 +150,6 @@ public class TreeManager {
                 /* Nothing should happen while in Sparkling mode, no exp gained, no changes at all */
                 break;
             default:
-
         }
     }
 }

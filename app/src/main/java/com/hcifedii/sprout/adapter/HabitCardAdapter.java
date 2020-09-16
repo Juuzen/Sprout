@@ -30,6 +30,7 @@ import io.realm.RealmRecyclerViewAdapter;
 import model.Habit;
 
 public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerView.ViewHolder> implements Filterable {
+    private static final String TAG = "HABITCARDADAPTER";
     Context ct;
     OrderedRealmCollection<Habit> list;
     OrderedRealmCollection<Habit> filteredList; /* mandatory for the filter */
@@ -67,11 +68,13 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
 
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         final Habit habit = getItem(position);
-        final int viewType = getItemViewType(position);
-        if (viewType == CLASSIC_TYPE) {
-            ((ClassicViewHolder) holder).setHabit(habit, ct);
-        } else if (viewType == REPETITION_TYPE) {
-            ((RepetitionViewHolder) holder).setHabit(habit, ct);
+        if (habit != null) {
+            final int viewType = getItemViewType(position);
+            if (viewType == CLASSIC_TYPE) {
+                ((ClassicViewHolder) holder).setHabit(habit, ct);
+            } else if (viewType == REPETITION_TYPE) {
+                ((RepetitionViewHolder) holder).setHabit(habit, ct);
+            }
         }
     }
 
@@ -85,6 +88,12 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             else if (habitType.equals("COUNTER")) type = REPETITION_TYPE;
         }
         return type;
+    }
+
+    @Override
+    public void updateData(@Nullable OrderedRealmCollection<Habit> data) {
+        filteredList = data;
+        super.updateData(data);
     }
 
     public void filterResults(String text) {
@@ -146,7 +155,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
 
             checkButton.setOnClickListener(view -> {
                 //TODO: inserire il codice per il listener
-                Toast.makeText(ct, "Funziono", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ct, "Funziono", Toast.LENGTH_SHORT).show();
             });
         }
     }
@@ -205,30 +214,4 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             });
         }
     }
-
-    /*
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView habitTitle;
-        ProgressBar progressBar;
-        TextView progressLabel;
-        ImageButton editHabitButton;
-        Button checkButton;
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            habitTitle = itemView.findViewById(R.id.counterHabitCardTitle);
-            editHabitButton = itemView.findViewById(R.id.counterHabitEditButton);
-            progressBar = itemView.findViewById(R.id.counterHabitProgressBar);
-            checkButton = itemView.findViewById(R.id.counterHabitCheckButton);
-            progressLabel = itemView.findViewById(R.id.counterHabitProgressLabel);
-        }
-
-        void setHabit(Habit habit) {
-            this.habitTitle.setText(habit.getTitle());
-            this.progressBar.setProgress(habit.getRepetitions());
-            this.progressBar.setMax(habit.getMaxRepetitions());
-            this.progressLabel.setText("Completato " + habit.getRepetitions() + " volte su " + habit.getMaxRepetitions()); //FIXME: sposta la stringa
-        }
-    }
-     */
 }

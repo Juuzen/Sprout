@@ -109,6 +109,7 @@ public class CreateHabitActivity extends AppCompatActivity {
                 habit.setHabitType(habitType);
                 habit.setMaxRepetitions(maxRepetitions);
                 habit.setFrequency(frequency);
+                habit.setFrequencyTest(frequency);
                 habit.setReminders(reminders);
                 habit.setMaxSnoozes(snooze);
                 habit.setGoalType(goalType);
