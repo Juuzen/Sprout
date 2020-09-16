@@ -149,6 +149,8 @@
     <string name="n_times">volte su</string>
     <string name="channel_name">Notifica dell\'abitudine</string>
     <string name="channel_description">Le notifiche decise dall\'utente.</string>
+    <string name="delete_habit_dialog_confirmation_toast">Abitudine eliminata!</string>
+    <string name="negative_delete_habit_dialog">No</string>
 
     <string-array name="months">
         <item>G</item>

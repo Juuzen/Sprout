@@ -40,7 +40,9 @@ import utils.NotificationAlarmManager.NotificationAlarm;
 public class EditHabitActivity extends AppCompatActivity {
 
     private static final String logcatTag = "Sprout - EditHabitActivity";
+
     private static final String IS_ALREADY_SHOWED = "alreadyShowed";
+    public static final String EXTRA_HABIT_ID = "habitId";
 
     // Fragments of this activity
     TitleFragment titleFragment;
@@ -153,65 +155,69 @@ public class EditHabitActivity extends AppCompatActivity {
         // Shrinking / extending behaviour of the fab
         NestedScrollView scrollView = findViewById(R.id.nestedScrollView);
         scrollView.setOnScrollChangeListener((View.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> this.runOnUiThread(() -> {
-            if (scrollY > oldScrollY) {
-                // Scroll down
-                editFab.shrink();
-            } else {
-                // Scroll up
-                editFab.extend();
-            }
+            if (scrollY > oldScrollY)
+                editFab.shrink();   // Scroll down
+            else
+                editFab.extend();   // Scroll up
         }));
 
-        // If savedInstance is null then get the data from the database. Else (ex. on screen
-        // rotation) each fragments will recover the data they saved.
-        if (savedInstanceState == null) {
-            habitId = getIntent().getIntExtra("HABIT_ID", -1);
+        habitId = getHabitIdFromBundles(savedInstanceState);
 
-            if (habitId >= 0) {
-                // Select habit from the database
-                habit = HabitRealmManager.getHabit(habitId);
+        if (habitId >= 0) {
+            // Select habit from the database
+            habit = HabitRealmManager.getHabit(habitId);
 
-                if (habit != null) {
+            if (habit != null) {
 
-                    this.runOnUiThread(() -> {
+                this.runOnUiThread(() -> {
 
-                        // Set Habit information
-                        titleFragment.setTitle(habit.getTitle());
-                        habitTypeFragment.setHabitType(habit.getHabitType());
-                        habitTypeFragment.setMaxRepetitions(habit.getMaxRepetitions());
-                        frequencyFragment.setFrequency(habit.getFrequency());
-                        remindersFragment.setReminderList(habit.getReminders());
-                        snoozeFragment.setSnooze(habit.getMaxSnoozes());
+                    // Set Habit information
+                    titleFragment.setTitle(habit.getTitle());
+                    habitTypeFragment.setHabitType(habit.getHabitType());
+                    habitTypeFragment.setMaxRepetitions(habit.getMaxRepetitions());
+                    frequencyFragment.setFrequency(habit.getFrequency());
+                    remindersFragment.setReminderList(habit.getReminders());
+                    snoozeFragment.setSnooze(habit.getMaxSnoozes());
 
-                        GoalType goalType = habit.getGoalType();
-                        goalFragment.setGoalType(goalType);
-                        // Goal
-                        if (goalType == GoalType.ACTION)
-                            goalFragment.setInt(habit.getMaxAction());
-                        else if (goalType == GoalType.STREAK)
-                            goalFragment.setInt(habit.getMaxStreakValue());
-                        else if (goalType == GoalType.DEADLINE)
-                            goalFragment.setLong(habit.getFinalDate());
+                    GoalType goalType = habit.getGoalType();
+                    goalFragment.setGoalType(goalType);
+                    // Goal
+                    if (goalType == GoalType.ACTION)
+                        goalFragment.setInt(habit.getMaxAction());
+                    else if (goalType == GoalType.STREAK)
+                        goalFragment.setInt(habit.getMaxStreakValue());
+                    else if (goalType == GoalType.DEADLINE)
+                        goalFragment.setLong(habit.getFinalDate());
 
-                    });
-
-
-                }
-
-
-            } else {
-                // Go to MainActivity with log error message
-                Log.e(this.getClass().getSimpleName(), "Invalid habit id.");
-                finish();
+                });
             }
+
+        } else {
+            // Go to MainActivity with log error message
+            Log.e(this.getClass().getSimpleName(), "Invalid habit id.");
+            finish();
         }
+
+    }
+
+    /**
+     * Retrieve the habit id from the intent / saved instance state
+     *
+     * @param savedInstanceState
+     * @return Habit id
+     */
+    private int getHabitIdFromBundles(Bundle savedInstanceState) {
+        if (savedInstanceState == null)
+            return getIntent().getIntExtra("HABIT_ID", -1);
+        else
+            return savedInstanceState.getInt(EXTRA_HABIT_ID, -1);
     }
 
     private void setUpNotifications(@NonNull Habit habit, @NonNull List<Reminder> oldReminders) {
 
         Calendar calendar = Calendar.getInstance();
 
-        if(!habit.getFrequency().contains(Days.today(calendar))){
+        if (!habit.getFrequency().contains(Days.today(calendar))) {
             // If today is not a marked day inside frequency, then skip the creation of the alarms
             return;
         }
@@ -288,6 +294,7 @@ public class EditHabitActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
 
         outState.putBoolean(IS_ALREADY_SHOWED, true);
+        outState.putInt(EXTRA_HABIT_ID, habitId);
     }
 
     @Override
@@ -306,15 +313,30 @@ public class EditHabitActivity extends AppCompatActivity {
             builder.setMessage(R.string.delete_habit_dialog_message);
             builder.setPositiveButton(R.string.positive_delete_habit_dialog, (dialogInterface, i) -> {
 
-                // TODO: prima di eliminare l'abitudine, bisogna eliminare gli alarm
+                deleteNotifications(habit);
+
                 HabitRealmManager.deleteHabit(habitId);
-                Toast.makeText(getBaseContext(), "Abitudine eliminata!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), R.string.delete_habit_dialog_confirmation_toast, Toast.LENGTH_SHORT).show();
                 finish();
             });
-            builder.setNegativeButton("No", (dialogInterface, i) -> dialogInterface.dismiss());
+            builder.setNegativeButton(R.string.negative_delete_habit_dialog, (dialogInterface, i) -> dialogInterface.dismiss());
             builder.show();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteNotifications(@NonNull Habit habit) {
+
+        Calendar calendar = Calendar.getInstance();
+
+        if (!habit.getFrequency().contains(Days.today(calendar)))
+            return;
+
+        for (Reminder reminder : habit.getReminders()) {
+            if (reminder.isActive() && reminder.getAlarmRequestCode() != 0)
+                // Delete active alarms
+                NotificationAlarm.cancelAlarm(this, reminder.getAlarmRequestCode());
+        }
     }
 
     private void showErrorSnackbar(View view, int messageResId) {
