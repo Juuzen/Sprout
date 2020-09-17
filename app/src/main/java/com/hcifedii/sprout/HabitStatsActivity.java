@@ -29,11 +29,17 @@ import com.hcifedii.sprout.enumerations.GoalType;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import model.Habit;
+import model.Task;
 import utils.HabitRealmManager;
+import model.Streak;
 
 public class HabitStatsActivity extends SproutApplication {
 
@@ -42,6 +48,8 @@ public class HabitStatsActivity extends SproutApplication {
     private static final DecimalFormat format = new DecimalFormat("###");
 
     private Habit habit;
+
+    private CalendarView calendarView;
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
@@ -83,7 +91,7 @@ public class HabitStatsActivity extends SproutApplication {
                 goalTypeTextView.setText(habit.getGoalType().getStringResourceId());
 
                 // Get the Calendar
-                CalendarView calendarView = findViewById(R.id.calendarView);
+                calendarView = findViewById(R.id.calendarView);
 
                 // List of icons that will be showed inside the calendar
                 List<EventDay> events = new ArrayList<>();
@@ -116,10 +124,10 @@ public class HabitStatsActivity extends SproutApplication {
 //                highlight.add(cal);
 
 
-                calendarView.setEvents(events);
-                calendarView.setHighlightedDays(highlight);
+                //calendarView.setEvents(events);
+                //calendarView.setHighlightedDays(highlight);
 
-
+                getDataFromTask();
                 // Draw charts
                 drawStreakChart(habit);
                 drawMonthlyChart(habit);
@@ -187,7 +195,6 @@ public class HabitStatsActivity extends SproutApplication {
         chart.setData(lineData);
 
     }
-
 
     // TODO: i dati devono essere ordinati per numero di azioni in modo crescente
     // TODO: max 4
@@ -275,7 +282,6 @@ public class HabitStatsActivity extends SproutApplication {
         chart.getDescription().setEnabled(false);
     }
 
-
     private int getHabitIdFromBundles(Bundle savedInstance) {
 
         int id = -1;
@@ -300,6 +306,166 @@ public class HabitStatsActivity extends SproutApplication {
     private List<Calendar> getSnoozedDays(@NonNull Habit habit) {
 
         return null;
+    }
+
+
+    private void getDataFromTask() {
+
+        this.runOnUiThread(() -> {
+
+            Calendar calendar = Calendar.getInstance();
+
+            List<Task> taskHistory = new ArrayList<>();
+
+            Task task1 = new Task(), task2 = new Task(), task3 = new Task(), task4 = new Task(), task5 = new Task();
+
+
+            {
+                calendar.set(Calendar.DAY_OF_YEAR, 260);
+
+                task1.setTaskDate(calendar.getTimeInMillis());
+                task1.setTaskStatus(Task.Status.PASSED);
+
+                calendar.set(Calendar.DAY_OF_YEAR, 261);
+
+                task2.setTaskDate(calendar.getTimeInMillis());
+                task2.setTaskStatus(Task.Status.SNOOZED);
+
+                calendar.set(Calendar.DAY_OF_YEAR, 262);
+
+                task3.setTaskDate(calendar.getTimeInMillis());
+                task3.setTaskStatus(Task.Status.PASSED);
+
+                calendar.set(Calendar.DAY_OF_YEAR, 263);
+
+                task4.setTaskDate(calendar.getTimeInMillis());
+                task4.setTaskStatus(Task.Status.FAILED);
+
+                calendar.set(Calendar.DAY_OF_YEAR, 200);
+
+                task5.setTaskDate(calendar.getTimeInMillis());
+                task5.setTaskStatus(Task.Status.PASSED);
+
+                taskHistory.add(task1);
+                taskHistory.add(task2);
+                taskHistory.add(task3);
+                taskHistory.add(task4);
+                taskHistory.add(task5);
+            }
+
+            //taskHistory.sort((task, t1) -> Long.compare(task.getTaskDate(), t1.getTaskDate()));
+            // Per le icone da mostrare nel calendario (rinvii e fallimenti)
+            List<EventDay> events = new ArrayList<>();
+
+            // Per i giorni da marcare come completati
+            List<Calendar> highlight = new ArrayList<>();
+
+
+            List<Streak> streakList = new ArrayList<>();
+
+            int monthAction = 0;
+            // Una lista di max 4 elementi con le serie migliori
+
+
+            Map<Integer, Integer> actionMap = getInstanceOfActionMap();
+
+            // Per le streak
+            ArrayList<BarEntry> entries = new ArrayList<>();
+
+            int lastMonth = Calendar.JANUARY;
+            int currentMonth = Calendar.JANUARY;
+
+            long minDayStreak = 0;
+
+            float index = 0f;
+            Calendar cal = null;
+
+            for (Task task : taskHistory) {
+
+                cal = Calendar.getInstance();
+                cal.setTimeInMillis(task.getTaskDate());
+
+
+                // Get the month
+                currentMonth = cal.get(Calendar.MONTH);
+                if (currentMonth != lastMonth) {
+                    // Updating monthly actions
+                    actionMap.put(lastMonth, monthAction);
+
+                    lastMonth = currentMonth;
+                    monthAction = 0;
+                }
+
+                if (minDayStreak <= 0) {
+                    minDayStreak = cal.getTimeInMillis();
+                }
+
+                // TODO: controllare la differenza in giorni tra il task corrente e il task precedente. Se > 1 (non si dovrebbe verificare), allora fare qualcosa
+
+                switch (task.getTaskStatus()) {
+                    case SNOOZED:
+                        // Snoozed task are highlighted and have a small icons underneath the date
+                        Drawable icon = getIcon(R.drawable.ic_sprout_small, R.color.secondaryColor);
+                        events.add(new EventDay(cal, icon));
+                    case PASSED:
+                        // Passed task are just highlighted
+                        highlight.add(cal);
+                        monthAction++;
+                        break;
+
+                    default:
+                        // Failed task are not highlighted. Instead, they show a red icon
+                        Drawable failedIcon = getIcon(R.drawable.ic_clear_24dp, R.color.redColor);
+                        events.add(new EventDay(cal, failedIcon));
+
+
+                        streakList.add(new Streak(minDayStreak, cal.getTimeInMillis()));
+
+                        minDayStreak = 0;
+
+
+                        break;
+
+                }
+
+
+            }
+
+            actionMap.put(currentMonth, monthAction);
+
+            if(cal != null)
+                streakList.add(new Streak(minDayStreak, cal.getTimeInMillis()));
+
+            // Set the highlighted days and icons on the calendarView
+            calendarView.setEvents(events);
+            calendarView.setHighlightedDays(highlight);
+
+
+            Log.e("AASDA", Arrays.toString(streakList.toArray()));
+
+
+        });
+
+
+    }
+
+    private Map<Integer, Integer> getInstanceOfActionMap() {
+
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(Calendar.JANUARY, 0);
+        map.put(Calendar.FEBRUARY, 0);
+        map.put(Calendar.MARCH, 0);
+        map.put(Calendar.APRIL, 0);
+        map.put(Calendar.MAY, 0);
+        map.put(Calendar.JUNE, 0);
+        map.put(Calendar.JULY, 0);
+        map.put(Calendar.AUGUST, 0);
+        map.put(Calendar.SEPTEMBER, 0);
+        map.put(Calendar.OCTOBER, 0);
+        map.put(Calendar.NOVEMBER, 0);
+        map.put(Calendar.DECEMBER, 0);
+
+        return map;
     }
 
     private Drawable getIcon(int drawableResId, int colorResId) {

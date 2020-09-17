@@ -43,7 +43,7 @@ public abstract class SproutApplication extends AppCompatActivity {
     }
 
     /**
-     * @param anchorView         The view you want to anchor the Snackbar
+     * @param anchorView   The view you want to anchor the Snackbar
      * @param messageResId Resource id of the string you want to use.
      */
     protected void showErrorSnackbar(View anchorView, int messageResId) {
