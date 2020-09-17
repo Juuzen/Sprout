@@ -1,6 +1,5 @@
 package com.hcifedii.sprout;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,10 +28,9 @@ import com.hcifedii.sprout.adapter.HabitCardAdapter;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import model.Habit;
-import utils.NotificationAlarmManager;
 import utils.SproutBottomAppBarCutCornersTopEdge;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends SproutApplication {
     private Realm realm;
     HabitCardAdapter adapter;
 

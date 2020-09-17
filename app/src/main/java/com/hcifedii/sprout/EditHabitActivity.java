@@ -1,8 +1,6 @@
 package com.hcifedii.sprout;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
 
@@ -16,7 +14,6 @@ import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.hcifedii.sprout.enumerations.Days;
 import com.hcifedii.sprout.enumerations.GoalType;
 import com.hcifedii.sprout.enumerations.HabitType;
@@ -37,7 +34,7 @@ import utils.HabitRealmManager;
 import utils.NotificationAlarmManager;
 import utils.NotificationAlarmManager.NotificationAlarm;
 
-public class EditHabitActivity extends AppCompatActivity {
+public class EditHabitActivity extends SproutApplication {
 
     private static final String logcatTag = "Sprout - EditHabitActivity";
 
@@ -339,64 +336,4 @@ public class EditHabitActivity extends AppCompatActivity {
         }
     }
 
-    private void showErrorSnackbar(View view, int messageResId) {
-        Snackbar.make(view, messageResId, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(getResources().getColor(R.color.redColor, getTheme()))
-                .setAnchorView(view)
-                .show();
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-    }
-
-    private void enableTopBackButton() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(true);
-        }
-    }
-
-    private void printHabitInfoOnLog(@NonNull Habit habit) {
-
-        // Start Test message
-        StringBuilder testData = new StringBuilder();
-        testData.append("\nTitle: ").append(habit.getTitle());
-        testData.append("\nHabitType: ")
-                .append(habit.getHabitType()).append(", ")
-                .append(habit.getRepetitions());
-
-        testData.append("\nFrequency: ");
-        for (Days d : habit.getFrequency()) {
-            testData.append(d.name()).append(' ');
-        }
-
-        testData.append("\nReminders: ");
-        for (Reminder r : habit.getReminders()) {
-            testData.append(r.toString()).append("\t");
-        }
-
-        boolean isSnoozeEnabled = habit.getMaxSnoozes() > 0;
-        testData.append("\nSnooze: ").append(isSnoozeEnabled).append(", ")
-                .append(habit.getMaxSnoozes());
-
-        GoalType goalType = habit.getGoalType();
-        testData.append("\nGoal type: ").append(goalType.name()).append(' ');
-        if (goalType == GoalType.DEADLINE)
-            testData.append(habit.getFinalDate());
-        else {
-            int intValue = (habit.getMaxAction() > 0) ? habit.getMaxAction() : habit.getMaxStreakValue();
-            testData.append(intValue);
-        }
-
-        Log.i(logcatTag, testData.toString());
-    }
 }

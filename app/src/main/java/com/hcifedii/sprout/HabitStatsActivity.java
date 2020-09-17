@@ -7,8 +7,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.applandeo.materialcalendarview.CalendarView;
@@ -37,7 +35,7 @@ import java.util.List;
 import model.Habit;
 import utils.HabitRealmManager;
 
-public class HabitStatsActivity extends AppCompatActivity {
+public class HabitStatsActivity extends SproutApplication {
 
     public static final String EXTRA_HABIT_ID = "habitID";
 
@@ -49,7 +47,7 @@ public class HabitStatsActivity extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        if(habit != null)
+        if (habit != null)
             outState.putInt(EXTRA_HABIT_ID, habit.getId());
     }
 
@@ -318,20 +316,6 @@ public class HabitStatsActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.top_app_bar_habit_stats, menu);
         return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-    }
-
-    private void enableTopBackButton() {
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(true);
-        }
     }
 
 }

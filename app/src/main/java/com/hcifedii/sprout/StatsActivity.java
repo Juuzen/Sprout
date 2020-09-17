@@ -17,8 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,12 +34,11 @@ import model.Habit;
 import utils.HabitRealmManager;
 
 
-public class StatsActivity extends AppCompatActivity {
+public class StatsActivity extends SproutApplication {
 
     public static final String SHARED_PREFS_PERMISSION_SHOWED = "UsageDialogShowed";
 
-    HabitListAdapter adapter;
-    MaterialTextView noItemMessage;
+    private HabitListAdapter adapter;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -66,7 +63,7 @@ public class StatsActivity extends AppCompatActivity {
 
         // Recycler View
 
-        noItemMessage = findViewById(R.id.noItemMessage);
+        MaterialTextView noItemMessage = findViewById(R.id.noItemMessage);
 
         RecyclerView recyclerView = findViewById(R.id.habitRecyclerView);
 
@@ -220,17 +217,4 @@ public class StatsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-    }
-
-    private void enableTopBackButton() {
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(true);
-        }
-    }
 }
