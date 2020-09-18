@@ -52,7 +52,7 @@ public class HabitStatsActivity extends SproutApplication {
     private List<EventDay> events;
 
     // Charts related fields
-    private Map<Integer, Integer> actionMap;
+    private Map<Integer, Integer> monthlyActionsMap;
     private List<Streak> streakList;
 
     private static final DecimalFormat format = new DecimalFormat("###");
@@ -117,7 +117,6 @@ public class HabitStatsActivity extends SproutApplication {
                 if (habit.getGoalType() == GoalType.DEADLINE)
                     markEndDate(habit.getFinalDate());
 
-
                 extractDataFromTaskHistory(habit.getTaskHistory());
 
                 // Set the highlighted days and icons on the calendarView
@@ -163,7 +162,7 @@ public class HabitStatsActivity extends SproutApplication {
 
         setNoDataAvailableMessage(chart);
 
-        if (actionMap == null || actionMap.size() < 12) {
+        if (monthlyActionsMap == null || monthlyActionsMap.size() < 12) {
             Log.e(this.getClass().getSimpleName(), "Invalid Action map");
             return;
         }
@@ -175,8 +174,8 @@ public class HabitStatsActivity extends SproutApplication {
 
         // Data
         float index = 0;
-        for (Integer key : actionMap.keySet()) {
-            Integer actions = actionMap.getOrDefault(key, 0);
+        for (Integer key : monthlyActionsMap.keySet()) {
+            Integer actions = monthlyActionsMap.getOrDefault(key, 0);
 
             if (actions != null)
                 entries.add(new Entry(index++, actions));
@@ -216,9 +215,7 @@ public class HabitStatsActivity extends SproutApplication {
         chart.setData(lineData);
     }
 
-    // TODO: i dati devono essere ordinati per numero di azioni in modo crescente
-    // TODO: ordinare i dati prima di mostrarli
-    // TODO: max 4
+    // TODO: i dati devono essere ordinati in ordine decrescente
     private void drawStreakChart() {
 
         BarChart chart = findViewById(R.id.streakChart);
@@ -230,15 +227,20 @@ public class HabitStatsActivity extends SproutApplication {
         }
 
         List<BarEntry> entries = new ArrayList<>();
+        List<String> labels = new ArrayList<>();
 
         int index = 0;
-        List<String> labels = new ArrayList<>();
+
         for (Streak streak : streakList) {
 
             entries.add(new BarEntry(index++, streak.getNumDay()));
             labels.add(streak.getLabel());
 
-            // TODO: terminare il ciclo quando index > 4
+            /* Allow only 4 elements inside the chart. Otherwise the bar's labels will end up
+             * overlapping each others.
+             */
+            if (index > 4)
+                break;
         }
 
         while (index <= 4) {
@@ -283,12 +285,12 @@ public class HabitStatsActivity extends SproutApplication {
 
         xAxis.setTextSize(7);
         xAxis.setGranularity(1f);
-        xAxis.setCenterAxisLabels(true);
-        xAxis.setLabelCount(5, true);
+        xAxis.setGranularityEnabled(true);
+        xAxis.setLabelCount(5);
 
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
-            public String getAxisLabel(float value, AxisBase axis) {
+            public String getFormattedValue(float value) {
                 return labels.get((int) value);
             }
         });
@@ -320,12 +322,6 @@ public class HabitStatsActivity extends SproutApplication {
 
         chart.getAxisRight().setDrawLabels(false);
         chart.getAxisLeft().setTextColor(primaryTextColor);
-        chart.getAxisLeft().setValueFormatter(new ValueFormatter() {
-            @Override
-            public String getAxisLabel(float value, AxisBase axis) {
-                return Integer.toString((int) value);
-            }
-        });
 
         chart.setPinchZoom(false);
         chart.getLegend().setEnabled(false);
@@ -352,14 +348,19 @@ public class HabitStatsActivity extends SproutApplication {
      */
     private void extractDataFromTaskHistory(@NonNull List<Task> tasks) {
 
-        Calendar calendar = Calendar.getInstance();
-
         List<Task> taskHistory = new ArrayList<>();
 
         Task task1 = new Task(), task2 = new Task(), task3 = new Task(), task4 = new Task(), task5 = new Task();
 
+        if(streakList == null){
+            Log.e(this.getClass().getSimpleName(), "Streak list == null");
+            return;
+        }
 
-        {
+
+        {   // Da sostituire con i dati veri
+            Calendar calendar = Calendar.getInstance();
+
             calendar.set(Calendar.DAY_OF_YEAR, 260);
 
             task1.setTaskDate(calendar.getTimeInMillis());
@@ -378,7 +379,7 @@ public class HabitStatsActivity extends SproutApplication {
             calendar.set(Calendar.DAY_OF_YEAR, 263);
 
             task4.setTaskDate(calendar.getTimeInMillis());
-            task4.setTaskStatus(Task.Status.FAILED);
+            task4.setTaskStatus(Task.Status.PASSED);
 
             calendar.set(Calendar.DAY_OF_YEAR, 200);
 
@@ -391,92 +392,88 @@ public class HabitStatsActivity extends SproutApplication {
             task6.setTaskDate(calendar.getTimeInMillis());
             task6.setTaskStatus(Task.Status.FAILED);
 
+            taskHistory.add(task5);
+            taskHistory.add(task6);
             taskHistory.add(task1);
             taskHistory.add(task2);
             taskHistory.add(task3);
             taskHistory.add(task4);
-            taskHistory.add(task5);
-            taskHistory.add(task6);
+
         }
 
+        if(taskHistory == null || taskHistory.size() < 1){
+            return;
+        }
         //taskHistory.sort((task, t1) -> Long.compare(task.getTaskDate(), t1.getTaskDate()));
         // Per le icone da mostrare nel calendario (rinvii e fallimenti)
 
 
-        int monthAction = 0;
-        // Una lista di max 4 elementi con le serie migliori
-
-        actionMap = getInstanceOfActionMap();
-
+        monthlyActionsMap = getInstanceOfActionMap();
 
         int lastMonth = Calendar.JANUARY;
         int currentMonth = Calendar.JANUARY;
 
         long minDayStreak = 0;
+        int monthlyActions = 0;
+        int streakDaysCounter = 0;
 
-        Calendar cal = null;
+        Calendar calendar = null;
 
         for (Task task : taskHistory) {
 
-            cal = Calendar.getInstance();
-            cal.setTimeInMillis(task.getTaskDate());
+            calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(task.getTaskDate());
 
 
             // Get the month
-            currentMonth = cal.get(Calendar.MONTH);
+            currentMonth = calendar.get(Calendar.MONTH);
             if (currentMonth != lastMonth) {
                 // Updating monthly actions
-                actionMap.put(lastMonth, monthAction);
+                monthlyActionsMap.put(lastMonth, monthlyActions);
 
                 lastMonth = currentMonth;
-                monthAction = 0;
+                monthlyActions = 0;
             }
 
             if (minDayStreak <= 0) {
-                minDayStreak = cal.getTimeInMillis();
+                // Streak date starting point
+                minDayStreak = calendar.getTimeInMillis();
             }
 
-            // TODO: controllare la differenza in giorni tra il task corrente e il task precedente. Se > 1 (non si dovrebbe verificare), allora fare qualcosa
 
             switch (task.getTaskStatus()) {
                 case SNOOZED:
                     // Snoozed task are highlighted and have a small icons underneath the date
-                    Drawable icon = getIcon(R.drawable.ic_sprout_small, R.color.secondaryColor);
-                    events.add(new EventDay(cal, icon));
+                    Drawable snoozeIcon = getIcon(R.drawable.ic_sprout_small, R.color.secondaryColor);
+                    events.add(new EventDay(calendar, snoozeIcon));
                 case PASSED:
                     // Passed task are just highlighted
-                    highlight.add(cal);
-                    monthAction++;
+                    highlight.add(calendar);
+                    monthlyActions++;
+                    streakDaysCounter++;
                     break;
 
                 default:
                     // Failed task are not highlighted. Instead, they have a red icon
                     Drawable failedIcon = getIcon(R.drawable.ic_clear_24dp, R.color.redColor);
-                    events.add(new EventDay(cal, failedIcon));
+                    events.add(new EventDay(calendar, failedIcon));
 
-
-                    streakList.add(new Streak(minDayStreak, cal.getTimeInMillis()));
+                    if (streakDaysCounter > 0) {
+                        streakList.add(new Streak(streakDaysCounter, minDayStreak, calendar.getTimeInMillis()));
+                        streakDaysCounter = 0;
+                    }
 
                     minDayStreak = 0;
-
+                    calendar = null;
 
                     break;
-
             }
-
-
         }
 
-        actionMap.put(currentMonth, monthAction);
-
-        // TODO: Controllare le condizioni di terminazione
-        if (cal != null)
-            streakList.add(new Streak(minDayStreak, cal.getTimeInMillis()));
-
-
-
-        Log.e("AASDA", Arrays.toString(streakList.toArray()));
-
+        // Update the map and the streak list with the remaining data (if available)
+        monthlyActionsMap.put(currentMonth, monthlyActions);
+        if (calendar != null)
+            streakList.add(new Streak(streakDaysCounter, minDayStreak, calendar.getTimeInMillis()));
 
     }
 

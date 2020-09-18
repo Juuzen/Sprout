@@ -9,44 +9,38 @@ import java.util.Locale;
 public class Streak implements Comparable<Streak> {
 
     private final int numDay;
-
     private final String label;
 
     /**
-     * Create a new Streak object from minDay to the failed day (excluded)
+     * Create a new Streak object from minDay to the current day (excluded)
      *
-     * @param minDay    Starting day of the streak
-     * @param failedDay Failed day of the streak
+     * @param numDay     The number of the days for this streak
+     * @param minDay     Starting day of the streak
+     * @param currentDay Current day of the streak
      */
-    public Streak(long minDay, long failedDay) {
+    public Streak(int numDay, long minDay, long currentDay) {
 
-        // Difference between two long to get the number of Days
-        // NOTE: From API 26 there is a better way for doing this.
+        this.numDay = numDay;
+
         Calendar min = Calendar.getInstance();
         min.setTimeInMillis(minDay);
-        min.set(Calendar.HOUR_OF_DAY, 0);
-        min.set(Calendar.MINUTE, 0);
-        min.set(Calendar.SECOND, 0);
-        min.set(Calendar.MILLISECOND, 0);
 
         Calendar max = Calendar.getInstance();
-        max.setTimeInMillis(failedDay);
-        max.set(Calendar.HOUR_OF_DAY, 0);
-        max.set(Calendar.MINUTE, 0);
-        max.set(Calendar.SECOND, 0);
-        max.set(Calendar.MILLISECOND, 0);
-
-        long diffInMilis = max.getTimeInMillis() - min.getTimeInMillis();
-
-        numDay = (int) (diffInMilis / (24 * 60 * 60 * 1000));
+        max.setTimeInMillis(currentDay);
 
         // Label showed inside the chart
-        SimpleDateFormat dayFormat = new SimpleDateFormat("dd/MMM", Locale.getDefault());
+        SimpleDateFormat dayFormat = new SimpleDateFormat("dd MMM", Locale.getDefault());
 
-        max.set(Calendar.DAY_OF_YEAR, max.get(Calendar.DAY_OF_YEAR) - 1);
+        if (numDay < 2) {
+            // If it's just one day, then the label will have only that day displayed
+            label = dayFormat.format(min.getTime());
 
-        label = dayFormat.format(min.getTime()).concat(" - ") +
-                dayFormat.format(max.getTime());
+        } else {
+            max.set(Calendar.DAY_OF_YEAR, max.get(Calendar.DAY_OF_YEAR) - 1);
+
+            label = dayFormat.format(min.getTime()).concat(" - ") +
+                    dayFormat.format(max.getTime());
+        }
     }
 
     public int getNumDay() {
@@ -58,8 +52,8 @@ public class Streak implements Comparable<Streak> {
     }
 
     @Override
-    public int compareTo(Streak streak) {
-        return Integer.compare(numDay, streak.numDay);
+    public int compareTo(Streak otherStreak) {
+        return Integer.compare(this.numDay, otherStreak.numDay);
     }
 
     @Override
@@ -67,8 +61,8 @@ public class Streak implements Comparable<Streak> {
         if (!(other instanceof Streak))
             return false;
 
-        Streak streak = (Streak) other;
-        return numDay == streak.numDay;
+        Streak otherStreak = (Streak) other;
+        return this.numDay == otherStreak.numDay;
     }
 
     @Override
@@ -79,6 +73,6 @@ public class Streak implements Comparable<Streak> {
     @NonNull
     @Override
     public String toString() {
-        return numDay + " days, " + label;
+        return '[' + numDay + " days, " + label + ']';
     }
 }
