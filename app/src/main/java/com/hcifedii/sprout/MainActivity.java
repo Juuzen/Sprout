@@ -8,20 +8,19 @@ import androidx.appcompat.app.AppCompatDelegate;
 import android.app.ActivityOptions;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.icu.util.TimeUnit;
 import android.os.Bundle;
-import android.transition.Fade;
-import android.transition.Slide;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import android.view.View;
-import android.view.Window;
+import android.widget.Adapter;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,27 +34,44 @@ import com.hcifedii.sprout.adapter.HabitCardAdapter;
 
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.Objects;
+import java.util.Observable;
+import java.util.Observer;
 
 import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import model.Habit;
+import utils.AdapterObservable;
 import utils.DBAlarmReceiver;
-import utils.HabitRealmManager;
 import utils.SproutBottomAppBarCutCornersTopEdge;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Observer {
+
     private static final String TAG = "MAINACTIVITY";
     private Realm realm;
     HabitCardAdapter adapter;
     RealmResults<Habit> results;
     String day = Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
+    AdapterObservable mObserver;
+
+    /*BroadcastReceiver alarmTest = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "onReceive: " + adapter.toString());
+        }
+    };*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         day = "TUESDAY";
-        Log.d("test", "onCreate: " + day);
+
+/*        IntentFilter s_intentFilter = new IntentFilter();
+        s_intentFilter.addAction(Intent.ACTION_DATE_CHANGED);
+        s_intentFilter.addAction(Intent.ACTION_INPUT_METHOD_CHANGED);
+        s_intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+
+        registerReceiver(alarmTest, s_intentFilter);*/
+
         setUIMode();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -71,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
         MenuItem statsMenuItem = bottomAppBar.getMenu().findItem(R.id.statsMenuItem);
         statsMenuItem.setOnMenuItemClickListener(item -> {
             if(item.getItemId() == R.id.statsMenuItem){
-
                 Intent i = new Intent(getApplicationContext(), StatsActivity.class);
                 Bundle bundle = ActivityOptions.makeCustomAnimation(this, android.R.anim.fade_in,
                         android.R.anim.fade_out).toBundle();
@@ -174,21 +189,17 @@ public class MainActivity extends AppCompatActivity {
                 builder.setTitle(getString(R.string.about_us_title));
                 builder.setMessage(getString(R.string.about_us_message));
                 builder.setIcon(R.drawable.ic_sprout_fg_small);
-
                 builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
-
                 builder.show();
                 return true;
 
             case R.id.debugMenuItemButton1:
-                //Toast.makeText(this, "Oggi è " + Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US).toUpperCase(), Toast.LENGTH_SHORT).show();
-                /* TODO: creare l'alarm manager */
 
-                /*
+                Log.d(TAG, "" + mObserver.countObservers());
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 if (alarmManager != null) {
                     Calendar cal = Calendar.getInstance();
-
+                    /*
                     if (cal.get(Calendar.MINUTE) == 59) {
                         cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + 1);
                         cal.set(Calendar.MINUTE, 0);
@@ -198,34 +209,23 @@ public class MainActivity extends AppCompatActivity {
                         cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) + 1);
                         cal.set(Calendar.SECOND, 0);
                     }
-
+                    */
+                    cal.set(Calendar.HOUR_OF_DAY, 0);
+                    cal.set(Calendar.MINUTE, 0);
+                    cal.set(Calendar.SECOND, 0);
                     long millis = cal.getTimeInMillis();
 
-                    Intent mIntent = new Intent (this, DBAlarmReceiver.class);
-                    mIntent.putExtra("Test", 154);
-
+                    /*
+                    Intent mIntent = new Intent (this, AlarmReceiverTest.class);
+                    mIntent.putExtra("repeat", false);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1000, mIntent, PendingIntent.FLAG_CANCEL_CURRENT);
                     alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC, millis, pendingIntent);
-                    Toast.makeText(this, "Alarm settato alle ore: " + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE), Toast.LENGTH_SHORT).show();
-                    Log.d("Alarm", "Alarm settato alle ore: " + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE));
+                    */
+
                 } else {
                     Log.e("AlarmManager", "Non sono riuscito a creare l'alarm.");
                 }
-                */
-                day = "WEDNESDAY";
-                Log.d("test", day);
-                results = realm
-                        .where(Habit.class)
-                        .equalTo("isCompleted", false)
-                        .and()
-                        .contains("frequencyTest", day, Case.INSENSITIVE)
-                        .sort("id")
-                        .findAll();
-                if (results != null) {
-                    adapter.updateData(results);
-                } else {
-                    Log.d(TAG, "What");
-                }
+
                 return true;
 
             default:
@@ -260,14 +260,50 @@ public class MainActivity extends AppCompatActivity {
                         .build());
     }
 
-    public void refreshAdapter() {
-        results = realm.where(Habit.class).equalTo("title", "test").findAll();
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         realm.removeAllChangeListeners();
+        AdapterObservable.getInstance().deleteObservers();
         realm.close();
     }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        day = "WEDNESDAY";
+        results = realm
+                .where(Habit.class)
+                .equalTo("isCompleted", false)
+                .and()
+                .contains("frequencyTest", day, Case.INSENSITIVE)
+                .sort("id")
+                .findAll();
+        if (results != null) {
+            adapter.updateData(results);
+        } else {
+            Log.d(TAG, "What");
+        }
+
+    }
+
+    /*
+    @Override
+    public void onChange() {
+        day = "WEDNESDAY";
+        Log.d("test", day);
+        results = realm
+                .where(Habit.class)
+                .equalTo("isCompleted", false)
+                .and()
+                .contains("frequencyTest", day, Case.INSENSITIVE)
+                .sort("id")
+                .findAll();
+        if (results != null) {
+            adapter.updateData(results);
+        } else {
+            Log.d(TAG, "What");
+        }
+    }
+
+     */
 }

@@ -154,8 +154,9 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             });
 
             checkButton.setOnClickListener(view -> {
-                //TODO: inserire il codice per il listener
-                //Toast.makeText(ct, "Funziono", Toast.LENGTH_SHORT).show();
+                if (habit.getRepetitions() < 1) {
+                    habit.getRealm().executeTransaction(realm -> habit.setRepetitions(1));
+                }
             });
         }
     }

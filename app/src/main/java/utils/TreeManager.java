@@ -104,52 +104,52 @@ public class TreeManager {
 
     }
 
-    public static void grow(Tree tree) {
-        // Retrieving the tree values
-        Tree.Growth growth = tree.getGrowth();
-        int exp = tree.getExperience();
-        // Setting up the growth switch case
-        switch (growth) {
-            case SPROUT:
-                if (exp >= 1) {
-                    TreeManager.setTreeGrowth(tree, Tree.Growth.SMALL);
-                    TreeManager.setTreeExperience(tree, 0);
-                    //TODO: aggiornare l'imageview
-                } else {
-                    TreeManager.setTreeExperience(tree, tree.getExperience() + 1);
-                }
-                break;
-            case SMALL:
-                if(exp >= 3) {
-                    TreeManager.setTreeGrowth(tree, Tree.Growth.MEDIUM);
-                    TreeManager.setTreeExperience(tree, 0);
-                    //TODO: aggiornare l'imageview
-                } else {
-                    TreeManager.setTreeExperience(tree, tree.getExperience() + 1);
-                }
-                break;
-            case MEDIUM:
-                if (exp >= 5) {
-                    TreeManager.setTreeGrowth(tree, Tree.Growth.MATURE);
-                    TreeManager.setTreeExperience(tree, 0);
-                    //TODO: aggiornare l'imageview
-                } else {
-                    TreeManager.setTreeExperience(tree, tree.getExperience() + 1);
-                }
-                break;
-            case MATURE:
-                if (exp >= 2) {
-                    TreeManager.setTreeGrowth(tree, Tree.Growth.SPARKLING);
-                    TreeManager.setTreeExperience(tree, 0);
-                    //TODO: aggiornare l'imageview
-                } else {
-                    TreeManager.setTreeExperience(tree, tree.getExperience() + 1);
-                }
-                break;
-            case SPARKLING:
-                /* Nothing should happen while in Sparkling mode, no exp gained, no changes at all */
-                break;
-            default:
-        }
-    }
+//    public static void grow(Tree tree) {
+//        // Retrieving the tree values
+//        Tree.Growth growth = tree.getGrowth();
+//        int exp = tree.getExperience();
+//        // Setting up the growth switch case
+//        switch (growth) {
+//            case SPROUT:
+//                if (exp >= 1) {
+//                    TreeManager.setTreeGrowth(tree, Tree.Growth.SMALL);
+//                    TreeManager.setTreeExperience(tree, 0);
+//                    //TODO: aggiornare l'imageview
+//                } else {
+//                    TreeManager.setTreeExperience(tree, tree.getExperience() + 1);
+//                }
+//                break;
+//            case SMALL:
+//                if(exp >= 3) {
+//                    TreeManager.setTreeGrowth(tree, Tree.Growth.MEDIUM);
+//                    TreeManager.setTreeExperience(tree, 0);
+//                    //TODO: aggiornare l'imageview
+//                } else {
+//                    TreeManager.setTreeExperience(tree, tree.getExperience() + 1);
+//                }
+//                break;
+//            case MEDIUM:
+//                if (exp >= 5) {
+//                    TreeManager.setTreeGrowth(tree, Tree.Growth.MATURE);
+//                    TreeManager.setTreeExperience(tree, 0);
+//                    //TODO: aggiornare l'imageview
+//                } else {
+//                    TreeManager.setTreeExperience(tree, tree.getExperience() + 1);
+//                }
+//                break;
+//            case MATURE:
+//                if (exp >= 2) {
+//                    TreeManager.setTreeGrowth(tree, Tree.Growth.SPARKLING);
+//                    TreeManager.setTreeExperience(tree, 0);
+//                    //TODO: aggiornare l'imageview
+//                } else {
+//                    TreeManager.setTreeExperience(tree, tree.getExperience() + 1);
+//                }
+//                break;
+//            case SPARKLING:
+//                /* Nothing should happen while in Sparkling mode, no exp gained, no changes at all */
+//                break;
+//            default:
+//        }
+//    }
 }

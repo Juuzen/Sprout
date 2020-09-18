@@ -104,6 +104,7 @@ public class HabitRealmManager {
     }
 
     public static void test(Context context) {
+        Log.d(LOG_TAG, "test: prova");
         Toast.makeText(context, "Test riuscito", Toast.LENGTH_SHORT).show();
     }
 
