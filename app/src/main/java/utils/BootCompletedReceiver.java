@@ -24,7 +24,6 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 
     private final Calendar calendar = Calendar.getInstance();
 
-
     @Override
     public void onReceive(Context context, Intent intent) {
 

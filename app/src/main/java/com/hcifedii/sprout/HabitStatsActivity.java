@@ -129,7 +129,7 @@ public class HabitStatsActivity extends SproutApplication {
                 drawMonthlyChart();
 
                 //TODO: gestione albero
-
+                //TODO: aggiungere un opzione per andare dentro a EditHabitActivity solo se l'abitudine non è ancora archiviata
             });
 
         } else {

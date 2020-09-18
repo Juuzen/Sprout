@@ -135,7 +135,7 @@ public class DBAlarmReceiver extends BroadcastReceiver  {
                                             if (isTaskPassed) {
                                                 habit.setGoalValue(habit.getGoalValue() + 1);
                                                 if (habit.getGoalValue() >= habit.getMaxAction()) {
-                                                    habit.setIsCompleted(true);
+                                                    habit.setCompleted(true);
                                                 }
                                             }
                                             break;
@@ -143,7 +143,7 @@ public class DBAlarmReceiver extends BroadcastReceiver  {
                                             if (isTaskPassed) {
                                                 habit.setGoalValue(habit.getGoalValue() + 1);
                                                 if (habit.getGoalValue() >= habit.getMaxStreakValue()) {
-                                                    habit.setIsCompleted(true);
+                                                    habit.setCompleted(true);
                                                 }
                                             } else {
                                                 habit.setGoalValue(0);
@@ -156,7 +156,7 @@ public class DBAlarmReceiver extends BroadcastReceiver  {
                                             int finalDate = cal.get(Calendar.DAY_OF_YEAR);
                                             //FIXME: controllo anche sull'anno
                                             if (today >= finalDate) {
-                                                habit.setIsCompleted(true);
+                                                habit.setCompleted(true);
                                             }
                                             break;
                                         default: // case NONE:

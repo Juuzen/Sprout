@@ -176,18 +176,6 @@ public class Habit extends RealmObject {
         goalType = val.name();
     }
 
-    /**
-     * Boolean that say if the habit is completed. A completed habit won't be shown inside the
-     * MainActivity.
-     */
-    private boolean isCompleted = false;
-    public boolean getIsCompleted() {
-        return isCompleted;
-    }
-    public void setIsCompleted(boolean completed) {
-        isCompleted = completed;
-    }
-
     private long goalValue = 0;
     public long getGoalValue() { return goalValue; }
     public void setGoalValue(long value) { this.goalValue = value; }
