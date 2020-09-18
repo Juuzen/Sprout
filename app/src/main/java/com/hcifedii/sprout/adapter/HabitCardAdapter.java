@@ -238,29 +238,4 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         }
     }
 
-    /*
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView habitTitle;
-        ProgressBar progressBar;
-        TextView progressLabel;
-        ImageButton editHabitButton;
-        Button checkButton;
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            habitTitle = itemView.findViewById(R.id.counterHabitCardTitle);
-            editHabitButton = itemView.findViewById(R.id.counterHabitEditButton);
-            progressBar = itemView.findViewById(R.id.counterHabitProgressBar);
-            checkButton = itemView.findViewById(R.id.counterHabitCheckButton);
-            progressLabel = itemView.findViewById(R.id.counterHabitProgressLabel);
-        }
-
-        void setHabit(Habit habit) {
-            this.habitTitle.setText(habit.getTitle());
-            this.progressBar.setProgress(habit.getRepetitions());
-            this.progressBar.setMax(habit.getMaxRepetitions());
-            this.progressLabel.setText("Completato " + habit.getRepetitions() + " volte su " + habit.getMaxRepetitions()); //FIXME: sposta la stringa
-        }
-    }
-     */
 }

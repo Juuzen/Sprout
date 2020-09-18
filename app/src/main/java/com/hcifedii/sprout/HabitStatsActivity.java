@@ -29,7 +29,6 @@ import com.hcifedii.sprout.enumerations.GoalType;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +51,8 @@ public class HabitStatsActivity extends SproutApplication {
     private List<EventDay> events;
 
     // Charts related fields
+    private static final int MAX_BAR_CHART_DIM = 4;
+
     private Map<Integer, Integer> monthlyActionsMap;
     private List<Streak> streakList;
 
@@ -126,6 +127,9 @@ public class HabitStatsActivity extends SproutApplication {
                 // Draw charts
                 drawStreakChart();
                 drawMonthlyChart();
+
+                //TODO: gestione albero
+
             });
 
         } else {
@@ -215,7 +219,9 @@ public class HabitStatsActivity extends SproutApplication {
         chart.setData(lineData);
     }
 
-    // TODO: i dati devono essere ordinati in ordine decrescente
+    /**
+     * Draw a bar chart displaying the 4 best streak of the user
+     */
     private void drawStreakChart() {
 
         BarChart chart = findViewById(R.id.streakChart);
@@ -225,6 +231,9 @@ public class HabitStatsActivity extends SproutApplication {
         if (streakList == null || streakList.size() <= 0) {
             return;
         }
+
+        // Order the streak list
+        streakList.sort(Streak::compareTo);
 
         List<BarEntry> entries = new ArrayList<>();
         List<String> labels = new ArrayList<>();
@@ -237,13 +246,12 @@ public class HabitStatsActivity extends SproutApplication {
             labels.add(streak.getLabel());
 
             /* Allow only 4 elements inside the chart. Otherwise the bar's labels will end up
-             * overlapping each others.
-             */
-            if (index > 4)
+             * overlapping each others. */
+            if (index >= MAX_BAR_CHART_DIM)
                 break;
         }
 
-        while (index <= 4) {
+        while (index < MAX_BAR_CHART_DIM) {
             // Fill the last positions with empty bars
             entries.add(new BarEntry(index++, 0));
             labels.add("");
@@ -251,14 +259,10 @@ public class HabitStatsActivity extends SproutApplication {
 
         BarDataSet barDataSet = new BarDataSet(entries, getString(R.string.days));
 
-        final int[] chartColor = new int[]{
-                getColor(R.color.primaryLightColor),
+        barDataSet.setColors(getColor(R.color.primaryLightColor),
                 getColor(R.color.primaryColor),
                 getColor(R.color.secondaryLightColor),
-                getColor(R.color.secondaryColor)
-        };
-
-        barDataSet.setColors(chartColor);
+                getColor(R.color.secondaryColor));
 
         barDataSet.setValueTextColor(getColor(R.color.primaryTextColor));
         barDataSet.setValueFormatter(new ValueFormatter() {
@@ -286,7 +290,7 @@ public class HabitStatsActivity extends SproutApplication {
         xAxis.setTextSize(7);
         xAxis.setGranularity(1f);
         xAxis.setGranularityEnabled(true);
-        xAxis.setLabelCount(5);
+        xAxis.setLabelCount(MAX_BAR_CHART_DIM);
 
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
@@ -331,16 +335,14 @@ public class HabitStatsActivity extends SproutApplication {
 
     private int getHabitIdFromBundles(Bundle savedInstance) {
 
-        int id = -1;
-        if (savedInstance != null) {
-            id = savedInstance.getInt(EXTRA_HABIT_ID, -1);
-        } else {
-            Bundle extra = getIntent().getExtras();
-            if (extra != null) {
-                id = extra.getInt(EXTRA_HABIT_ID, -1);
-            }
-        }
-        return id;
+        if (savedInstance != null)
+            return savedInstance.getInt(EXTRA_HABIT_ID, -1);
+
+        Bundle extra = getIntent().getExtras();
+        if (extra != null)
+            return extra.getInt(EXTRA_HABIT_ID, -1);
+
+        return -1;
     }
 
     /**
@@ -352,11 +354,12 @@ public class HabitStatsActivity extends SproutApplication {
 
         Task task1 = new Task(), task2 = new Task(), task3 = new Task(), task4 = new Task(), task5 = new Task();
 
-        if(streakList == null){
+        if (streakList == null) {
             Log.e(this.getClass().getSimpleName(), "Streak list == null");
             return;
         }
 
+        // TODO: sostituire con la vera lista di task
 
         {   // Da sostituire con i dati veri
             Calendar calendar = Calendar.getInstance();
@@ -401,7 +404,7 @@ public class HabitStatsActivity extends SproutApplication {
 
         }
 
-        if(taskHistory == null || taskHistory.size() < 1){
+        if (taskHistory == null || taskHistory.size() < 1) {
             return;
         }
         //taskHistory.sort((task, t1) -> Long.compare(task.getTaskDate(), t1.getTaskDate()));

@@ -17,8 +17,15 @@ public class Streak implements Comparable<Streak> {
      * @param numDay     The number of the days for this streak
      * @param minDay     Starting day of the streak
      * @param currentDay Current day of the streak
+     * @throws IllegalArgumentException Throw an exception when the parameters are wrong
      */
     public Streak(int numDay, long minDay, long currentDay) {
+
+        if(minDay > currentDay){
+            throw new IllegalArgumentException("minDay must be less than or equal to currentDay");
+        }else if(numDay < 1){
+            throw new IllegalArgumentException("numDay must be greater that 0");
+        }
 
         this.numDay = numDay;
 
@@ -53,7 +60,7 @@ public class Streak implements Comparable<Streak> {
 
     @Override
     public int compareTo(Streak otherStreak) {
-        return Integer.compare(this.numDay, otherStreak.numDay);
+        return Integer.compare(otherStreak.numDay, this.numDay);
     }
 
     @Override
