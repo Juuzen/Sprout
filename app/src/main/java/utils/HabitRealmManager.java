@@ -3,35 +3,34 @@ package utils;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-
 import com.hcifedii.sprout.enumerations.GoalType;
-
 import java.util.Calendar;
 import java.util.List;
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 import model.Habit;
+
 import model.Task;
 import model.Tree;
+import model.Reminder;
+
 
 public class HabitRealmManager {
 
     private static final String LOG_TAG = "HabitManager";
 
     public static long getHabitCount() {
-        Realm realm = null;
-        long count;
-        try {
-            realm = Realm.getDefaultInstance();
-            count = realm.where(Habit.class).count();
-
-        } finally {
-            if (realm != null)
-                realm.close();
+        try (Realm realm = Realm.getDefaultInstance()) {
+            return realm.where(Habit.class).count();
         }
-        return count;
+    }
+
+    public static long getCompletedHabitCount() {
+        try (Realm realm = Realm.getDefaultInstance()) {
+            return realm.where(Habit.class).equalTo("isCompleted", true).count();
+        }
     }
 
     public static Habit getHabit(int habitId) {
@@ -67,6 +66,7 @@ public class HabitRealmManager {
         try {
             realm = Realm.getDefaultInstance();
             RealmResults<Habit> realmResults = realm.where(Habit.class).findAll();
+
             habitList = realm.copyFromRealm(realmResults);
         } finally {
             if (realm != null)
@@ -78,29 +78,31 @@ public class HabitRealmManager {
     public static void saveOrUpdateHabit(@NonNull Habit habit) {
         try (Realm realm = Realm.getDefaultInstance()) {
             realm.executeTransactionAsync(
-                    realmInstance -> realmInstance.copyToRealmOrUpdate(habit),
+
+                    realmInstance -> {
+
+                        Habit oldHabit = realmInstance.where(Habit.class).equalTo("id", habit.getId()).findFirst();
+                        if (oldHabit != null) {
+                            // Delete old reminders
+                            RealmList<Reminder> reminder = oldHabit.getReminders();
+                            reminder.deleteAllFromRealm();
+                        }
+
+                        realmInstance.copyToRealmOrUpdate(habit);
+
+                    },
                     () -> Log.i(LOG_TAG, "Transaction success! - ID: " + habit.getId()),
                     error -> Log.i(LOG_TAG, "Transaction error! - ID: " + habit.getId() + "\n" + error.getMessage()));
         }
     }
 
-    public static int getNextId () {
-        Realm realm = null;
-        int result;
-        try {
-            realm = Realm.getDefaultInstance();
+    public static int getNextId() {
+        try (Realm realm = Realm.getDefaultInstance()) {
             Number maxId = realm.where(Habit.class).max("id");
-            if (maxId != null) {
-                result = maxId.intValue() + 1;
-            } else {
-                result = 0;
-            }
-        } finally {
-            if (realm != null) {
-                realm.close();
-            }
+            if (maxId != null)
+                return maxId.intValue() + 1;
+            else return 0;
         }
-        return result;
     }
 
     public static void test(Context context) {

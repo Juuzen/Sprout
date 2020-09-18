@@ -2,21 +2,15 @@ package com.hcifedii.sprout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
-import android.transition.Explode;
-import android.transition.Fade;
-import android.transition.Slide;
-import android.util.Log;
 
 import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.hcifedii.sprout.enumerations.Days;
 import com.hcifedii.sprout.enumerations.GoalType;
 import com.hcifedii.sprout.enumerations.HabitType;
@@ -28,6 +22,7 @@ import com.hcifedii.sprout.fragment.RemindersFragment;
 import com.hcifedii.sprout.fragment.SnoozeFragment;
 import com.hcifedii.sprout.fragment.TitleFragment;
 
+import java.util.Calendar;
 import java.util.List;
 
 import model.Habit;
@@ -35,9 +30,13 @@ import io.realm.RealmList;
 import model.Reminder;
 import model.Tree;
 import utils.HabitRealmManager;
+
 import utils.TreeManager;
 
-public class CreateHabitActivity extends AppCompatActivity {
+import utils.NotificationAlarmManager;
+
+
+public class CreateHabitActivity extends SproutApplication {
 
     private static final String logcatTag = "Sprout - CreateHabitActivity";
 
@@ -117,6 +116,7 @@ public class CreateHabitActivity extends AppCompatActivity {
                 habit.setMaxStreakValue(goalIntValue);
                 habit.setFinalDate(goalLongValue);
 
+
                 //Set the tree field
                 Tree tree = new Tree();
                 tree.setId(habit.getId());
@@ -126,10 +126,15 @@ public class CreateHabitActivity extends AppCompatActivity {
                 // Print test Message
                 printHabitInfoOnLog(habit);
 
+                setUpNotification(habit);
+
+
                 // Save habit
                 HabitRealmManager.saveOrUpdateHabit(habit);
+
                 Toast.makeText(this, R.string.new_habit_success_message, Toast.LENGTH_SHORT).show();
                 finish();
+
             } else {
                 titleFragment.setErrorMessage(getString(R.string.error_title_is_empty));
                 showErrorSnackbar(saveFab, R.string.error_title_is_empty);
@@ -150,31 +155,32 @@ public class CreateHabitActivity extends AppCompatActivity {
 
         presetFragment = (PresetFragment) fragmentManager.findFragmentById(R.id.presetHabitFragment);
 
-        presetFragment.setAdapterListener(habit -> this.runOnUiThread(() -> {
+        if (presetFragment != null) {
+            presetFragment.setAdapterListener(habit -> this.runOnUiThread(() -> {
 
-            titleFragment.setTitle(habit.getTitle());
+                titleFragment.setTitle(habit.getTitle());
 
-            habitTypeFragment.setHabitType(habit.getHabitType());
-            habitTypeFragment.setMaxRepetitions(habit.getRepetitions());
+                habitTypeFragment.setHabitType(habit.getHabitType());
+                habitTypeFragment.setMaxRepetitions(habit.getRepetitions());
 
-            frequencyFragment.setFrequency(habit.getFrequency());
+                frequencyFragment.setFrequency(habit.getFrequency());
 
-            remindersFragment.setReminderList(habit.getReminders());
+                remindersFragment.setReminderList(habit.getReminders());
 
-            snoozeFragment.setSnooze(habit.getMaxSnoozes());
+                snoozeFragment.setSnooze(habit.getMaxSnoozes());
 
-            GoalType goalType = habit.getGoalType();
-            goalFragment.setGoalType(goalType);
-            if (goalType == GoalType.ACTION)
-                goalFragment.setInt(habit.getMaxAction());
-            else if (goalType == GoalType.STREAK)
-                goalFragment.setInt(habit.getMaxStreakValue());
-            else if (goalType == GoalType.DEADLINE)
-                goalFragment.setLong(habit.getFinalDate());
+                GoalType goalType = habit.getGoalType();
+                goalFragment.setGoalType(goalType);
+                if (goalType == GoalType.ACTION)
+                    goalFragment.setInt(habit.getMaxAction());
+                else if (goalType == GoalType.STREAK)
+                    goalFragment.setInt(habit.getMaxStreakValue());
+                else if (goalType == GoalType.DEADLINE)
+                    goalFragment.setLong(habit.getFinalDate());
 
-            Toast.makeText(getBaseContext(), R.string.preset_habit_loading_snackbar, Toast.LENGTH_SHORT).show();
-        }));
-
+                Toast.makeText(getBaseContext(), R.string.preset_habit_loading_snackbar, Toast.LENGTH_SHORT).show();
+            }));
+        }
 
         // Shrinking / extending behaviour of the fab
         NestedScrollView scrollView = findViewById(R.id.nestedScrollView);
@@ -188,81 +194,52 @@ public class CreateHabitActivity extends AppCompatActivity {
             }
         }));
 
-
     }
 
-    /**
-     * @param view         The view you want to anchor the Snackbar
-     * @param messageResId Resource id of the string you want to use.
-     */
-    private void showErrorSnackbar(View view, int messageResId) {
-        Snackbar.make(view, messageResId, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(getResources().getColor(R.color.redColor, getTheme()))
-                .setTextColor(getResources().getColor(R.color.onRedColor, getTheme()))
-                .setAnchorView(view)
-                .show();
+    private void setUpNotification(@NonNull Habit habit) {
+
+        Calendar calendar = Calendar.getInstance();
+
+        if (!habit.getFrequency().contains(Days.today(calendar))) {
+            // If today is not a marked day inside frequency, then skip the creation of the alarms
+            return;
+        }
+
+        List<Reminder> reminders = habit.getReminders();
+
+        if (reminders.size() > 0) {
+            NotificationAlarmManager manager = new NotificationAlarmManager(this);
+            manager.setNotificationData(habit.getTitle(), habit.getId());
+
+            // Now
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minutes = calendar.get(Calendar.MINUTE);
+
+            for (Reminder reminder : reminders) {
+                if (reminder.isActive() && !reminder.isInThePast(hour, minutes)) {
+
+                    int requestCode = manager.setAlarmAt(reminder.getHours(), reminder.getMinutes());
+
+                    // Save the request code for later use
+                    reminder.setAlarmRequestCode(requestCode);
+
+                    // Reset request code
+                    manager.setRequestCode(0);
+                }
+            }
+        }
+        // Print a test message
+        //printHabitInfoOnLog(habit);
     }
 
-    private void enableTopBackButton() {
+    @Override
+    protected void enableTopBackButton() {
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setElevation(0);
-        } else {
-            Log.e(logcatTag, "getSupportActionBar() returned null");
         }
-    }
-
-    /**
-     * Print a test message inside logcat
-     * @param habit Habit to be printed
-     */
-    private void printHabitInfoOnLog(@NonNull Habit habit){
-
-        // Start Test message
-        StringBuilder testData = new StringBuilder();
-        testData.append("\nTitle: ").append(habit.getTitle());
-        testData.append("\nHabitType: ")
-                .append(habit.getHabitType()).append(", ")
-                .append(habit.getRepetitions());
-
-        testData.append("\nFrequency: ");
-        for (Days d : habit.getFrequency()) {
-            testData.append(d.name()).append(' ');
-        }
-
-        testData.append("\nReminders: ");
-        for (Reminder r : habit.getReminders()) {
-            testData.append(r.toString()).append("\t");
-        }
-
-        boolean isSnoozeEnabled = habit.getMaxSnoozes() > 0;
-        testData.append("\nSnooze: ").append(isSnoozeEnabled).append(", ")
-                .append(habit.getMaxSnoozes());
-
-        GoalType goalType = habit.getGoalType();
-        testData.append("\nGoal type: ").append(goalType.name()).append(' ');
-        if (goalType == GoalType.DEADLINE)
-            testData.append(habit.getFinalDate());
-        else {
-            int intValue = (habit.getMaxAction() > 0) ? habit.getMaxAction() : habit.getMaxStreakValue();
-            testData.append(intValue);
-        }
-
-        Log.i(logcatTag, testData.toString());
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
 }

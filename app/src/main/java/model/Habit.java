@@ -12,7 +12,6 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
-import utils.DaysEnum;
 
 public class Habit extends RealmObject {
 
@@ -24,9 +23,11 @@ public class Habit extends RealmObject {
 
     @PrimaryKey
     private int id;
+
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -36,11 +37,27 @@ public class Habit extends RealmObject {
      */
     @Required
     private String title;
+
     public String getTitle() {
         return title;
     }
+
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    /**
+     * Boolean that say if the habit is completed. A completed habit won't be shown inside the
+     * MainActivity.
+     */
+    private boolean isCompleted = false;
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
     }
 
     /**
@@ -60,16 +77,24 @@ public class Habit extends RealmObject {
      * Each time the user complete an action.
      */
     private int repetitions = 0;
+
     public int getRepetitions() {
         return repetitions;
     }
+
     public void setRepetitions(int repetitions) {
         this.repetitions = repetitions;
     }
-    
+
     private int maxRepetitions = 1; //if the habitType is "COUNTER", then this should be replaced with the new value
-    public int getMaxRepetitions() { return maxRepetitions; }
-    public void setMaxRepetitions(int maxRepetitions) { this.maxRepetitions = maxRepetitions; }
+
+    public int getMaxRepetitions() {
+        return maxRepetitions;
+    }
+
+    public void setMaxRepetitions(int maxRepetitions) {
+        this.maxRepetitions = maxRepetitions;
+    }
 
     private String frequencyTest;
 
@@ -89,6 +114,7 @@ public class Habit extends RealmObject {
     private RealmList<String> frequency;
 
     public List<Days> getFrequency() {
+
         List<Days> output = new ArrayList<>();
         // Convert the RealmList of String to a List of Days
         for (String day : frequency)
@@ -122,6 +148,7 @@ public class Habit extends RealmObject {
 
     // Snoozed status
     private boolean isSnoozed = false;
+
     public boolean getIsSnoozed() { return isSnoozed; }
     public void setIsSnoozed(boolean snoozed) { isSnoozed = snoozed; }
 
@@ -129,6 +156,7 @@ public class Habit extends RealmObject {
     private int snoozesMade = 0;
     public int getSnoozesMade() { return snoozesMade; }
     public void setSnoozesMade(int snoozed) { snoozesMade = snoozed; }
+
 
     // Max snoozes (in a week? in a month?) TODO: specificare la logica per i rinvii
     private int maxSnoozes = 0;

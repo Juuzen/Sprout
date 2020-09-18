@@ -14,6 +14,7 @@ public class Reminder extends RealmObject implements Serializable {
     private boolean isActive = true;
 
     private boolean is24HourFormat;
+    private int requestCode;
 
     // Default constructor for Realm
     public Reminder() {
@@ -61,7 +62,7 @@ public class Reminder extends RealmObject implements Serializable {
     }
 
     private static String get24HourFormattedString(int hours, int minutes) {
-        return String.valueOf(hours) + ':' + String.format(Locale.getDefault(),"%02d", minutes);
+        return String.valueOf(hours) + ':' + String.format(Locale.getDefault(), "%02d", minutes);
     }
 
     private static String get12HourFormattedString(int hour, int minutes) {
@@ -79,17 +80,47 @@ public class Reminder extends RealmObject implements Serializable {
 
         time.append(':');
 
-        time.append(String.format(Locale.getDefault(),"%02d", minutes));
+        time.append(String.format(Locale.getDefault(), "%02d", minutes));
 
         time.append(' ').append(timeSet);
 
         return time.toString();
     }
 
+    public void setAlarmRequestCode(int alarmRequestCode) {
+        this.requestCode = alarmRequestCode;
+    }
+
+    public int getAlarmRequestCode() {
+        return requestCode;
+    }
+
+    @Override
+    public boolean equals(Object otherReminder) {
+        if (!(otherReminder instanceof Reminder))
+            return false;
+
+        Reminder reminder = (Reminder) otherReminder;
+        return hours == reminder.hours && minutes == reminder.minutes && requestCode == reminder.requestCode;
+    }
+
+    @Override
+    public int hashCode() {
+        return hours ^ minutes ^ requestCode;
+    }
+
+    /**
+     * @param otherHours
+     * @param otherMinutes
+     * @return Return true if this reminder is in the past.
+     */
+    public boolean isInThePast(int otherHours, int otherMinutes) {
+        return this.hours < otherHours || this.minutes < otherMinutes;
+    }
+
     @NonNull
     @Override
     public String toString() {
-        return "[" + hours + ":" + minutes + ", isActive=" + isActive + ", is24Hour=" + is24HourFormat + "]";
+        return "[" + hours + ":" + minutes + ", isActive=" + isActive + ", is24Hour=" + is24HourFormat + ", requestCode=" + requestCode + "]";
     }
-
 }

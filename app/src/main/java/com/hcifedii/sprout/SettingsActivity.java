@@ -4,14 +4,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragmentCompat;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends SproutApplication {
 
     public static final String SHARED_PREFS_FILE = "sharedPrefs";
     public static final String SHARED_PREFS_DARK_MODE = "DarkMode";
@@ -106,20 +104,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         }
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-    }
-
-    private void enableTopBackButton() {
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setHomeButtonEnabled(true);
-        }
     }
 
 }

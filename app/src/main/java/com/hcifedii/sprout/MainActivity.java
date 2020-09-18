@@ -1,6 +1,6 @@
 package com.hcifedii.sprout;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -13,17 +13,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
 import android.util.Log;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import android.view.View;
+
 import android.widget.Adapter;
+
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment;
@@ -45,7 +49,8 @@ import utils.AdapterObservable;
 import utils.DBAlarmReceiver;
 import utils.SproutBottomAppBarCutCornersTopEdge;
 
-public class MainActivity extends AppCompatActivity implements Observer {
+
+public class MainActivity extends SproutApplication implements Observer {
 
     private static final String TAG = "MAINACTIVITY";
     private Realm realm;
@@ -174,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+
             case R.id.searchMenuItem:
                 return true;
 
@@ -188,7 +194,15 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
                 builder.setTitle(getString(R.string.about_us_title));
                 builder.setMessage(getString(R.string.about_us_message));
-                builder.setIcon(R.drawable.ic_sprout_fg_small);
+
+
+                Drawable sproutIcon = ContextCompat.getDrawable(this, R.drawable.ic_sprout_small);
+
+                if(sproutIcon != null)
+                    sproutIcon.setTint(getColor(R.color.primaryColor));
+
+                builder.setIcon(sproutIcon);
+
                 builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
                 builder.show();
                 return true;
