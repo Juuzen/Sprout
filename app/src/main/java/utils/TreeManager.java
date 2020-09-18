@@ -2,36 +2,39 @@ package utils;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.hcifedii.sprout.BuildConfig;
 
 import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import model.Task;
 import model.Tree;
 
-
-enum Health {
-    HEALTHY,
-    DRYING,
-    WITHERED
-}
-
 public class TreeManager {
-    private static final String LOG_TAG = "DBTreeManager";
+    private static final String TAG = "TreeManager";
 
     public static Tree getTree(int treeId) {
         Tree result = null;
         if (treeId >= 0) {
-            Realm realm = null;
-            try {
-                realm = Realm.getDefaultInstance();
-                result = realm.where(Tree.class).equalTo("id", treeId).findFirst();
-            } finally {
-                if (realm != null) realm.close();
+            try (Realm realm = Realm.getDefaultInstance()) {
+                Tree check = realm.where(Tree.class).equalTo("id", treeId).findFirst();
+                if (check != null) {
+                    result = realm.copyFromRealm(check);
+                }
             }
         }
         return result;
+    }
+
+    public static void insertTree(@NonNull Tree tree) {
+        try (Realm realm = Realm.getDefaultInstance()) {
+            realm.executeTransaction(
+                    realmInstance -> realmInstance.insertOrUpdate(tree)
+            );
+        }
     }
 
     public static ArrayList<Tree> getAllTrees() {
@@ -49,122 +52,104 @@ public class TreeManager {
         return list;
     }
 
-    // adds 1 to the tree's experience
-    public static void gainExperience(int treeId) {
-        Tree tree = getTree(treeId);
+    public static void setTreeGrowth(Tree tree, Tree.Growth growth) {
         if (tree != null) {
-            Realm realm = null;
-            try {
-                realm = Realm.getDefaultInstance();
+            try (Realm realm = Realm.getDefaultInstance()) {
                 realm.executeTransactionAsync(
                         realm1 -> {
-                    tree.setExperience(tree.getExperience() + 1);
-                    realm1.insertOrUpdate(tree); },
-
-                        () -> Log.i(LOG_TAG, "Experience Gained! - ID: " + tree.getId()),
-
-                        error -> Log.i(LOG_TAG, "Transaction unsuccessful! - ID: " + tree.getId() + "\n" + error.getMessage()));
-            } finally {
-                if (realm != null) {
-                    realm.close();
-                }
+                            tree.setGrowth(growth);
+                            realm1.insertOrUpdate(tree);
+                        },
+                        () -> Log.i(TAG, "Growth level set! - ID: " + tree.getId()),
+                        error -> Log.i(TAG, "Transaction error! - ID: " + tree.getId() + "\n" + error.getMessage()));
             }
         }
     }
 
-    public static void setTreeGrowth(int treeId, Tree.Growth growth) {
-        Tree tree = getTree(treeId);
+    public static void setTreeHealth(Tree tree, Tree.Health health) {
         if (tree != null) {
-            Realm realm = null;
-            try {
-                realm = Realm.getDefaultInstance();
-                realm.executeTransactionAsync(
-                        realm1 -> {
-                    tree.setGrowth(growth);
-                    tree.setExperience(0);
-                    realm1.insertOrUpdate(tree); },
-
-                        () -> Log.i(LOG_TAG, "Growth level set! - ID: " + tree.getId()),
-
-                        error -> Log.i(LOG_TAG, "Transaction error! - ID: " + tree.getId() + "\n" + error.getMessage()));
-            } finally {
-                if (realm != null)
-                    realm.close();
-            }
-        }
-    }
-
-    public static void setTreeHealth(int treeId, Tree.Health health) {
-        Tree tree = getTree(treeId);
-        if (tree != null) {
-            Realm realm = null;
-            try {
-                realm = Realm.getDefaultInstance();
+            try (Realm realm = Realm.getDefaultInstance()) {
                 realm.executeTransactionAsync(
                         realm1 -> {
                             tree.setHealth(health);
-                            tree.setExperience(0);
-                            realm1.insertOrUpdate(tree); },
-
-                        () -> Log.i(LOG_TAG, "Health level set! - ID: " + tree.getId()),
-
-                        error -> Log.i(LOG_TAG, "Transaction error! - ID: " + tree.getId() + "\n" + error.getMessage()));
-            } finally {
-                if (realm != null)
-                    realm.close();
+                            realm1.insertOrUpdate(tree);
+                        },
+                        () -> Log.i(TAG, "Health level set! - ID: " + tree.getId()),
+                        error -> Log.i(TAG, "Transaction error! - ID: " + tree.getId() + "\n" + error.getMessage()));
             }
         }
     }
 
-    private static int getNextId(Realm realm) {
-        Number newId = realm.where(Tree.class).max("id");
-        if (newId != null)
-            return newId.intValue() + 1;
-        return 0;
-    }
-
-    public static void grow(int treeId) {
-        // Retrieving the tree instance
-        Tree tree = getTree(treeId);
-
-        // Retrieving the tree values
-        Tree.Growth val = tree.getGrowth();
-        int exp = tree.getExperience();
-
-        // Setting up the growth switch case
-        switch (val) {
-            case SPROUT:
-                if (exp >= 1) {
-                    TreeManager.setTreeGrowth(tree.getId(), Tree.Growth.SMALL);
-                }
-                break;
-            case SMALL:
-                if (exp >= 3) {
-                    TreeManager.setTreeGrowth(tree.getId(), Tree.Growth.MEDIUM);
-                }
-                break;
-            case MEDIUM:
-                if (exp >= 5) {
-                    TreeManager.setTreeGrowth(tree.getId(), Tree.Growth.MATURE);
-                }
-                break;
-            case MATURE:
-                if (exp >= 2) {
-                    TreeManager.setTreeGrowth(tree.getId(), Tree.Growth.SPARKLING);
-                }
-                break;
-            default:
-        }
-    }
-
-    public static void normalize(int treeId) {
-        Tree tree = getTree(treeId);
+    public static void setTreeExperience(Tree tree, int experience) {
         if (tree != null) {
-            if (tree.getGrowth() == Tree.Growth.SPARKLING) {
-                setTreeGrowth(treeId, Tree.Growth.MATURE);
+            try (Realm realm = Realm.getDefaultInstance()) {
+                realm.executeTransactionAsync(
+                        realm1 -> {
+                            tree.setExperience(experience);
+                            realm1.insertOrUpdate(tree);
+                        },
+                        () -> Log.i(TAG, "Experience set! - ID: " + tree.getId()),
+                        error -> Log.i(TAG, "Transaction error! - ID: " + tree.getId() + "\n" + error.getMessage()));
             }
         }
     }
 
+    private static int getNextId() {
+        try (Realm realm = Realm.getDefaultInstance()) {
+            Number newId = realm.where(Tree.class).max("id");
+            if (newId != null)
+                return newId.intValue() + 1;
+            return 0;
+        }
 
+    }
+
+//    public static void grow(Tree tree) {
+//        // Retrieving the tree values
+//        Tree.Growth growth = tree.getGrowth();
+//        int exp = tree.getExperience();
+//        // Setting up the growth switch case
+//        switch (growth) {
+//            case SPROUT:
+//                if (exp >= 1) {
+//                    TreeManager.setTreeGrowth(tree, Tree.Growth.SMALL);
+//                    TreeManager.setTreeExperience(tree, 0);
+//                    //TODO: aggiornare l'imageview
+//                } else {
+//                    TreeManager.setTreeExperience(tree, tree.getExperience() + 1);
+//                }
+//                break;
+//            case SMALL:
+//                if(exp >= 3) {
+//                    TreeManager.setTreeGrowth(tree, Tree.Growth.MEDIUM);
+//                    TreeManager.setTreeExperience(tree, 0);
+//                    //TODO: aggiornare l'imageview
+//                } else {
+//                    TreeManager.setTreeExperience(tree, tree.getExperience() + 1);
+//                }
+//                break;
+//            case MEDIUM:
+//                if (exp >= 5) {
+//                    TreeManager.setTreeGrowth(tree, Tree.Growth.MATURE);
+//                    TreeManager.setTreeExperience(tree, 0);
+//                    //TODO: aggiornare l'imageview
+//                } else {
+//                    TreeManager.setTreeExperience(tree, tree.getExperience() + 1);
+//                }
+//                break;
+//            case MATURE:
+//                if (exp >= 2) {
+//                    TreeManager.setTreeGrowth(tree, Tree.Growth.SPARKLING);
+//                    TreeManager.setTreeExperience(tree, 0);
+//                    //TODO: aggiornare l'imageview
+//                } else {
+//                    TreeManager.setTreeExperience(tree, tree.getExperience() + 1);
+//                }
+//                break;
+//            case SPARKLING:
+//                /* Nothing should happen while in Sparkling mode, no exp gained, no changes at all */
+//                break;
+//            default:
+//        }
+//    }
 }

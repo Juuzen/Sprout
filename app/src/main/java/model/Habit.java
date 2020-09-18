@@ -96,6 +96,20 @@ public class Habit extends RealmObject {
         this.maxRepetitions = maxRepetitions;
     }
 
+    private String frequencyTest;
+
+    public String getFrequencyTest() { return frequencyTest; }
+
+    public void setFrequencyTest(List<Days> input) {
+        frequencyTest = "";
+        StringBuilder tmp = new StringBuilder();
+        for (Days day : input) {
+            tmp.append(day.name());
+        }
+        frequencyTest = tmp.toString();
+    }
+
+
     // Week frequency
     private RealmList<String> frequency;
 
@@ -109,7 +123,6 @@ public class Habit extends RealmObject {
     }
 
     public void setFrequency(List<Days> input) {
-
         if (frequency.size() > 0)
             frequency.clear();
         // Convert the List of Days to a RealmList of String
@@ -119,121 +132,118 @@ public class Habit extends RealmObject {
 
     // Reminders
     private RealmList<Reminder> reminders;
-
     public RealmList<Reminder> getReminders() {
         return reminders;
     }
-
     public void setReminders(RealmList<Reminder> reminders) {
         this.reminders = reminders;
+    }
+
+    // Tree
+    private Tree tree;
+    public Tree getTree() { return tree; }
+    public void setTree(Tree tree) {
+        this.tree = tree;
     }
 
     // Snoozed status
     private boolean isSnoozed = false;
 
-    public boolean getIsSnoozed() {
-        return isSnoozed;
-    }
-
-    public void setIsSnoozed(boolean snoozed) {
-        isSnoozed = snoozed;
-    }
+    public boolean getIsSnoozed() { return isSnoozed; }
+    public void setIsSnoozed(boolean snoozed) { isSnoozed = snoozed; }
 
     // Snoozed made during a X (week/month/etc)
-    private int snoozedMade = 0;
+    private int snoozesMade = 0;
+    public int getSnoozesMade() { return snoozesMade; }
+    public void setSnoozesMade(int snoozed) { snoozesMade = snoozed; }
 
-    public int getSnoozedMade() {
-        return snoozedMade;
-    }
-
-    public void setSnoozedMade(int snoozed) {
-        snoozedMade = snoozed;
-    }
 
     // Max snoozes (in a week? in a month?) TODO: specificare la logica per i rinvii
     private int maxSnoozes = 0;
-
     public int getMaxSnoozes() {
         return maxSnoozes;
     }
-
     public void setMaxSnoozes(int maxSnoozes) {
         this.maxSnoozes = maxSnoozes;
     }
 
     // Goal
     private String goalType = GoalType.NONE.name();
-
     public GoalType getGoalType() {
         return GoalType.valueOf(goalType);
     }
-
     public void setGoalType(GoalType val) {
         goalType = val.name();
     }
 
+    /**
+     * Boolean that say if the habit is completed. A completed habit won't be shown inside the
+     * MainActivity.
+     */
+    private boolean isCompleted = false;
+    public boolean getIsCompleted() {
+        return isCompleted;
+    }
+    public void setIsCompleted(boolean completed) {
+        isCompleted = completed;
+    }
+
+    private long goalValue = 0;
+    public long getGoalValue() { return goalValue; }
+    public void setGoalValue(long value) { this.goalValue = value; }
 
     // Max completed actions while having an habit TODO: col counter, gestire la logica
     private int maxAction;
-
     public int getMaxAction() {
         return maxAction;
     }
-
     public void setMaxAction(int maxAction) {
         this.maxAction = maxAction;
     }
 
     // Max value of streak while having an habit
     private int maxStreakValue;
-
     public int getMaxStreakValue() {
         return maxStreakValue;
     }
-
     public void setMaxStreakValue(int maxStreakValue) {
         this.maxStreakValue = maxStreakValue;
     }
 
     // Goal -- Deadline
     private long finalDate;     // Deadline in milliseconds
-
     public long getFinalDate() {
         return finalDate;
     }
-
     public void setFinalDate(long finalDate) {
         this.finalDate = finalDate;
     }
 
     // Icon showed inside the preset habit view
     private int imageResId;
-
     public int getImage() {
         return imageResId;
     }
-
     public void setImage(int image) {
         this.imageResId = image;
     }
 
     // Stats data
     private RealmList<Task> taskHistory;
-
     public RealmList<Task> getTaskHistory() {
-        return null;
+        return taskHistory;
     }
-
+    public void addTaskToHistory(Task task) {
+        taskHistory.add(task);
+    }
     public void setTaskHistory(RealmList<Task> taskHistory) {
         this.taskHistory = taskHistory;
     }
 
     private long habitCreationDate;     // Creation date in milliseconds
-
     public long getHabitCreationDate() {
         return habitCreationDate;
     }
-
     /*
     public void setHabitCreationDate(long date) {
         habitCreationDate = date;

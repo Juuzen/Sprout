@@ -28,8 +28,13 @@ import java.util.List;
 import model.Habit;
 import io.realm.RealmList;
 import model.Reminder;
+import model.Tree;
 import utils.HabitRealmManager;
+
+import utils.TreeManager;
+
 import utils.NotificationAlarmManager;
+
 
 public class CreateHabitActivity extends SproutApplication {
 
@@ -103,6 +108,7 @@ public class CreateHabitActivity extends SproutApplication {
                 habit.setHabitType(habitType);
                 habit.setMaxRepetitions(maxRepetitions);
                 habit.setFrequency(frequency);
+                habit.setFrequencyTest(frequency);
                 habit.setReminders(reminders);
                 habit.setMaxSnoozes(snooze);
                 habit.setGoalType(goalType);
@@ -110,7 +116,18 @@ public class CreateHabitActivity extends SproutApplication {
                 habit.setMaxStreakValue(goalIntValue);
                 habit.setFinalDate(goalLongValue);
 
+
+                //Set the tree field
+                Tree tree = new Tree();
+                tree.setId(habit.getId());
+                habit.setTree(tree);
+                TreeManager.insertTree(tree);
+
+                // Print test Message
+                printHabitInfoOnLog(habit);
+
                 setUpNotification(habit);
+
 
                 // Save habit
                 HabitRealmManager.saveOrUpdateHabit(habit);

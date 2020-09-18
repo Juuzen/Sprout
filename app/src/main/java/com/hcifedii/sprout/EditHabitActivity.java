@@ -115,7 +115,7 @@ public class EditHabitActivity extends SproutApplication {
                 if (maxRepetitions < habit.getRepetitions()) {
                     habit.setRepetitions(maxRepetitions);
                 }
-
+                habit.setFrequencyTest(frequency);
                 habit.setFrequency(frequency);
                 habit.setReminders(reminders);
                 habit.setMaxSnoozes(snooze);

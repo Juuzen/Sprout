@@ -6,15 +6,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import android.app.ActivityOptions;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
+import android.util.Log;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import android.view.View;
+
+import android.widget.Adapter;
+
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -25,17 +36,47 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.hcifedii.sprout.adapter.HabitCardAdapter;
 
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.Observable;
+import java.util.Observer;
+
+import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import model.Habit;
+import utils.AdapterObservable;
+import utils.DBAlarmReceiver;
 import utils.SproutBottomAppBarCutCornersTopEdge;
 
-public class MainActivity extends SproutApplication {
+
+public class MainActivity extends SproutApplication implements Observer {
+
+    private static final String TAG = "MAINACTIVITY";
     private Realm realm;
     HabitCardAdapter adapter;
+    RealmResults<Habit> results;
+    String day = Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
+    AdapterObservable mObserver;
+
+    /*BroadcastReceiver alarmTest = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "onReceive: " + adapter.toString());
+        }
+    };*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        day = "TUESDAY";
+
+/*        IntentFilter s_intentFilter = new IntentFilter();
+        s_intentFilter.addAction(Intent.ACTION_DATE_CHANGED);
+        s_intentFilter.addAction(Intent.ACTION_INPUT_METHOD_CHANGED);
+        s_intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+
+        registerReceiver(alarmTest, s_intentFilter);*/
+
         setUIMode();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -51,7 +92,6 @@ public class MainActivity extends SproutApplication {
         MenuItem statsMenuItem = bottomAppBar.getMenu().findItem(R.id.statsMenuItem);
         statsMenuItem.setOnMenuItemClickListener(item -> {
             if(item.getItemId() == R.id.statsMenuItem){
-
                 Intent i = new Intent(getApplicationContext(), StatsActivity.class);
                 Bundle bundle = ActivityOptions.makeCustomAnimation(this, android.R.anim.fade_in,
                         android.R.anim.fade_out).toBundle();
@@ -70,10 +110,17 @@ public class MainActivity extends SproutApplication {
             startActivity(intent, bundle);
         });
 
+        //TODO: mostrare gli habit attivi nel giorno corrente, gli altri dopo (con un divider?)
         RecyclerView rv = findViewById(R.id.habitCardRecyclerView);
         TextView emptyMessage = findViewById(R.id.mainEmptyHabitListMessage);
         realm = Realm.getDefaultInstance();
-        RealmResults<Habit> results = realm.where(Habit.class).sort("id").findAll();
+        results = realm
+                .where(Habit.class)
+                .equalTo("isCompleted", false)
+                .and()
+                .contains("frequencyTest", day, Case.INSENSITIVE)
+                .sort("id")
+                .findAll();
 
         results.addChangeListener(habits -> {
             if (habits.size() > 0) {
@@ -148,6 +195,7 @@ public class MainActivity extends SproutApplication {
                 builder.setTitle(getString(R.string.about_us_title));
                 builder.setMessage(getString(R.string.about_us_message));
 
+
                 Drawable sproutIcon = ContextCompat.getDrawable(this, R.drawable.ic_sprout_small);
 
                 if(sproutIcon != null)
@@ -156,8 +204,42 @@ public class MainActivity extends SproutApplication {
                 builder.setIcon(sproutIcon);
 
                 builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
-
                 builder.show();
+                return true;
+
+            case R.id.debugMenuItemButton1:
+
+                Log.d(TAG, "" + mObserver.countObservers());
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                if (alarmManager != null) {
+                    Calendar cal = Calendar.getInstance();
+                    /*
+                    if (cal.get(Calendar.MINUTE) == 59) {
+                        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + 1);
+                        cal.set(Calendar.MINUTE, 0);
+                        cal.set(Calendar.SECOND, 0);
+                    } else {
+                        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY));
+                        cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) + 1);
+                        cal.set(Calendar.SECOND, 0);
+                    }
+                    */
+                    cal.set(Calendar.HOUR_OF_DAY, 0);
+                    cal.set(Calendar.MINUTE, 0);
+                    cal.set(Calendar.SECOND, 0);
+                    long millis = cal.getTimeInMillis();
+
+                    /*
+                    Intent mIntent = new Intent (this, AlarmReceiverTest.class);
+                    mIntent.putExtra("repeat", false);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1000, mIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC, millis, pendingIntent);
+                    */
+
+                } else {
+                    Log.e("AlarmManager", "Non sono riuscito a creare l'alarm.");
+                }
+
                 return true;
 
             default:
@@ -196,6 +278,46 @@ public class MainActivity extends SproutApplication {
     protected void onDestroy() {
         super.onDestroy();
         realm.removeAllChangeListeners();
+        AdapterObservable.getInstance().deleteObservers();
         realm.close();
     }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        day = "WEDNESDAY";
+        results = realm
+                .where(Habit.class)
+                .equalTo("isCompleted", false)
+                .and()
+                .contains("frequencyTest", day, Case.INSENSITIVE)
+                .sort("id")
+                .findAll();
+        if (results != null) {
+            adapter.updateData(results);
+        } else {
+            Log.d(TAG, "What");
+        }
+
+    }
+
+    /*
+    @Override
+    public void onChange() {
+        day = "WEDNESDAY";
+        Log.d("test", day);
+        results = realm
+                .where(Habit.class)
+                .equalTo("isCompleted", false)
+                .and()
+                .contains("frequencyTest", day, Case.INSENSITIVE)
+                .sort("id")
+                .findAll();
+        if (results != null) {
+            adapter.updateData(results);
+        } else {
+            Log.d(TAG, "What");
+        }
+    }
+
+     */
 }

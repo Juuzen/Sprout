@@ -20,6 +20,12 @@ public class Tree extends RealmObject {
         WITHERED
     }
 
+    public Tree() {
+        this.growth = Growth.SPROUT.name();
+        this.health = Health.HEALTHY.name();
+        this.experience = 0;
+    }
+
     @PrimaryKey
     private int id;
     private String growth;
@@ -27,8 +33,8 @@ public class Tree extends RealmObject {
     private int experience;
 
     // Inverse relationship (to retrieve the habit that holds the tree instance)
-    //@LinkingObjects("tree")
-    //private final RealmResults<Habit> habit = null;
+    //    //    //@LinkingObjects("tree")
+    //    //    //private final RealmResults<Habit> habit = null;
 
     public int getId() { return id; }
 

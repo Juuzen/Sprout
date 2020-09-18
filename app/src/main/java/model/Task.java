@@ -11,11 +11,11 @@ public class Task extends RealmObject {
 
     private long taskDate;
     private String taskStatus;
+    private int id;
 
     public long getTaskDate() {
         return taskDate;
     }
-
     public void setTaskDate(long taskDate) {
         this.taskDate = taskDate;
     }
@@ -23,8 +23,8 @@ public class Task extends RealmObject {
     public Task.Status getTaskStatus() {
         return Status.valueOf(this.taskStatus);
     }
+    public void setTaskStatus(Task.Status taskStatus) { this.taskStatus = taskStatus.name(); }
 
-    public void setTaskStatus(Task.Status taskStatus) {
-        this.taskStatus = taskStatus.name();
-    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 }

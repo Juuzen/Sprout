@@ -20,6 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+
+        <receiver android:process=":remote" android:name="utils.DBAlarmReceiver"/>
+
         <receiver android:process=":remote" android:name="utils.NotificationAlarmManager$NotificationAlarm"/>
         <receiver android:process=":remote" android:name="utils.BootCompletedReceiver">
             <intent-filter>

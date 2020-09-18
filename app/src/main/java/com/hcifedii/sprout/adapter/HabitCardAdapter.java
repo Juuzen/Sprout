@@ -32,10 +32,14 @@ import io.realm.RealmRecyclerViewAdapter;
 import model.Habit;
 
 public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerView.ViewHolder> implements Filterable {
+
+    private static final String TAG = "HABITCARDADAPTER";
+
     private Context ct;
     private OrderedRealmCollection<Habit> list;
     private OrderedRealmCollection<Habit> filteredList; /* mandatory for the filter */
     private Realm mRealm;
+
 
     private static final int CLASSIC_TYPE = 1;
     private static final int REPETITION_TYPE = 2;
@@ -69,11 +73,13 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
 
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         final Habit habit = getItem(position);
-        final int viewType = getItemViewType(position);
-        if (viewType == CLASSIC_TYPE) {
-            ((ClassicViewHolder) holder).setHabit(habit, ct);
-        } else if (viewType == REPETITION_TYPE) {
-            ((RepetitionViewHolder) holder).setHabit(habit, ct);
+        if (habit != null) {
+            final int viewType = getItemViewType(position);
+            if (viewType == CLASSIC_TYPE) {
+                ((ClassicViewHolder) holder).setHabit(habit, ct);
+            } else if (viewType == REPETITION_TYPE) {
+                ((RepetitionViewHolder) holder).setHabit(habit, ct);
+            }
         }
     }
 
@@ -87,6 +93,12 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             else if (habitType.equals("COUNTER")) type = REPETITION_TYPE;
         }
         return type;
+    }
+
+    @Override
+    public void updateData(@Nullable OrderedRealmCollection<Habit> data) {
+        filteredList = data;
+        super.updateData(data);
     }
 
     public void filterResults(String text) {
@@ -162,8 +174,10 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             });
 
             checkButton.setOnClickListener(view -> {
-                //TODO: inserire il codice per il listener
-                Toast.makeText(context, "Funziono", Toast.LENGTH_SHORT).show();
+                if (habit.getRepetitions() < 1) {
+                    habit.getRealm().executeTransaction(realm -> habit.setRepetitions(1));
+                }
+
             });
         }
     }
@@ -237,5 +251,4 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             });
         }
     }
-
 }

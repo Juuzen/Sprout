@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import java.util.Calendar;
 
 public enum Days {
-
     MONDAY,
     TUESDAY,
     WEDNESDAY,
