@@ -118,7 +118,6 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
     public Filter getFilter() {
         return new HabitFilter(this);
     }
-
     private static class HabitFilter extends Filter {
         private final HabitCardAdapter adapter;
 
