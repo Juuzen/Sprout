@@ -1,10 +1,13 @@
 package com.hcifedii.sprout;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -44,6 +47,7 @@ public class HabitStatsActivity extends SproutApplication {
     public static final String EXTRA_HABIT_ID = "habitID";
 
     private int habitId;
+    private boolean isHabitArchived = false;
 
     // Calendar related fields
     private CalendarView calendarView;
@@ -83,11 +87,8 @@ public class HabitStatsActivity extends SproutApplication {
                 // Get habit from database
                 Habit habit = HabitRealmManager.getHabit(habitId);
 
-                if (habit == null) {
-                    Log.e(this.getClass().getSimpleName(), "habit == null");
-                    finish();
-                    return;
-                }
+                isHabitArchived = habit.isArchived();
+
                 // Set Activity's title
                 setTitle(habit.getTitle());
 
@@ -129,7 +130,8 @@ public class HabitStatsActivity extends SproutApplication {
                 drawMonthlyChart();
 
                 //TODO: gestione albero
-                //TODO: aggiungere un opzione per andare dentro a EditHabitActivity solo se l'abitudine non è ancora archiviata
+
+
             });
 
         } else {
@@ -512,7 +514,36 @@ public class HabitStatsActivity extends SproutApplication {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.top_app_bar_habit_stats, menu);
+
+        if (isHabitArchived) {
+            // Disable the menu item if the habit was archived
+            menu.findItem(R.id.editHabitMenuItem).setVisible(false);
+        }
+
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.editHabitMenuItem:
+                Intent intent = new Intent(this, EditHabitActivity.class);
+                intent.putExtra(EditHabitActivity.EXTRA_HABIT_ID, habitId);
+
+                Bundle bundle = ActivityOptions.makeCustomAnimation(this,
+                        android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+
+                startActivity(intent, bundle);
+
+                return true;
+            case R.id.deleteStatsMenuItem:
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+
+    }
 }

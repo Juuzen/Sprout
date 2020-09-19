@@ -50,7 +50,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         int minutes = calendar.get(Calendar.MINUTE);
 
         // Get today's habit list
-        List<Habit> habitList = HabitRealmManager.getAllHabits();
+        List<Habit> habitList = HabitRealmManager.getUnarchivedHabits();
 
         for (Habit habit : habitList) {
 

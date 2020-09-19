@@ -3,10 +3,14 @@ package utils;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
+
 import com.hcifedii.sprout.enumerations.GoalType;
+
 import java.util.Calendar;
 import java.util.List;
+
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
@@ -27,9 +31,9 @@ public class HabitRealmManager {
         }
     }
 
-    public static long getCompletedHabitCount() {
+    public static long getArchivedHabitCount() {
         try (Realm realm = Realm.getDefaultInstance()) {
-            return realm.where(Habit.class).equalTo("isCompleted", true).count();
+            return realm.where(Habit.class).equalTo("isArchived", true).count();
         }
     }
 
@@ -52,7 +56,6 @@ public class HabitRealmManager {
                 realm.executeTransaction(realmInstance -> {
                     Habit habit = realmInstance.where(Habit.class).equalTo("id", id).findFirst();
                     if (habit != null) {
-                        //FIXME: rimuovere tutti gli eventuali RealmObject all'interno dell'habit
                         habit.deleteFromRealm();
                     }
                 });
@@ -61,18 +64,21 @@ public class HabitRealmManager {
     }
 
     public static List<Habit> getAllHabits() {
-        Realm realm = null;
-        List<Habit> habitList;
-        try {
-            realm = Realm.getDefaultInstance();
+        try (Realm realm = Realm.getDefaultInstance()) {
             RealmResults<Habit> realmResults = realm.where(Habit.class).findAll();
 
-            habitList = realm.copyFromRealm(realmResults);
-        } finally {
-            if (realm != null)
-                realm.close();
+            return realm.copyFromRealm(realmResults);
         }
-        return habitList;
+    }
+
+    public static List<Habit> getUnarchivedHabits() {
+        try (Realm realm = Realm.getDefaultInstance()) {
+            RealmResults<Habit> realmResults = realm.where(Habit.class)
+                    .equalTo("isArchived", false)
+                    .findAll();
+
+            return realm.copyFromRealm(realmResults);
+        }
     }
 
     public static void saveOrUpdateHabit(@NonNull Habit habit) {
@@ -122,7 +128,7 @@ public class HabitRealmManager {
 
         try (Realm realm = Realm.getDefaultInstance()) {
             RealmResults<Habit> habitList = realm.where(Habit.class).findAll();
-            for (Habit habit: habitList) {
+            for (Habit habit : habitList) {
                 /*
                  * 1. Creare un Task con i risultati del giorno (ricorda di inserirlo nel Realm)
                  * 2. Aggiornare eventuali campi dell'habit

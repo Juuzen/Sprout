@@ -53,7 +53,7 @@ public class StatsActivity extends SproutApplication {
         timeTextView.setText(getUsageTimeString());
 
         long habitCount = HabitRealmManager.getHabitCount();
-        long completedHabitCount = HabitRealmManager.getCompletedHabitCount();
+        long completedHabitCount = HabitRealmManager.getArchivedHabitCount();
 
         MaterialTextView habitCreatedTextView = findViewById(R.id.habitCreatedTextView);
         habitCreatedTextView.setText(Long.toString(habitCount));

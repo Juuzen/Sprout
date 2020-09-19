@@ -47,8 +47,7 @@ public class Habit extends RealmObject {
     }
 
     /**
-     * Boolean that say if the habit is completed. A completed habit won't be shown inside the
-     * MainActivity.
+     * Boolean that say if the habit is completed for that day.
      */
     private boolean isCompleted = false;
 
@@ -59,6 +58,21 @@ public class Habit extends RealmObject {
     public void setCompleted(boolean completed) {
         isCompleted = completed;
     }
+
+    /**
+     * Boolean that say if the habit is archived. An archived habit won't be shown inside
+     * MainActivity
+     */
+    private boolean isArchived = false;
+
+    public boolean isArchived() {
+        return isArchived;
+    }
+
+    public void setArchived(boolean archived) {
+        isArchived = archived;
+    }
+
 
     /**
      * Type of the habit (classic or counter)
@@ -232,6 +246,7 @@ public class Habit extends RealmObject {
     public long getHabitCreationDate() {
         return habitCreationDate;
     }
+
     /*
     public void setHabitCreationDate(long date) {
         habitCreationDate = date;
