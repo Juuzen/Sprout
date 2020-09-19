@@ -4,6 +4,7 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,6 +35,7 @@ import io.realm.OrderedRealmCollection;
 import io.realm.Realm;
 import io.realm.RealmRecyclerViewAdapter;
 import model.Habit;
+import model.Tree;
 
 public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerView.ViewHolder> implements Filterable {
 
@@ -44,7 +46,6 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
     private OrderedRealmCollection<Habit> filteredList; /* mandatory for the filter */
     private Realm mRealm;
 
-
     private static final int CLASSIC_TYPE = 1;
     private static final int REPETITION_TYPE = 2;
 
@@ -54,6 +55,125 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         list = data;
         filteredList = data;
         mRealm = realm;
+    }
+
+    protected static int getTreeAsset(Tree tree, Context ct) {
+        int result = -1;
+        Tree.Growth growth = tree.getGrowth();
+        Tree.Health health = tree.getHealth();
+        int nightModeFlags =
+                ct.getResources().getConfiguration().uiMode &
+                        Configuration.UI_MODE_NIGHT_MASK;
+        switch (nightModeFlags) {
+            case Configuration.UI_MODE_NIGHT_UNDEFINED:
+            case Configuration.UI_MODE_NIGHT_NO:
+                switch (growth) {
+                    case SPROUT:
+                        result = R.drawable.tree_day_sprout;
+                        break;
+                    case SPARKLING:
+                        result = R.drawable.tree_day_sparkling;
+                        break;
+
+                    case SMALL:
+                        switch (health) {
+                            case HEALTHY:
+                                result = R.drawable.tree_day_small_healthy;
+                                break;
+                            case DRYING:
+                                result = R.drawable.tree_day_small_drying;
+                                break;
+                            case WITHERED:
+                                result = R.drawable.tree_day_small_withered;
+                                break;
+                        }
+                        break;
+
+                    case MEDIUM:
+                        switch (health) {
+                            case HEALTHY:
+                                result = R.drawable.tree_day_medium_healthy;
+                                break;
+                            case DRYING:
+                                result = R.drawable.tree_day_medium_drying;
+                                break;
+                            case WITHERED:
+                                result = R.drawable.tree_day_medium_withered;
+                                break;
+                        }
+                        break;
+
+                    case MATURE:
+                        switch (health) {
+                            case HEALTHY:
+                                result = R.drawable.tree_day_mature_healthy;
+                                break;
+                            case DRYING:
+                                result = R.drawable.tree_day_mature_drying;
+                                break;
+                            case WITHERED:
+                                result = R.drawable.tree_day_mature_withered;
+                                break;
+                        }
+                        break;
+                }
+                break;
+
+            case Configuration.UI_MODE_NIGHT_YES:
+                switch (growth) {
+                    case SPROUT:
+                        result = R.drawable.tree_night_sprout;
+                        break;
+                    case SPARKLING:
+                        result = R.drawable.tree_night_sparkling;
+                        break;
+
+                    case SMALL:
+                        switch (health) {
+                            case HEALTHY:
+                                result = R.drawable.tree_night_small_healthy;
+                                break;
+                            case DRYING:
+                                result = R.drawable.tree_night_small_drying;
+                                break;
+                            case WITHERED:
+                                result = R.drawable.tree_night_small_withered;
+                                break;
+                        }
+                        break;
+
+                    case MEDIUM:
+                        switch (health) {
+                            case HEALTHY:
+                                result = R.drawable.tree_night_medium_healthy;
+                                break;
+                            case DRYING:
+                                result = R.drawable.tree_night_medium_drying;
+                                break;
+                            case WITHERED:
+                                result = R.drawable.tree_night_medium_withered;
+                                break;
+                        }
+                        break;
+
+                    case MATURE:
+                        switch (health) {
+                            case HEALTHY:
+                                result = R.drawable.tree_night_mature_healthy;
+                                break;
+                            case DRYING:
+                                result = R.drawable.tree_night_mature_drying;
+                                break;
+                            case WITHERED:
+                                result = R.drawable.tree_night_mature_withered;
+                                break;
+                        }
+                        break;
+                }
+                break;
+        }
+
+        return result;
     }
 
     @Override
@@ -144,10 +264,10 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         private MaterialTextView completedLabel;
         private CardView view;
         private ShapeableImageView treeImageView;
+        private ShapeableImageView treeStatus;
 
         public ClassicViewHolder(@NonNull View itemView) {
             super(itemView);
-
             view = (CardView) itemView;
             habitTitle = itemView.findViewById(R.id.classicHabitCardTitle);
             completedLabel = itemView.findViewById(R.id.classicHabitCompletedLabel);
@@ -155,24 +275,34 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             snoozeButton = itemView.findViewById(R.id.classicHabitSnoozeButton);
             checkButton = itemView.findViewById(R.id.classicHabitCheckButton);
             treeImageView = itemView.findViewById(R.id.classicHabitTreeImageView);
+            treeStatus = itemView.findViewById(R.id.classicHabitTreeStatusImageView);
         }
 
         public void setHabit(Habit habit, Context context) {
             habitTitle.setText(habit.getTitle());
+            Tree tree = habit.getTree();
+            if (tree != null) treeImageView.setImageResource(HabitCardAdapter.getTreeAsset(tree, context));
+            else treeImageView.setImageTintList(ColorStateList.valueOf(context.getColor(R.color.redColor)));
 
             if (habit.getIsSnoozed()) {
                 completedLabel.setText("Rinviata!");
                 completedLabel.setTextColor(context.getColor(R.color.secondaryColor));
+                treeStatus.setVisibility(View.VISIBLE);
+                treeStatus.setImageResource(R.drawable.tree_status_snoozed);
                 snoozeButton.setEnabled(false);
                 checkButton.setEnabled(false);
+
             } else if (habit.getRepetitions() != 0) {
                 completedLabel.setText("Completata!");
                 completedLabel.setTextColor(context.getColor(R.color.primaryColor));
+                treeStatus.setVisibility(View.VISIBLE);
+                treeStatus.setImageResource(R.drawable.tree_status_completed);
                 snoozeButton.setEnabled(false);
                 checkButton.setEnabled(false);
             } else {
                 checkButton.setEnabled(true);
                 snoozeButton.setEnabled(true);
+                treeStatus.setVisibility(View.INVISIBLE);
             }
 
             view.setOnClickListener(view -> {
@@ -224,38 +354,50 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         private Button checkButton;
         private Button snoozeButton;
         private CardView view;
+        private ShapeableImageView treeImageView;
+        private ShapeableImageView treeStatus;
 
         public RepetitionViewHolder(@NonNull View itemView) {
             super(itemView);
-
             view = (CardView) itemView;
-
             habitTitle = itemView.findViewById(R.id.counterHabitCardTitle);
             editHabitButton = itemView.findViewById(R.id.counterHabitEditButton);
             progressBar = itemView.findViewById(R.id.counterHabitProgressBar);
             checkButton = itemView.findViewById(R.id.counterHabitCheckButton);
             snoozeButton = itemView.findViewById(R.id.counterHabitSnoozeButton);
             progressLabel = itemView.findViewById(R.id.counterHabitProgressLabel);
+            treeImageView = itemView.findViewById(R.id.counterHabitTreeImageView);
+            treeStatus = itemView.findViewById(R.id.counterHabitTreeStatusImageView);
         }
 
         void setHabit(Habit habit, Context context) {
             this.habitTitle.setText(habit.getTitle());
             this.progressBar.setMax(habit.getMaxRepetitions());
+            Tree tree = habit.getTree();
+            if (tree != null) treeImageView.setImageResource(HabitCardAdapter.getTreeAsset(tree, context));
+            else treeImageView.setImageTintList(ColorStateList.valueOf(context.getColor(R.color.redColor)));
+
             String message = "";
             if (habit.getIsSnoozed()) {
                 message = "Abitudine rinviata!";
                 progressBar.setProgress(habit.getMaxRepetitions());
                 progressBar.setProgressTintList(ColorStateList.valueOf(context.getColor(R.color.secondaryColor)));
+                treeStatus.setVisibility(View.VISIBLE);
+                treeStatus.setImageResource(R.drawable.tree_status_snoozed);
                 checkButton.setEnabled(false);
                 snoozeButton.setEnabled(false);
             } else if (habit.getRepetitions() == habit.getMaxRepetitions()) {
                 message = "Abitudine completata!";
+                progressBar.setProgress(habit.getRepetitions());
+                treeStatus.setVisibility(View.VISIBLE);
+                treeStatus.setImageResource(R.drawable.tree_status_completed);
                 checkButton.setEnabled(false);
                 snoozeButton.setEnabled(false);
             } else {
                 message = context.getResources().getQuantityString(R.plurals.counterHabitRepetitionsLabel, habit.getRepetitions(), habit.getRepetitions(), habit.getMaxRepetitions());
                 progressBar.setProgress(habit.getRepetitions());
                 progressBar.setProgressTintList(ColorStateList.valueOf(context.getColor(R.color.primaryColor)));
+                treeStatus.setVisibility(View.INVISIBLE);
                 checkButton.setEnabled(true);
                 snoozeButton.setEnabled(true);
             }
@@ -294,6 +436,11 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                     }
                 });
             }
+
+            checkButton.setOnLongClickListener(view1 -> {
+                Toast.makeText(context, "Funziono", Toast.LENGTH_SHORT).show();
+                return true;
+            });
 
             checkButton.setOnClickListener(view -> {
                 int habitId = habit.getId();

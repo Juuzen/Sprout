@@ -68,6 +68,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/circleImageView" />
 
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/counterHabitTreeStatusImageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/whiteColor"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/circleImageView" />
+
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/counterHabitEditButton"
             style="?android:attr/borderlessButtonStyle"

@@ -214,9 +214,7 @@ public class MainActivity extends SproutApplication implements Observer {
      * Set the Night/Light UI. On the first run of the app, the user get the Light UI.
      */
     private void setUIMode() {
-
         SharedPreferences preferences = getSharedPreferences(SettingsActivity.SHARED_PREFS_FILE, MODE_PRIVATE);
-
         int pref = preferences.getInt(SettingsActivity.SHARED_PREFS_DARK_MODE, AppCompatDelegate.MODE_NIGHT_NO);
 
         AppCompatDelegate.setDefaultNightMode(pref);
@@ -235,6 +233,8 @@ public class MainActivity extends SproutApplication implements Observer {
                         .setTopEdge(topEdge)
                         .build());
     }
+
+    //FIXME: gestire l'update dell'adapter in onResume
 
     @Override
     protected void onDestroy() {

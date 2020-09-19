@@ -76,6 +76,7 @@ public class DBAlarmReceiver extends BroadcastReceiver  {
                                 Tree.Health health = tree.getHealth();
                                 Tree.Growth growth = tree.getGrowth();
                                 int experience = tree.getExperience();
+                                //FIXME: gestire anche il rinvio nei vari switch
                                 switch (health) {
                                     case HEALTHY:
                                         if (isTaskPassed) {
@@ -124,7 +125,7 @@ public class DBAlarmReceiver extends BroadcastReceiver  {
                                         else tree.setHealth(Tree.Health.WITHERED);
                                         break;
                                     case WITHERED:
-                                        if (isTaskPassed) tree.setHealth(Tree.Health.HEALTHY);
+                                        if (isTaskPassed) tree.setHealth(Tree.Health.DRYING);
                                         else {
                                             if ((experience - 1) >= 0) {
                                                 tree.setExperience(experience - 1);
