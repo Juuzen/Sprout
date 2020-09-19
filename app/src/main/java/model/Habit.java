@@ -152,13 +152,13 @@ public class Habit extends RealmObject {
     public boolean getIsSnoozed() { return isSnoozed; }
     public void setIsSnoozed(boolean snoozed) { isSnoozed = snoozed; }
 
-    // Snoozed made during a X (week/month/etc)
+    // Snoozed made during a week
     private int snoozesMade = 0;
     public int getSnoozesMade() { return snoozesMade; }
     public void setSnoozesMade(int snoozed) { snoozesMade = snoozed; }
 
 
-    // Max snoozes (in a week? in a month?) TODO: specificare la logica per i rinvii
+    // Max snoozes in a week
     private int maxSnoozes = 0;
     public int getMaxSnoozes() {
         return maxSnoozes;
@@ -166,6 +166,10 @@ public class Habit extends RealmObject {
     public void setMaxSnoozes(int maxSnoozes) {
         this.maxSnoozes = maxSnoozes;
     }
+
+    private int snoozesPassedDays = 0;
+    public int getSnoozesPassedDays() { return snoozesPassedDays; }
+    public void setSnoozesPassedDays(int snoozesPassedDays) { this.snoozesPassedDays = snoozesPassedDays; }
 
     // Goal
     private String goalType = GoalType.NONE.name();
