@@ -133,7 +133,7 @@ public class CreateHabitActivity extends SproutApplication {
                 HabitRealmManager.saveOrUpdateHabit(habit);
 
                 Toast.makeText(this, R.string.new_habit_success_message, Toast.LENGTH_SHORT).show();
-                finish();
+                finish(); //FIXME: Richiamare l'animazione
 
             } else {
                 titleFragment.setErrorMessage(getString(R.string.error_title_is_empty));

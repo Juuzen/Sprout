@@ -3,6 +3,8 @@ package com.hcifedii.sprout.adapter;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +23,8 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.textview.MaterialTextView;
 import com.hcifedii.sprout.EditHabitActivity;
 import com.hcifedii.sprout.HabitStatsActivity;
 import com.hcifedii.sprout.R;
@@ -137,21 +141,40 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         private TextView habitTitle;
         private ImageButton editHabitButton;
         private Button checkButton;
-
+        private Button snoozeButton;
+        private MaterialTextView completedLabel;
         private CardView view;
+        private ShapeableImageView treeImageView;
 
         public ClassicViewHolder(@NonNull View itemView) {
             super(itemView);
 
             view = (CardView) itemView;
-
             habitTitle = itemView.findViewById(R.id.classicHabitCardTitle);
+            completedLabel = itemView.findViewById(R.id.classicHabitCompletedLabel);
             editHabitButton = itemView.findViewById(R.id.classicHabitEditButton);
+            snoozeButton = itemView.findViewById(R.id.classicHabitSnoozeButton);
             checkButton = itemView.findViewById(R.id.classicHabitCheckButton);
+            treeImageView = itemView.findViewById(R.id.classicHabitTreeImageView);
         }
 
         public void setHabit(Habit habit, Context context) {
             habitTitle.setText(habit.getTitle());
+
+            if (habit.getIsSnoozed()) {
+                completedLabel.setText("Rinviata!");
+                completedLabel.setTextColor(context.getColor(R.color.secondaryColor));
+                snoozeButton.setEnabled(false);
+                checkButton.setEnabled(false);
+            } else if (habit.getRepetitions() != 0) {
+                completedLabel.setText("Completata!");
+                completedLabel.setTextColor(context.getColor(R.color.primaryColor));
+                snoozeButton.setEnabled(false);
+                checkButton.setEnabled(false);
+            } else {
+                checkButton.setEnabled(true);
+                snoozeButton.setEnabled(true);
+            }
 
             view.setOnClickListener(view -> {
                 // When the card is clicked, go to the habit's stats
@@ -173,11 +196,23 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                 context.startActivity(intent, bundle);
             });
 
+            if (habit.getMaxSnoozes() == 0) {
+                snoozeButton.setVisibility(View.INVISIBLE);
+            } else {
+                snoozeButton.setVisibility(View.VISIBLE);
+                snoozeButton.setOnClickListener(view1 -> {
+                    if (habit.getSnoozesMade() < habit.getMaxSnoozes()) {
+                        habit.getRealm().executeTransaction(realm -> { habit.setIsSnoozed(true); });
+                    } else {
+                        Toast.makeText(context, "Non puoi più rinviare l'abitudine!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
             checkButton.setOnClickListener(view -> {
                 if (habit.getRepetitions() < 1) {
                     habit.getRealm().executeTransaction(realm -> habit.setRepetitions(1));
                 }
-
             });
         }
     }
@@ -188,7 +223,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         private TextView progressLabel;
         private ImageButton editHabitButton;
         private Button checkButton;
-
+        private Button snoozeButton;
         private CardView view;
 
         public RepetitionViewHolder(@NonNull View itemView) {
@@ -200,17 +235,31 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             editHabitButton = itemView.findViewById(R.id.counterHabitEditButton);
             progressBar = itemView.findViewById(R.id.counterHabitProgressBar);
             checkButton = itemView.findViewById(R.id.counterHabitCheckButton);
+            snoozeButton = itemView.findViewById(R.id.counterHabitSnoozeButton);
             progressLabel = itemView.findViewById(R.id.counterHabitProgressLabel);
         }
 
         void setHabit(Habit habit, Context context) {
             this.habitTitle.setText(habit.getTitle());
-            this.progressBar.setProgress(habit.getRepetitions());
             this.progressBar.setMax(habit.getMaxRepetitions());
-
-
-            String message = context.getString(R.string.completed) + ' ' + habit.getRepetitions() + ' ' + context.getString(R.string.n_times) + ' ' + habit.getMaxRepetitions();
-
+            String message = "";
+            if (habit.getIsSnoozed()) {
+                message = "Abitudine rinviata!";
+                progressBar.setProgress(habit.getMaxRepetitions());
+                progressBar.setProgressTintList(ColorStateList.valueOf(context.getColor(R.color.secondaryColor)));
+                checkButton.setEnabled(false);
+                snoozeButton.setEnabled(false);
+            } else if (habit.getRepetitions() == habit.getMaxRepetitions()) {
+                message = "Abitudine completata!";
+                checkButton.setEnabled(false);
+                snoozeButton.setEnabled(false);
+            } else {
+                message = context.getResources().getQuantityString(R.plurals.counterHabitRepetitionsLabel, habit.getRepetitions(), habit.getRepetitions(), habit.getMaxRepetitions());
+                progressBar.setProgress(habit.getRepetitions());
+                progressBar.setProgressTintList(ColorStateList.valueOf(context.getColor(R.color.primaryColor)));
+                checkButton.setEnabled(true);
+                snoozeButton.setEnabled(true);
+            }
             this.progressLabel.setText(message);
 
             view.setOnClickListener(view -> {
@@ -232,6 +281,20 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
 
                 context.startActivity(intent, bundle);
             });
+
+            if (habit.getMaxSnoozes() == 0) {
+                snoozeButton.setVisibility(View.INVISIBLE);
+            } else {
+                snoozeButton.setVisibility(View.VISIBLE);
+                snoozeButton.setOnClickListener(view1 -> {
+                    if (habit.getSnoozesMade() < habit.getMaxSnoozes()) {
+                        habit.getRealm().executeTransaction(realm -> { habit.setIsSnoozed(true); });
+                    } else {
+                        // you shouldn't be here
+                        Toast.makeText(context, "Non puoi più rinviare l'abitudine!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
 
             checkButton.setOnClickListener(view -> {
                 int habitId = habit.getId();

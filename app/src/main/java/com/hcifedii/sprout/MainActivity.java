@@ -43,6 +43,7 @@ import java.util.Observer;
 
 import io.realm.Case;
 import io.realm.Realm;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import model.Habit;
 import utils.AdapterObservable;
@@ -57,26 +58,10 @@ public class MainActivity extends SproutApplication implements Observer {
     HabitCardAdapter adapter;
     RealmResults<Habit> results;
     String day = Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
-    AdapterObservable mObserver;
-
-    /*BroadcastReceiver alarmTest = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "onReceive: " + adapter.toString());
-        }
-    };*/
+    //AdapterObservable mObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        day = "TUESDAY";
-
-/*        IntentFilter s_intentFilter = new IntentFilter();
-        s_intentFilter.addAction(Intent.ACTION_DATE_CHANGED);
-        s_intentFilter.addAction(Intent.ACTION_INPUT_METHOD_CHANGED);
-        s_intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
-
-        registerReceiver(alarmTest, s_intentFilter);*/
-
         setUIMode();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -194,54 +179,31 @@ public class MainActivity extends SproutApplication implements Observer {
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
                 builder.setTitle(getString(R.string.about_us_title));
                 builder.setMessage(getString(R.string.about_us_message));
-
-
                 Drawable sproutIcon = ContextCompat.getDrawable(this, R.drawable.ic_sprout_small);
-
                 if(sproutIcon != null)
                     sproutIcon.setTint(getColor(R.color.primaryColor));
-
                 builder.setIcon(sproutIcon);
-
                 builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
                 builder.show();
                 return true;
 
             case R.id.debugMenuItemButton1:
-
-                Log.d(TAG, "" + mObserver.countObservers());
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 if (alarmManager != null) {
                     Calendar cal = Calendar.getInstance();
-                    /*
-                    if (cal.get(Calendar.MINUTE) == 59) {
-                        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + 1);
-                        cal.set(Calendar.MINUTE, 0);
-                        cal.set(Calendar.SECOND, 0);
-                    } else {
-                        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY));
-                        cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) + 1);
-                        cal.set(Calendar.SECOND, 0);
-                    }
-                    */
                     cal.set(Calendar.HOUR_OF_DAY, 0);
                     cal.set(Calendar.MINUTE, 0);
                     cal.set(Calendar.SECOND, 0);
                     long millis = cal.getTimeInMillis();
 
-                    /*
-                    Intent mIntent = new Intent (this, AlarmReceiverTest.class);
+                    Intent mIntent = new Intent (this, DBAlarmReceiver.class);
                     mIntent.putExtra("repeat", false);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1000, mIntent, PendingIntent.FLAG_CANCEL_CURRENT);
                     alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC, millis, pendingIntent);
-                    */
-
                 } else {
                     Log.e("AlarmManager", "Non sono riuscito a creare l'alarm.");
                 }
-
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -284,7 +246,6 @@ public class MainActivity extends SproutApplication implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        day = "WEDNESDAY";
         results = realm
                 .where(Habit.class)
                 .equalTo("isCompleted", false)
@@ -299,25 +260,4 @@ public class MainActivity extends SproutApplication implements Observer {
         }
 
     }
-
-    /*
-    @Override
-    public void onChange() {
-        day = "WEDNESDAY";
-        Log.d("test", day);
-        results = realm
-                .where(Habit.class)
-                .equalTo("isCompleted", false)
-                .and()
-                .contains("frequencyTest", day, Case.INSENSITIVE)
-                .sort("id")
-                .findAll();
-        if (results != null) {
-            adapter.updateData(results);
-        } else {
-            Log.d(TAG, "What");
-        }
-    }
-
-     */
 }

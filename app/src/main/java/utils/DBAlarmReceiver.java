@@ -31,6 +31,9 @@ import model.Tree;
 
 public class DBAlarmReceiver extends BroadcastReceiver  {
     private static final String TAG = "Broadcastreceiver";
+    //TODO: should include this value inside Habit?
+    private final int snoozesDayLimit = 7;
+
     public DBAlarmReceiver(){}
 
     @Override
@@ -56,14 +59,17 @@ public class DBAlarmReceiver extends BroadcastReceiver  {
                                 task.setTaskDate(Calendar.getInstance().getTimeInMillis());
                                 habit.addTaskToHistory(task);
 
-                                // TODO: fare il check mensile per resettare snoozesMade
                                 habit.setRepetitions(0);
+
+                                if (habit.getSnoozesPassedDays() == snoozesDayLimit) {
+                                    habit.setSnoozesPassedDays(0);
+                                    habit.setSnoozesMade(0);
+                                } else {
+                                    habit.setSnoozesPassedDays(habit.getSnoozesPassedDays() + 1);
+                                }
+
                                 if (habit.getIsSnoozed()) {
-                                    int snoozesMade = habit.getSnoozesMade();
-                                    int maxSnoozes = habit.getMaxSnoozes();
-                                    if (snoozesMade < maxSnoozes) {
-                                        habit.setSnoozesMade(snoozesMade + 1);
-                                    }
+                                    habit.setIsSnoozed(false);
                                 }
 
                                 Tree tree = habit.getTree();
