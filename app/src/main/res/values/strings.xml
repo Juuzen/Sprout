@@ -64,7 +64,7 @@
     <string name="preset_go_to_bed_early">Vai a dormire presto</string>
     <string name="preset_habit_loading_snackbar">Caricamento completato !</string>
     <string name="preset_take_meds">Prendi le medicine</string>
-    <string name="edit_fab">Modifica l\'abitudine</string>
+    <string name="edit_habit">Modifica l\'abitudine</string>
     <string name="edit_habit_delete_button">Elimina</string>
     <string name="error_deadline_is_empty">Inserisci una data di scadenza</string>
     <string name="title_activity_settings">Impostazioni</string>

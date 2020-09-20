@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -39,7 +41,7 @@ public class EditHabitActivity extends SproutApplication {
     private static final String logcatTag = "Sprout - EditHabitActivity";
 
     private static final String IS_ALREADY_SHOWED = "alreadyShowed";
-    public static final String EXTRA_HABIT_ID = "habitId";
+    public static final String EXTRA_HABIT_ID = "HABIT_ID";
 
     // Fragments of this activity
     TitleFragment titleFragment;
@@ -314,7 +316,14 @@ public class EditHabitActivity extends SproutApplication {
 
                 HabitRealmManager.deleteHabit(habitId);
                 Toast.makeText(getBaseContext(), R.string.delete_habit_dialog_confirmation_toast, Toast.LENGTH_SHORT).show();
-                finish();
+
+                Intent intent = new Intent(this, MainActivity.class);
+                Bundle bundle = ActivityOptions.makeCustomAnimation(this,
+                        android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+                // Removes other Activities from stack
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent, bundle);
+
             });
             builder.setNegativeButton(R.string.negative_delete_habit_dialog, (dialogInterface, i) -> dialogInterface.dismiss());
             builder.show();

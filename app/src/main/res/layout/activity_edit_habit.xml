@@ -83,7 +83,7 @@
         android:backgroundTint="@color/primaryColor"
         android:fitsSystemWindows="true"
         android:padding="16dp"
-        android:text="@string/edit_fab"
+        android:text="@string/edit_habit"
         android:textAllCaps="false"
         android:textColor="@color/whiteColor"
         app:icon="@drawable/ic_edit_24"

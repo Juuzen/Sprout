@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/helpMenuItem"
-        android:title="@string/help_menu_item"
+        android:id="@+id/editHabitMenuItem"
+        android:title="@string/edit_habit"
         app:showAsAction="never" />
     <item
         android:id="@+id/deleteStatsMenuItem"
