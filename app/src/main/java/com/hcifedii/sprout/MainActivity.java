@@ -51,14 +51,14 @@ import utils.DBAlarmReceiver;
 import utils.SproutBottomAppBarCutCornersTopEdge;
 
 
-public class MainActivity extends SproutApplication implements Observer {
+public class MainActivity extends SproutApplication {
 
+    //Ciao sono un commento
     private static final String TAG = "MAINACTIVITY";
     private Realm realm;
     HabitCardAdapter adapter;
     RealmResults<Habit> results;
     String day = Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
-    //AdapterObservable mObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -236,16 +236,10 @@ public class MainActivity extends SproutApplication implements Observer {
 
     //FIXME: gestire l'update dell'adapter in onResume
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        realm.removeAllChangeListeners();
-        AdapterObservable.getInstance().deleteObservers();
-        realm.close();
-    }
 
     @Override
-    public void update(Observable observable, Object o) {
+    protected void onResume() {
+        super.onResume();
         results = realm
                 .where(Habit.class)
                 .equalTo("isCompleted", false)
@@ -258,6 +252,12 @@ public class MainActivity extends SproutApplication implements Observer {
         } else {
             Log.d(TAG, "What");
         }
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.removeAllChangeListeners();
+        realm.close();
     }
 }
