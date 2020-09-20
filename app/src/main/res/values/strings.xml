@@ -1,31 +1,21 @@
 <resources>
 
     <string name="app_name">Sprout</string>
-
     <string name="settingsMenuString">Impostazioni</string>
-
     <string name="aboutMenuString">Chi siamo</string>
-
     <string name="statsContentDescription">Statistiche</string>
     <string name="statsMenuTitle">Statistiche</string>
-
     <string name="searchContentDescription">Cerca abitudine</string>
     <string name="searchMenuTitle">Cerca</string>
-
     <string name="save_fab">Salva l\'abitudine</string>
-
     <string name="error_title_is_empty">Il titolo non può essere vuoto</string>
-
     <string name="title_hint">Titolo dell\'abitudine</string>
-
     <string name="classic_habit_info">
         Con questa tipologia puoi tenere traccia delle abitudini che devono essere completate una sola volta al giorno.
     </string>
-
     <string name="counter_habit_info"> Se hai bisogno di ripetere un\'abitudine più volte al giorno
         (come ad esempio bere 4 bicchieri d’acqua).
     </string>
-
     <string name="frequency_title">Frequenza settimanale</string>
     <string name="mondayString">L</string>
     <string name="tuesdayString">M</string>
@@ -34,23 +24,17 @@
     <string name="fridayString">V</string>
     <string name="saturdayString">S</string>
     <string name="sundayString">D</string>
-
     <string name="habit_type_title">Tipologia dell\'abitudine</string>
-
     <string name="delete_button_content_description">Elimina</string>
     <string name="pause_button_content_description">Metti in pausa</string>
     <string name="add_reminder_button_content_description">Aggiungi un promemoria</string>
     <string name="reminder_title">Notifiche</string>
-
     <string name="emptyMainActivityMessage">
         Non hai inserito ancora nessuna abitudine! Crearne una
         è facile, ti basta cliccare sul tasto in basso per iniziare!
     </string>
-
-
     <string name="title_activity_create_habit">Nuova abitudine</string>
     <string name="MainActivityTitle">Le mie abitudini</string>
-
     <string name="snooze_title">Rinvii settimanali</string>
     <string name="snooze_info">I rinvii ti permettono di non segnare come completata l’abitudine, mantenendo però la serie.</string>
     <string name="max_snoozes_subtitle">Rinvii massimi</string>
@@ -84,16 +68,11 @@
     <string name="edit_habit_delete_button">Elimina</string>
     <string name="error_deadline_is_empty">Inserisci una data di scadenza</string>
     <string name="title_activity_settings">Impostazioni</string>
-
-
     <string name="light">Chiaro</string>
     <string name="dark">Scuro</string>
     <string name="predefined">Predefinito</string>
-
     <string name="messages_header">Generale</string>
     <string name="theme_title">Tema dell\'applicazione</string>
-
-
     <string name="about_us_title">Sprout (HCI 2020)</string>
     <string name="about_us_message">Prodotto da Michele e Salvatore.\n</string>
     <string name="title_activity_stats">Statistiche</string>
@@ -120,18 +99,15 @@
     <string name="delete_stats_menu_item">Azzera le statistiche</string>
     <string name="delete_habit_dialog_message">Vuoi eliminare l\'abitudine? Perderai tutti i tuoi progressi!</string>
     <string name="positive_delete_habit_dialog">Sì, cancella</string>
-
     <string name="title_habit_type_stats">Abitudine:</string>
     <string name="counter">Contatore</string>
     <string name="classic">Classica</string>
-
     <string name="title_goal_stats">Obiettivo:</string>
     <string name="none">Nessuno</string>
     <string name="action">Azioni</string>
     <string name="deadline">Deadline</string>
     <string name="streak">Serie</string>
     <string name="no_data_available">Nessun dato disponibile per la visualizzazione</string>
-
     <string name="days">Giorni</string>
     <string name="month">Mesi</string>
     <string name="best_streak_chart_title">Serie migliori</string>
@@ -149,7 +125,6 @@
     <string name="channel_description">Le notifiche decise dall\'utente.</string>
     <string name="delete_habit_dialog_confirmation_toast">Abitudine eliminata!</string>
     <string name="negative_delete_habit_dialog">No</string>
-
     <string-array name="months">
         <item>G</item>
         <item>F</item>
@@ -165,4 +140,9 @@
         <item>D</item>
     </string-array>
 
+    <plurals name="counterHabitRepetitionsLabel">
+        <item quantity="one">Completata %1$d volta su %2$d</item>
+        <item quantity="other">Completata %1$d volte su %2$d</item>
+    </plurals>
+    <string name="counter_habit_number_picker_dialog">Seleziona quante volte hai completato la tua abitudine oggi:</string>
 </resources>

@@ -43,6 +43,7 @@ import java.util.Observer;
 
 import io.realm.Case;
 import io.realm.Realm;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import model.Habit;
 import utils.AdapterObservable;
@@ -50,33 +51,17 @@ import utils.DBAlarmReceiver;
 import utils.SproutBottomAppBarCutCornersTopEdge;
 
 
-public class MainActivity extends SproutApplication implements Observer {
+public class MainActivity extends SproutApplication {
 
+    //Ciao sono un commento
     private static final String TAG = "MAINACTIVITY";
     private Realm realm;
     HabitCardAdapter adapter;
     RealmResults<Habit> results;
     String day = Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
-    AdapterObservable mObserver;
-
-    /*BroadcastReceiver alarmTest = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "onReceive: " + adapter.toString());
-        }
-    };*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        day = "TUESDAY";
-
-/*        IntentFilter s_intentFilter = new IntentFilter();
-        s_intentFilter.addAction(Intent.ACTION_DATE_CHANGED);
-        s_intentFilter.addAction(Intent.ACTION_INPUT_METHOD_CHANGED);
-        s_intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
-
-        registerReceiver(alarmTest, s_intentFilter);*/
-
         setUIMode();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -194,54 +179,31 @@ public class MainActivity extends SproutApplication implements Observer {
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
                 builder.setTitle(getString(R.string.about_us_title));
                 builder.setMessage(getString(R.string.about_us_message));
-
-
                 Drawable sproutIcon = ContextCompat.getDrawable(this, R.drawable.ic_sprout_small);
-
                 if(sproutIcon != null)
                     sproutIcon.setTint(getColor(R.color.primaryColor));
-
                 builder.setIcon(sproutIcon);
-
                 builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
                 builder.show();
                 return true;
 
             case R.id.debugMenuItemButton1:
-
-                Log.d(TAG, "" + mObserver.countObservers());
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 if (alarmManager != null) {
                     Calendar cal = Calendar.getInstance();
-                    /*
-                    if (cal.get(Calendar.MINUTE) == 59) {
-                        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY) + 1);
-                        cal.set(Calendar.MINUTE, 0);
-                        cal.set(Calendar.SECOND, 0);
-                    } else {
-                        cal.set(Calendar.HOUR_OF_DAY, cal.get(Calendar.HOUR_OF_DAY));
-                        cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) + 1);
-                        cal.set(Calendar.SECOND, 0);
-                    }
-                    */
                     cal.set(Calendar.HOUR_OF_DAY, 0);
                     cal.set(Calendar.MINUTE, 0);
                     cal.set(Calendar.SECOND, 0);
                     long millis = cal.getTimeInMillis();
 
-                    /*
-                    Intent mIntent = new Intent (this, AlarmReceiverTest.class);
+                    Intent mIntent = new Intent (this, DBAlarmReceiver.class);
                     mIntent.putExtra("repeat", false);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1000, mIntent, PendingIntent.FLAG_CANCEL_CURRENT);
                     alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC, millis, pendingIntent);
-                    */
-
                 } else {
                     Log.e("AlarmManager", "Non sono riuscito a creare l'alarm.");
                 }
-
                 return true;
-
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -252,9 +214,7 @@ public class MainActivity extends SproutApplication implements Observer {
      * Set the Night/Light UI. On the first run of the app, the user get the Light UI.
      */
     private void setUIMode() {
-
         SharedPreferences preferences = getSharedPreferences(SettingsActivity.SHARED_PREFS_FILE, MODE_PRIVATE);
-
         int pref = preferences.getInt(SettingsActivity.SHARED_PREFS_DARK_MODE, AppCompatDelegate.MODE_NIGHT_NO);
 
         AppCompatDelegate.setDefaultNightMode(pref);
@@ -275,49 +235,26 @@ public class MainActivity extends SproutApplication implements Observer {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        results = realm
+                .where(Habit.class)
+                .equalTo("isArchived", false)
+                .and()
+                .contains("frequencyTest", day, Case.INSENSITIVE)
+                .sort("id")
+                .findAll();
+        if (results != null) {
+            adapter.updateData(results);
+        } else {
+            Log.d(TAG, "What");
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         realm.removeAllChangeListeners();
-        AdapterObservable.getInstance().deleteObservers();
         realm.close();
     }
-
-    @Override
-    public void update(Observable observable, Object o) {
-        day = "WEDNESDAY";
-        results = realm
-                .where(Habit.class)
-                .equalTo("isCompleted", false)
-                .and()
-                .contains("frequencyTest", day, Case.INSENSITIVE)
-                .sort("id")
-                .findAll();
-        if (results != null) {
-            adapter.updateData(results);
-        } else {
-            Log.d(TAG, "What");
-        }
-
-    }
-
-    /*
-    @Override
-    public void onChange() {
-        day = "WEDNESDAY";
-        Log.d("test", day);
-        results = realm
-                .where(Habit.class)
-                .equalTo("isCompleted", false)
-                .and()
-                .contains("frequencyTest", day, Case.INSENSITIVE)
-                .sort("id")
-                .findAll();
-        if (results != null) {
-            adapter.updateData(results);
-        } else {
-            Log.d(TAG, "What");
-        }
-    }
-
-     */
 }

@@ -31,6 +31,9 @@ import model.Tree;
 
 public class DBAlarmReceiver extends BroadcastReceiver  {
     private static final String TAG = "Broadcastreceiver";
+    //TODO: should include this value inside Habit?
+    private final int snoozesDayLimit = 7;
+
     public DBAlarmReceiver(){}
 
     @Override
@@ -48,94 +51,89 @@ public class DBAlarmReceiver extends BroadcastReceiver  {
                     realm.executeTransaction(
                             realmInstance -> {
                                 boolean isTaskPassed = habit.getRepetitions() == habit.getMaxRepetitions();
+                                boolean isTaskSnoozed = habit.getIsSnoozed();
+                                Tree tree = habit.getTree();
+                                Tree.Health health = tree.getHealth();
+                                Tree.Growth growth = tree.getGrowth();
+                                int experience = tree.getExperience();
+                                GoalType goal = habit.getGoalType();
+
+                                /* Task creation */
                                 Task task = new Task();
                                 task.setId(TaskManager.getNextId());
-                                if (habit.getIsSnoozed()) task.setTaskStatus(Task.Status.SNOOZED);
+                                if (isTaskSnoozed) task.setTaskStatus(Task.Status.SNOOZED);
                                 else if (isTaskPassed) task.setTaskStatus(Task.Status.PASSED);
                                 else task.setTaskStatus(Task.Status.FAILED);
                                 task.setTaskDate(Calendar.getInstance().getTimeInMillis());
                                 habit.addTaskToHistory(task);
 
-                                // TODO: fare il check mensile per resettare snoozesMade
-                                habit.setRepetitions(0);
-                                if (habit.getIsSnoozed()) {
-                                    int snoozesMade = habit.getSnoozesMade();
-                                    int maxSnoozes = habit.getMaxSnoozes();
-                                    if (snoozesMade < maxSnoozes) {
-                                        habit.setSnoozesMade(snoozesMade + 1);
+                                if (!isTaskSnoozed) {
+                                    /* Tree handler */
+                                    switch (health) {
+                                        case HEALTHY:
+                                            if (isTaskPassed) {
+                                                switch (growth) {
+                                                    case SPROUT:
+                                                        if (experience == 0) {
+                                                            tree.setGrowth(Tree.Growth.SMALL);
+                                                            tree.setExperience(0);
+                                                        }
+                                                        break;
+                                                    case SMALL:
+                                                        if(experience >= 3) {
+                                                            tree.setGrowth(Tree.Growth.MEDIUM);
+                                                            tree.setExperience(0);
+                                                        } else {
+                                                            tree.setExperience(experience + 1);
+                                                        }
+                                                        break;
+                                                    case MEDIUM:
+                                                        if (experience >= 5) {
+                                                            tree.setGrowth(Tree.Growth.MATURE);
+                                                            tree.setExperience(0);
+                                                        } else {
+                                                            tree.setExperience(experience + 1);
+                                                        }
+                                                        break;
+                                                    case MATURE:
+                                                        if (experience >= 2) {
+                                                            tree.setGrowth(Tree.Growth.SPARKLING);
+                                                            tree.setExperience(0);
+                                                        } else {
+                                                            tree.setExperience(experience + 1);
+                                                        }
+                                                        break;
+                                                    case SPARKLING:
+                                                        break;
+                                                    default:
+                                                }
+                                            } else {
+                                                if (growth == Tree.Growth.SPARKLING) tree.setGrowth(Tree.Growth.MATURE);
+                                                else if (growth != Tree.Growth.SPROUT) tree.setHealth(Tree.Health.DRYING);
+                                            }
+                                            break;
+                                        case DRYING:
+                                            if (isTaskPassed) tree.setHealth(Tree.Health.HEALTHY);
+                                            else tree.setHealth(Tree.Health.WITHERED);
+                                            break;
+                                        case WITHERED:
+                                            if (isTaskPassed) tree.setHealth(Tree.Health.DRYING);
+                                            else {
+                                                if ((experience - 1) >= 0) {
+                                                    tree.setExperience(experience - 1);
+                                                }
+                                            }
+                                            break;
+                                        default:
                                     }
-                                }
 
-                                Tree tree = habit.getTree();
-                                Tree.Health health = tree.getHealth();
-                                Tree.Growth growth = tree.getGrowth();
-                                int experience = tree.getExperience();
-                                switch (health) {
-                                    case HEALTHY:
-                                        if (isTaskPassed) {
-                                            switch (growth) {
-                                                case SPROUT:
-                                                    if (experience == 0) {
-                                                        tree.setGrowth(Tree.Growth.SMALL);
-                                                        tree.setExperience(0);
-                                                    }
-                                                    break;
-                                                case SMALL:
-                                                    if(experience >= 3) {
-                                                        tree.setGrowth(Tree.Growth.MEDIUM);
-                                                        tree.setExperience(0);
-                                                    } else {
-                                                        tree.setExperience(experience + 1);
-                                                    }
-                                                    break;
-                                                case MEDIUM:
-                                                    if (experience >= 5) {
-                                                        tree.setGrowth(Tree.Growth.MATURE);
-                                                        tree.setExperience(0);
-                                                    } else {
-                                                        tree.setExperience(experience + 1);
-                                                    }
-                                                    break;
-                                                case MATURE:
-                                                    if (experience >= 2) {
-                                                        tree.setGrowth(Tree.Growth.SPARKLING);
-                                                        tree.setExperience(0);
-                                                    } else {
-                                                        tree.setExperience(experience + 1);
-                                                    }
-                                                    break;
-                                                case SPARKLING:
-                                                    break;
-                                                default:
-                                            }
-                                        } else {
-                                            if (growth == Tree.Growth.SPARKLING) tree.setGrowth(Tree.Growth.MATURE);
-                                            else if (growth != Tree.Growth.SPROUT) tree.setHealth(Tree.Health.DRYING);
-                                        }
-                                        break;
-                                    case DRYING:
-                                        if (isTaskPassed) tree.setHealth(Tree.Health.HEALTHY);
-                                        else tree.setHealth(Tree.Health.WITHERED);
-                                        break;
-                                    case WITHERED:
-                                        if (isTaskPassed) tree.setHealth(Tree.Health.HEALTHY);
-                                        else {
-                                            if ((experience - 1) >= 0) {
-                                                tree.setExperience(experience - 1);
-                                            }
-                                        }
-                                        break;
-                                    default:
-                                }
-
-                                GoalType goal = habit.getGoalType();
-                                if (!habit.getIsSnoozed()) {
+                                    /* Goal handler */
                                     switch (goal) {
                                         case ACTION:
                                             if (isTaskPassed) {
                                                 habit.setGoalValue(habit.getGoalValue() + 1);
                                                 if (habit.getGoalValue() >= habit.getMaxAction()) {
-                                                    habit.setCompleted(true);
+                                                    habit.setArchived(true);
                                                 }
                                             }
                                             break;
@@ -143,7 +141,7 @@ public class DBAlarmReceiver extends BroadcastReceiver  {
                                             if (isTaskPassed) {
                                                 habit.setGoalValue(habit.getGoalValue() + 1);
                                                 if (habit.getGoalValue() >= habit.getMaxStreakValue()) {
-                                                    habit.setCompleted(true);
+                                                    habit.setArchived(true);
                                                 }
                                             } else {
                                                 habit.setGoalValue(0);
@@ -156,11 +154,23 @@ public class DBAlarmReceiver extends BroadcastReceiver  {
                                             int finalDate = cal.get(Calendar.DAY_OF_YEAR);
                                             //FIXME: controllo anche sull'anno
                                             if (today >= finalDate) {
-                                                habit.setCompleted(true);
+                                                habit.setArchived(true);
                                             }
                                             break;
                                         default: // case NONE:
                                     }
+                                }
+
+                                /* Habit temporary info resets */
+                                habit.setRepetitions(0);
+                                if (habit.getSnoozesPassedDays() == snoozesDayLimit) {
+                                    habit.setSnoozesPassedDays(0);
+                                    habit.setSnoozesMade(0);
+                                } else {
+                                    habit.setSnoozesPassedDays(habit.getSnoozesPassedDays() + 1);
+                                }
+                                if (isTaskSnoozed) {
+                                    habit.setIsSnoozed(false);
                                 }
                             });
                 }
