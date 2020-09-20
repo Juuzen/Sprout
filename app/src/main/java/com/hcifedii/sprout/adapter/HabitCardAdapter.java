@@ -22,6 +22,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.imageview.ShapeableImageView;
@@ -438,7 +439,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             }
 
             checkButton.setOnLongClickListener(view1 -> {
-                Toast.makeText(context, "Funziono", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Context", Toast.LENGTH_SHORT).show();
                 return true;
             });
 

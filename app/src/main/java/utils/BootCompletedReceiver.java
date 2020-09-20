@@ -21,19 +21,15 @@ import model.Reminder;
  * If it fails, then try first: > adb root
  */
 public class BootCompletedReceiver extends BroadcastReceiver {
-
     private final Calendar calendar = Calendar.getInstance();
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
         if (intent != null) {
-
             Log.i(this.getClass().getSimpleName(), "Boot received " + intent.getAction());
 
             // Boot detected. Recreate the alarms for today
             habitsAlarmsSetUp(context);
-
             // Do other stuff here
 
         }

@@ -234,15 +234,12 @@ public class MainActivity extends SproutApplication {
                         .build());
     }
 
-    //FIXME: gestire l'update dell'adapter in onResume
-
-
     @Override
     protected void onResume() {
         super.onResume();
         results = realm
                 .where(Habit.class)
-                .equalTo("isCompleted", false)
+                .equalTo("isArchived", false)
                 .and()
                 .contains("frequencyTest", day, Case.INSENSITIVE)
                 .sort("id")

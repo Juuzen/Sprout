@@ -37,26 +37,11 @@ public class Habit extends RealmObject {
      */
     @Required
     private String title;
-
     public String getTitle() {
         return title;
     }
-
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    /**
-     * Boolean that say if the habit is completed for that day.
-     */
-    private boolean isCompleted = false;
-
-    public boolean isCompleted() {
-        return isCompleted;
-    }
-
-    public void setCompleted(boolean completed) {
-        isCompleted = completed;
     }
 
     /**
@@ -64,25 +49,20 @@ public class Habit extends RealmObject {
      * MainActivity
      */
     private boolean isArchived = false;
-
     public boolean isArchived() {
         return isArchived;
     }
-
     public void setArchived(boolean archived) {
         isArchived = archived;
     }
-
 
     /**
      * Type of the habit (classic or counter)
      */
     private String habitType = HabitType.CLASSIC.name();
-
     public HabitType getHabitType() {
         return HabitType.valueOf(habitType);
     }
-
     public void setHabitType(HabitType habitType) {
         this.habitType = habitType.name();
     }
@@ -91,29 +71,23 @@ public class Habit extends RealmObject {
      * Each time the user complete an action.
      */
     private int repetitions = 0;
-
     public int getRepetitions() {
         return repetitions;
     }
-
     public void setRepetitions(int repetitions) {
         this.repetitions = repetitions;
     }
 
     private int maxRepetitions = 1; //if the habitType is "COUNTER", then this should be replaced with the new value
-
     public int getMaxRepetitions() {
         return maxRepetitions;
     }
-
     public void setMaxRepetitions(int maxRepetitions) {
         this.maxRepetitions = maxRepetitions;
     }
 
     private String frequencyTest;
-
     public String getFrequencyTest() { return frequencyTest; }
-
     public void setFrequencyTest(List<Days> input) {
         frequencyTest = "";
         StringBuilder tmp = new StringBuilder();
@@ -123,19 +97,15 @@ public class Habit extends RealmObject {
         frequencyTest = tmp.toString();
     }
 
-
     // Week frequency
     private RealmList<String> frequency;
-
     public List<Days> getFrequency() {
-
         List<Days> output = new ArrayList<>();
         // Convert the RealmList of String to a List of Days
         for (String day : frequency)
             output.add(Days.valueOf(day));
         return output;
     }
-
     public void setFrequency(List<Days> input) {
         if (frequency.size() > 0)
             frequency.clear();
@@ -162,7 +132,6 @@ public class Habit extends RealmObject {
 
     // Snoozed status
     private boolean isSnoozed = false;
-
     public boolean getIsSnoozed() { return isSnoozed; }
     public void setIsSnoozed(boolean snoozed) { isSnoozed = snoozed; }
 
@@ -250,42 +219,5 @@ public class Habit extends RealmObject {
     public long getHabitCreationDate() {
         return habitCreationDate;
     }
-
-    /*
-    public void setHabitCreationDate(long date) {
-        habitCreationDate = date;
-    }
-     */
-
-    /*
-    private int bestStreak;
-    private int currentStreak;
-    private int completedTasks;
-
-    public int getBestStreak() {
-        return bestStreak;
-    }
-
-    public void setBestStreak(int bestStreak) {
-        this.bestStreak = bestStreak;
-    }
-
-    public int getCurrentStreak() {
-        return currentStreak;
-    }
-
-    public void setCurrentStreak(int currentStreak) {
-        this.currentStreak = currentStreak;
-    }
-
-    public int getCompletedTasks() {
-        return completedTasks;
-    }
-
-    public void setCompletedTasks(int completedTasks) {
-        this.completedTasks = completedTasks;
-    }
-     */
-
-
+    public void setHabitCreationDate(long date) { habitCreationDate = date; }
 }
