@@ -5,24 +5,8 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.hcifedii.sprout.MainActivity;
-import com.hcifedii.sprout.R;
-import com.hcifedii.sprout.adapter.HabitCardAdapter;
 import com.hcifedii.sprout.enumerations.GoalType;
-
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-import java.util.Observable;
-
 import io.realm.Realm;
 import io.realm.RealmResults;
 import model.Habit;
@@ -39,12 +23,6 @@ public class DBAlarmReceiver extends BroadcastReceiver  {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent != null) {
-            /*
-             * v. Richiamare storeHabitListInfo() sulla lista di habit giornalieri
-             * X. OBSERVER
-             * v. Ri-settare l'alarm manager per il giorno successivo
-             */
-
             try (Realm realm = Realm.getDefaultInstance()) {
                 RealmResults<Habit> habitList = realm.where(Habit.class).findAll();
                 for (Habit habit: habitList) {
@@ -71,44 +49,24 @@ public class DBAlarmReceiver extends BroadcastReceiver  {
                                     /* Tree handler */
                                     switch (health) {
                                         case HEALTHY:
+                                            // only in HEALTHY state, growth state can change
                                             if (isTaskPassed) {
-                                                switch (growth) {
-                                                    case SPROUT:
-                                                        if (experience == 0) {
-                                                            tree.setGrowth(Tree.Growth.SMALL);
-                                                            tree.setExperience(0);
-                                                        }
-                                                        break;
-                                                    case SMALL:
-                                                        if(experience >= 3) {
-                                                            tree.setGrowth(Tree.Growth.MEDIUM);
-                                                            tree.setExperience(0);
-                                                        } else {
-                                                            tree.setExperience(experience + 1);
-                                                        }
-                                                        break;
-                                                    case MEDIUM:
-                                                        if (experience >= 5) {
-                                                            tree.setGrowth(Tree.Growth.MATURE);
-                                                            tree.setExperience(0);
-                                                        } else {
-                                                            tree.setExperience(experience + 1);
-                                                        }
-                                                        break;
-                                                    case MATURE:
-                                                        if (experience >= 2) {
-                                                            tree.setGrowth(Tree.Growth.SPARKLING);
-                                                            tree.setExperience(0);
-                                                        } else {
-                                                            tree.setExperience(experience + 1);
-                                                        }
-                                                        break;
-                                                    case SPARKLING:
-                                                        break;
-                                                    default:
+                                                // While in SPARKLING state, experience is not collected but
+                                                // growth state is preserved
+                                                if (growth != Tree.Growth.SPARKLING) {
+                                                    if (experience >= TreeManager.getRequiredExperience(growth)) {
+                                                        tree.setGrowth(TreeManager.getNextGrowthStep(growth));
+                                                        tree.setExperience(0);
+                                                    } else {
+                                                        tree.setExperience(experience + 1);
+                                                    }
                                                 }
-                                            } else {
+                                            }
+                                            else {
+                                                // While in SPARKLING growth state, health state cannot change
+                                                // but growth state will be reverted to MATURE state
                                                 if (growth == Tree.Growth.SPARKLING) tree.setGrowth(Tree.Growth.MATURE);
+                                                    // While in SPROUT growth state, health state cannot change
                                                 else if (growth != Tree.Growth.SPROUT) tree.setHealth(Tree.Health.DRYING);
                                             }
                                             break;
@@ -149,11 +107,12 @@ public class DBAlarmReceiver extends BroadcastReceiver  {
                                             break;
                                         case DEADLINE:
                                             Calendar cal = Calendar.getInstance();
-                                            int today = cal.get(Calendar.DAY_OF_YEAR);
+                                            int currentDay = cal.get(Calendar.DAY_OF_YEAR);
+                                            int currentYear = cal.get(Calendar.YEAR);
                                             cal.setTimeInMillis(habit.getFinalDate());
-                                            int finalDate = cal.get(Calendar.DAY_OF_YEAR);
-                                            //FIXME: controllo anche sull'anno
-                                            if (today >= finalDate) {
+                                            int finalDay = cal.get(Calendar.DAY_OF_YEAR);
+                                            int finalYear = cal.get(Calendar.YEAR);
+                                            if ((currentDay >= finalDay) && (currentYear >= finalYear)) {
                                                 habit.setArchived(true);
                                             }
                                             break;
@@ -172,28 +131,27 @@ public class DBAlarmReceiver extends BroadcastReceiver  {
                                 if (isTaskSnoozed) {
                                     habit.setIsSnoozed(false);
                                 }
-                            });
+                            }
+                    );
                 }
             }
-//            AdapterObservable mObs = AdapterObservable.getInstance();
-////            Log.d(TAG, "" + mObs.countObservers());
 
+            //FIXME: implement observable pattern to trigger UI update in MainActivity
 
-                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-                if (alarmManager != null) {
-                    Calendar cal = Calendar.getInstance();
-                    cal.set(Calendar.HOUR_OF_DAY, 0);
-                    cal.set(Calendar.MINUTE, 0);
-                    cal.set(Calendar.SECOND, 0);
-                    cal.set(Calendar.DAY_OF_YEAR, cal.get(Calendar.DAY_OF_YEAR) + 1);
-                    long millis = cal.getTimeInMillis();
-                    Intent mIntent = new Intent (context, DBAlarmReceiver.class);
-                    mIntent.putExtra("repeat", false);
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1000, mIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC, millis, pendingIntent);
-                }
-
-
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            if (alarmManager != null) {
+                Calendar cal = Calendar.getInstance();
+                //TODO: Get SharedPreference to set custom day change
+                cal.set(Calendar.HOUR_OF_DAY, 0);
+                cal.set(Calendar.MINUTE, 0);
+                cal.set(Calendar.SECOND, 0);
+                cal.set(Calendar.DAY_OF_YEAR, cal.get(Calendar.DAY_OF_YEAR) + 1);
+                long millis = cal.getTimeInMillis();
+                Intent mIntent = new Intent (context, DBAlarmReceiver.class);
+                mIntent.putExtra("repeat", false);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1000, mIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC, millis, pendingIntent);
+            }
         }
     }
 

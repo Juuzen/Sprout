@@ -94,7 +94,7 @@ public class TreeManager {
         }
     }
 
-    private static int getNextId() {
+    public static int getNextId() {
         try (Realm realm = Realm.getDefaultInstance()) {
             Number newId = realm.where(Tree.class).max("id");
             if (newId != null)
@@ -104,52 +104,45 @@ public class TreeManager {
 
     }
 
-//    public static void grow(Tree tree) {
-//        // Retrieving the tree values
-//        Tree.Growth growth = tree.getGrowth();
-//        int exp = tree.getExperience();
-//        // Setting up the growth switch case
-//        switch (growth) {
-//            case SPROUT:
-//                if (exp >= 1) {
-//                    TreeManager.setTreeGrowth(tree, Tree.Growth.SMALL);
-//                    TreeManager.setTreeExperience(tree, 0);
-//                    //TODO: aggiornare l'imageview
-//                } else {
-//                    TreeManager.setTreeExperience(tree, tree.getExperience() + 1);
-//                }
-//                break;
-//            case SMALL:
-//                if(exp >= 3) {
-//                    TreeManager.setTreeGrowth(tree, Tree.Growth.MEDIUM);
-//                    TreeManager.setTreeExperience(tree, 0);
-//                    //TODO: aggiornare l'imageview
-//                } else {
-//                    TreeManager.setTreeExperience(tree, tree.getExperience() + 1);
-//                }
-//                break;
-//            case MEDIUM:
-//                if (exp >= 5) {
-//                    TreeManager.setTreeGrowth(tree, Tree.Growth.MATURE);
-//                    TreeManager.setTreeExperience(tree, 0);
-//                    //TODO: aggiornare l'imageview
-//                } else {
-//                    TreeManager.setTreeExperience(tree, tree.getExperience() + 1);
-//                }
-//                break;
-//            case MATURE:
-//                if (exp >= 2) {
-//                    TreeManager.setTreeGrowth(tree, Tree.Growth.SPARKLING);
-//                    TreeManager.setTreeExperience(tree, 0);
-//                    //TODO: aggiornare l'imageview
-//                } else {
-//                    TreeManager.setTreeExperience(tree, tree.getExperience() + 1);
-//                }
-//                break;
-//            case SPARKLING:
-//                /* Nothing should happen while in Sparkling mode, no exp gained, no changes at all */
-//                break;
-//            default:
-//        }
-//    }
+    public static int getRequiredExperience(Tree.Growth growth) {
+        int result;
+        switch (growth) {
+            case SPROUT:
+                result = 1;
+                break;
+            case SMALL:
+                result = 3;
+                break;
+            case MEDIUM:
+                result = 5;
+                break;
+            case MATURE:
+                result = 2;
+                break;
+            default:
+                result = -1;
+        }
+        return result;
+    }
+
+    public static Tree.Growth getNextGrowthStep(Tree.Growth growth) {
+        Tree.Growth result;
+        switch (growth) {
+            case SPROUT:
+                result = Tree.Growth.SMALL;
+                break;
+            case SMALL:
+                result = Tree.Growth.MEDIUM;
+                break;
+            case MEDIUM:
+                result = Tree.Growth.MATURE;
+                break;
+            case MATURE:
+                result = Tree.Growth.SPARKLING;
+                break;
+            default:
+                result = growth;
+        }
+        return result;
+    }
 }
