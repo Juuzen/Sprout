@@ -130,7 +130,7 @@ public class MainActivity extends SproutApplication {
         }
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rv.setLayoutManager(layoutManager);
-        adapter = new HabitCardAdapter(results, realm);
+        adapter = new HabitCardAdapter(results, realm, fab);
         rv.setAdapter(adapter);
     }
 

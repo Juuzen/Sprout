@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +21,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
 import com.hcifedii.sprout.EditHabitActivity;
 import com.hcifedii.sprout.HabitStatsActivity;
@@ -38,19 +41,59 @@ import model.Tree;
 
 public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerView.ViewHolder> implements Filterable {
 
-    private Context context;
-    private OrderedRealmCollection<Habit> list;
-    private OrderedRealmCollection<Habit> filteredList; /* mandatory for the filter */
-    private Realm mRealm;
-
     private static final int CLASSIC_TYPE = 1;
     private static final int REPETITION_TYPE = 2;
 
-    public HabitCardAdapter(@Nullable OrderedRealmCollection<Habit> data, Realm realm) {
+    private Context context;
+
+    private OrderedRealmCollection<Habit> list;
+    private OrderedRealmCollection<Habit> filteredList; /* mandatory for the filter */
+
+    private Realm mRealm;
+
+    // View used by the Snackbar as anchor
+    private View anchorFab;
+
+
+    public HabitCardAdapter(@Nullable OrderedRealmCollection<Habit> data, Realm realm, View anchorFab) {
         super(data, true, true);
         list = data;
         filteredList = data;
         mRealm = realm;
+
+        this.anchorFab = anchorFab;
+    }
+
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+
+        if (viewType == CLASSIC_TYPE) {
+            View view = inflater.inflate(R.layout.fragment_habit_classic_card, parent, false);
+            return new ClassicViewHolder(view, anchorFab);
+        } else /* REPETITION_TYPE */ {
+            View view = inflater.inflate(R.layout.fragment_habit_counter_card, parent, false);
+            return new RepetitionViewHolder(view, anchorFab);
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
+        final Habit habit = getItem(position);
+        if (habit == null)
+            return;
+
+        final int viewType = getItemViewType(position);
+        if (viewType == CLASSIC_TYPE) {
+            ((ClassicViewHolder) holder).setHabit(habit, context);
+        } else if (viewType == REPETITION_TYPE) {
+            ((RepetitionViewHolder) holder).setHabit(habit, context);
+        }
+
     }
 
     protected static int getTreeAsset(Tree tree, Context ct) {
@@ -176,33 +219,6 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         return this.filteredList.size();
     }
 
-    @NonNull
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        context = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
-
-        if (viewType == CLASSIC_TYPE) {
-            View view = inflater.inflate(R.layout.fragment_habit_classic_card, parent, false);
-            return new ClassicViewHolder(view);
-        } else /* if (viewType == REPETITION_TYPE) */ {
-            View view = inflater.inflate(R.layout.fragment_habit_counter_card, parent, false);
-            return new RepetitionViewHolder(view);
-        }
-    }
-
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        final Habit habit = getItem(position);
-        if (habit != null) {
-            final int viewType = getItemViewType(position);
-            if (viewType == CLASSIC_TYPE) {
-                ((ClassicViewHolder) holder).setHabit(habit, context);
-            } else if (viewType == REPETITION_TYPE) {
-                ((RepetitionViewHolder) holder).setHabit(habit, context);
-            }
-        }
-    }
 
     @Override
     public int getItemViewType(int position) {
@@ -254,19 +270,29 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         }
     }
 
+    /**
+     * Classic habit type view holder
+     */
     private static class ClassicViewHolder extends RecyclerView.ViewHolder {
+
+        private final CardView view;
+        private final View anchorFab;
+
         private TextView habitTitle;
         private ImageButton editHabitButton;
         private Button checkButton;
         private Button snoozeButton;
         private MaterialTextView completedLabel;
-        private CardView view;
+
         private ShapeableImageView treeImageView;
         private ShapeableImageView treeStatus;
 
-        public ClassicViewHolder(@NonNull View itemView) {
+        public ClassicViewHolder(@NonNull View itemView, @NonNull View anchorFab) {
             super(itemView);
+
             view = (CardView) itemView;
+            this.anchorFab = anchorFab;
+
             habitTitle = itemView.findViewById(R.id.classicHabitCardTitle);
             completedLabel = itemView.findViewById(R.id.classicHabitCompletedLabel);
             editHabitButton = itemView.findViewById(R.id.classicHabitEditButton);
@@ -317,7 +343,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
 
             editHabitButton.setOnClickListener(view -> {
                 Intent intent = new Intent(context, EditHabitActivity.class);
-                intent.putExtra("HABIT_ID", habit.getId());
+                intent.putExtra(EditHabitActivity.EXTRA_HABIT_ID, habit.getId());
 
                 Bundle bundle = ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in,
                         android.R.anim.fade_out).toBundle();
@@ -333,7 +359,11 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                     if (habit.getSnoozesMade() < habit.getMaxSnoozes()) {
                         habit.getRealm().executeTransaction(realm -> habit.setIsSnoozed(true));
                     } else {
-                        Toast.makeText(context, "Non puoi più rinviare l'abitudine!", Toast.LENGTH_SHORT).show();
+                        Snackbar.make(view, R.string.habit_cannot_be_snoozed_snackbar, Snackbar.LENGTH_SHORT)
+                                .setBackgroundTint(ContextCompat.getColor(context, R.color.primaryColor))
+                                .setTextColor(ContextCompat.getColor(context, R.color.whiteColor))
+                                .setAnchorView(anchorFab)
+                                .show();
                     }
                 });
             }
@@ -341,25 +371,41 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             checkButton.setOnClickListener(view -> {
                 if (habit.getRepetitions() < 1) {
                     habit.getRealm().executeTransaction(realm -> habit.setRepetitions(1));
+
+                    Snackbar.make(view, R.string.habit_updated_snackbar, Snackbar.LENGTH_SHORT)
+                            .setBackgroundTint(ContextCompat.getColor(context, R.color.primaryColor))
+                            .setTextColor(ContextCompat.getColor(context, R.color.whiteColor))
+                            .setAnchorView(anchorFab)
+                            .show();
                 }
             });
         }
     }
 
+    /**
+     * Counter habit type view holder
+     */
     private static class RepetitionViewHolder extends RecyclerView.ViewHolder {
+
+        private final CardView view;
+        private final View anchorFab;
+
         private TextView habitTitle;
         private ProgressBar progressBar;
         private TextView progressLabel;
         private ImageButton editHabitButton;
         private Button checkButton;
         private Button snoozeButton;
-        private CardView view;
+
         private ShapeableImageView treeImageView;
         private ShapeableImageView treeStatus;
 
-        public RepetitionViewHolder(@NonNull View itemView) {
+        public RepetitionViewHolder(@NonNull View itemView, @NonNull View anchorFab) {
             super(itemView);
+
             view = (CardView) itemView;
+            this.anchorFab = anchorFab;
+
             habitTitle = itemView.findViewById(R.id.counterHabitCardTitle);
             editHabitButton = itemView.findViewById(R.id.counterHabitEditButton);
             progressBar = itemView.findViewById(R.id.counterHabitProgressBar);
@@ -417,7 +463,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
 
             editHabitButton.setOnClickListener(view -> {
                 Intent intent = new Intent(context, EditHabitActivity.class);
-                intent.putExtra("HABIT_ID", habit.getId());
+                intent.putExtra(EditHabitActivity.EXTRA_HABIT_ID, habit.getId());
 
                 Bundle bundle = ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in,
                         android.R.anim.fade_out).toBundle();
@@ -433,8 +479,12 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                     if (habit.getSnoozesMade() < habit.getMaxSnoozes()) {
                         habit.getRealm().executeTransaction(realm -> habit.setIsSnoozed(true));
                     } else {
-                        // you shouldn't be here
-                        Toast.makeText(context, "Non puoi più rinviare l'abitudine!", Toast.LENGTH_SHORT).show();
+
+                        Snackbar.make(view, R.string.habit_cannot_be_snoozed_snackbar, Snackbar.LENGTH_SHORT)
+                                .setBackgroundTint(ContextCompat.getColor(context, R.color.primaryColor))
+                                .setTextColor(ContextCompat.getColor(context, R.color.whiteColor))
+                                .setAnchorView(anchorFab)
+                                .show();
                     }
                 });
             }
@@ -445,19 +495,29 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             });
 
             checkButton.setOnClickListener(view -> {
-                int habitId = habit.getId();
-                int newRepValue = habit.getRepetitions() + 1;
+
+                int newValue = habit.getRepetitions() + 1;
                 int maxReps = habit.getMaxRepetitions();
-                Log.d("Testing", newRepValue + " - " + maxReps);
-                if (newRepValue <= habit.getMaxRepetitions()) {
+
+                //Log.d("Testing", newRepValue + " - " + maxReps);
+
+                if (newValue <= maxReps) {
                     habit.getRealm().executeTransaction(realm -> {
-                        Habit result = realm.where(Habit.class).equalTo("id", habitId).findFirst();
+                        Habit result = realm.where(Habit.class)
+                                .equalTo("id", habit.getId())
+                                .findFirst();
                         if (result != null) {
-                            result.setRepetitions(newRepValue);
-                            String newLabel = "Completata " + newRepValue + " volte su " + maxReps;
+                            result.setRepetitions(newValue);
+                            String newLabel = "Completata " + newValue + " volte su " + maxReps;
                             progressLabel.setText(newLabel);
                         }
                     });
+
+                    Snackbar.make(view, R.string.habit_updated_snackbar, Snackbar.LENGTH_SHORT)
+                            .setBackgroundTint(ContextCompat.getColor(context, R.color.primaryColor))
+                            .setTextColor(ContextCompat.getColor(context, R.color.whiteColor))
+                            .setAnchorView(anchorFab)
+                            .show();
                 }
             });
         }
