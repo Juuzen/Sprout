@@ -64,6 +64,7 @@ public class EditHabitActivity extends SproutApplication {
         ExtendedFloatingActionButton editFab = findViewById(R.id.fabEditButton);
         editFab.setOnClickListener(fabView -> {
             //TODO: Alert for disruptive actions (changing habit type, changing maxRepetitions etc)
+            //TODO: Add error snackbar for missing info
             String title = titleFragment.getTitle();
             if (title.length() > 0) {
                 // Clear error message
@@ -98,10 +99,8 @@ public class EditHabitActivity extends SproutApplication {
 
                 long goalLongValue = 0;
                 int goalIntValue = 0;
-
                 if (goalType == GoalType.DEADLINE) {
                     goalLongValue = goalFragment.getLong();
-
                     if (goalLongValue < 0) {
                         //showErrorSnackbar(saveFab, R.string.error_deadline_is_empty);
                         return;

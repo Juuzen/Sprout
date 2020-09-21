@@ -23,11 +23,9 @@ public class Habit extends RealmObject {
 
     @PrimaryKey
     private int id;
-
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -57,7 +55,7 @@ public class Habit extends RealmObject {
     }
 
     /**
-     * Type of the habit (classic or counter)
+     * Type of the habit
      */
     private String habitType = HabitType.CLASSIC.name();
     public HabitType getHabitType() {
@@ -68,7 +66,7 @@ public class Habit extends RealmObject {
     }
 
     /**
-     * Each time the user complete an action.
+     * Each time the user complete a task.
      */
     private int repetitions = 0;
     public int getRepetitions() {
@@ -78,6 +76,9 @@ public class Habit extends RealmObject {
         this.repetitions = repetitions;
     }
 
+    /**
+     * The max number of repetitions required to complete a task.
+     */
     private int maxRepetitions = 1; //if the habitType is "COUNTER", then this should be replaced with the new value
     public int getMaxRepetitions() {
         return maxRepetitions;
@@ -86,6 +87,9 @@ public class Habit extends RealmObject {
         this.maxRepetitions = maxRepetitions;
     }
 
+    /**
+     * When the habit is active (as a flatlist for Realm limitations)
+     */
     private String frequencyTest;
     public String getFrequencyTest() { return frequencyTest; }
     public void setFrequencyTest(List<Days> input) {
@@ -97,7 +101,9 @@ public class Habit extends RealmObject {
         frequencyTest = tmp.toString();
     }
 
-    // Week frequency
+    /**
+     * When the habit is active (as a RealmList)
+     */
     private RealmList<String> frequency;
     public List<Days> getFrequency() {
         List<Days> output = new ArrayList<>();
@@ -114,7 +120,9 @@ public class Habit extends RealmObject {
             frequency.add(day.name());
     }
 
-    // Reminders
+    /**
+     * Reminders for the habit
+     */
     private RealmList<Reminder> reminders;
     public RealmList<Reminder> getReminders() {
         return reminders;
@@ -123,25 +131,32 @@ public class Habit extends RealmObject {
         this.reminders = reminders;
     }
 
-    // Tree
+    /**
+     * Tree RealmObject associated to the habit
+     */
     private Tree tree;
     public Tree getTree() { return tree; }
     public void setTree(Tree tree) {
         this.tree = tree;
     }
 
-    // Snoozed status
+    /**
+     * If the habit is snoozed
+     */
     private boolean isSnoozed = false;
     public boolean getIsSnoozed() { return isSnoozed; }
     public void setIsSnoozed(boolean snoozed) { isSnoozed = snoozed; }
 
-    // Snoozed made during a week
+    /**
+     * Snoozes made (during a week)
+     */
     private int snoozesMade = 0;
     public int getSnoozesMade() { return snoozesMade; }
     public void setSnoozesMade(int snoozed) { snoozesMade = snoozed; }
 
-
-    // Max snoozes in a week
+    /**
+     * Max snoozes (choosed by the user)
+     */
     private int maxSnoozes = 0;
     public int getMaxSnoozes() {
         return maxSnoozes;
@@ -150,11 +165,16 @@ public class Habit extends RealmObject {
         this.maxSnoozes = maxSnoozes;
     }
 
+    /**
+     * Counter for the snooze weekly reset
+     */
     private int snoozesPassedDays = 0;
     public int getSnoozesPassedDays() { return snoozesPassedDays; }
     public void setSnoozesPassedDays(int snoozesPassedDays) { this.snoozesPassedDays = snoozesPassedDays; }
 
-    // Goal
+    /**
+     * Optional goal for the habit
+     */
     private String goalType = GoalType.NONE.name();
     public GoalType getGoalType() {
         return GoalType.valueOf(goalType);
@@ -163,11 +183,16 @@ public class Habit extends RealmObject {
         goalType = val.name();
     }
 
+    /**
+     * Where the goal information is stored
+     */
     private long goalValue = 0;
     public long getGoalValue() { return goalValue; }
     public void setGoalValue(long value) { this.goalValue = value; }
 
-    // Max completed actions while having an habit TODO: col counter, gestire la logica
+    /**
+     * Max number of tasks required to be completed in order to archive the habit
+     */
     private int maxAction;
     public int getMaxAction() {
         return maxAction;
@@ -176,7 +201,9 @@ public class Habit extends RealmObject {
         this.maxAction = maxAction;
     }
 
-    // Max value of streak while having an habit
+    /**
+     * Max value of streak required in order to archive the habit
+     */
     private int maxStreakValue;
     public int getMaxStreakValue() {
         return maxStreakValue;
@@ -185,7 +212,9 @@ public class Habit extends RealmObject {
         this.maxStreakValue = maxStreakValue;
     }
 
-    // Goal -- Deadline
+    /**
+     * Deadline
+     */
     private long finalDate;     // Deadline in milliseconds
     public long getFinalDate() {
         return finalDate;
@@ -194,7 +223,9 @@ public class Habit extends RealmObject {
         this.finalDate = finalDate;
     }
 
-    // Icon showed inside the preset habit view
+    /**
+     * Habit icon (for the preset habits)
+     */
     private int imageResId;
     public int getImage() {
         return imageResId;
@@ -203,7 +234,9 @@ public class Habit extends RealmObject {
         this.imageResId = image;
     }
 
-    // Stats data
+    /**
+     * Habit stats
+     */
     private RealmList<Task> taskHistory;
     public RealmList<Task> getTaskHistory() {
         return taskHistory;
@@ -215,6 +248,9 @@ public class Habit extends RealmObject {
         this.taskHistory = taskHistory;
     }
 
+    /**
+     * When the habit is created
+     */
     private long habitCreationDate;     // Creation date in milliseconds
     public long getHabitCreationDate() {
         return habitCreationDate;
