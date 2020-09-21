@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import com.hcifedii.sprout.enumerations.GoalType;
 import java.util.Calendar;
+import java.util.Locale;
+
+import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import model.Habit;
@@ -17,6 +20,8 @@ public class DBAlarmReceiver extends BroadcastReceiver  {
     private static final String TAG = "Broadcastreceiver";
     //TODO: should include this value inside Habit?
     private final int snoozesDayLimit = 7;
+    String debugDay = Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
+    String day = Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK - 1, Calendar.LONG, Locale.US);
 
     public DBAlarmReceiver(){}
 
@@ -24,7 +29,13 @@ public class DBAlarmReceiver extends BroadcastReceiver  {
     public void onReceive(Context context, Intent intent) {
         if (intent != null) {
             try (Realm realm = Realm.getDefaultInstance()) {
-                RealmResults<Habit> habitList = realm.where(Habit.class).findAll();
+                RealmResults<Habit> habitList = realm
+                        .where(Habit.class)
+                        .equalTo("isArchived", false)
+                        .and()
+                        .contains("frequencyTest", debugDay, Case.INSENSITIVE)
+                        .sort("id")
+                        .findAll();
                 for (Habit habit: habitList) {
                     realm.executeTransaction(
                             realmInstance -> {

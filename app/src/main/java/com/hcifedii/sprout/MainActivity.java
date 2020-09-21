@@ -101,7 +101,7 @@ public class MainActivity extends SproutApplication {
         realm = Realm.getDefaultInstance();
         results = realm
                 .where(Habit.class)
-                .equalTo("isCompleted", false)
+                .equalTo("isArchived", false)
                 .and()
                 .contains("frequencyTest", day, Case.INSENSITIVE)
                 .sort("id")
