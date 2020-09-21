@@ -453,7 +453,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                         Habit result = realm.where(Habit.class).equalTo("id", habitId).findFirst();
                         if (result != null) {
                             result.setRepetitions(newRepValue);
-                            String newLabel = "Completato " + newRepValue + " volte su " + maxReps;
+                            String newLabel = context.getResources().getQuantityString(R.plurals.counterHabitRepetitionsLabel, habit.getRepetitions(), habit.getRepetitions(), habit.getMaxRepetitions());
                             progressLabel.setText(newLabel);
                         }
                     });
