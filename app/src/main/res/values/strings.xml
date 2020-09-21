@@ -119,7 +119,7 @@
     <string name="snooze_button">Rinvia</string>
     <string name="main_activity_habit_counter_placeholder">Completata 0 volte su 5</string>
     <string name="new_habit_success_message">Nuova abitudine creata con successo!</string>
-    <string name="completed">Completata</string>
+    <string name="completed">Completata!</string>
     <string name="n_times">volte su</string>
     <string name="channel_name">Notifica dell\'abitudine</string>
     <string name="channel_description">Le notifiche decise dall\'utente.</string>
@@ -147,4 +147,5 @@
     <string name="counter_habit_number_picker_dialog">Seleziona quante volte hai completato la tua abitudine oggi:</string>
     <string name="delete_stats_dialog_message">Vuoi davvero eliminare le statistiche?</string>
     <string name="delete_stats_result_message">Statistiche eliminate</string>
+    <string name="snoozed">Rinviata!</string>
 </resources>

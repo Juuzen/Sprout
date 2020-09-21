@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,7 +21,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.imageview.ShapeableImageView;
@@ -40,9 +38,7 @@ import model.Tree;
 
 public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerView.ViewHolder> implements Filterable {
 
-    private static final String TAG = "HABITCARDADAPTER";
-
-    private Context ct;
+    private Context context;
     private OrderedRealmCollection<Habit> list;
     private OrderedRealmCollection<Habit> filteredList; /* mandatory for the filter */
     private Realm mRealm;
@@ -50,9 +46,8 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
     private static final int CLASSIC_TYPE = 1;
     private static final int REPETITION_TYPE = 2;
 
-    public HabitCardAdapter(@Nullable OrderedRealmCollection<Habit> data, Context context, Realm realm) {
+    public HabitCardAdapter(@Nullable OrderedRealmCollection<Habit> data, Realm realm) {
         super(data, true, true);
-        ct = context;
         list = data;
         filteredList = data;
         mRealm = realm;
@@ -62,9 +57,8 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         int result = -1;
         Tree.Growth growth = tree.getGrowth();
         Tree.Health health = tree.getHealth();
-        int nightModeFlags =
-                ct.getResources().getConfiguration().uiMode &
-                        Configuration.UI_MODE_NIGHT_MASK;
+        int nightModeFlags = ct.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
         switch (nightModeFlags) {
             case Configuration.UI_MODE_NIGHT_UNDEFINED:
             case Configuration.UI_MODE_NIGHT_NO:
@@ -185,13 +179,15 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view;
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
+        context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+
         if (viewType == CLASSIC_TYPE) {
-            view = inflater.inflate(R.layout.fragment_habit_classic_card, parent, false);
+            View view = inflater.inflate(R.layout.fragment_habit_classic_card, parent, false);
             return new ClassicViewHolder(view);
         } else /* if (viewType == REPETITION_TYPE) */ {
-            view = inflater.inflate(R.layout.fragment_habit_counter_card, parent, false);
+            View view = inflater.inflate(R.layout.fragment_habit_counter_card, parent, false);
             return new RepetitionViewHolder(view);
         }
     }
@@ -201,9 +197,9 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         if (habit != null) {
             final int viewType = getItemViewType(position);
             if (viewType == CLASSIC_TYPE) {
-                ((ClassicViewHolder) holder).setHabit(habit, ct);
+                ((ClassicViewHolder) holder).setHabit(habit, context);
             } else if (viewType == REPETITION_TYPE) {
-                ((RepetitionViewHolder) holder).setHabit(habit, ct);
+                ((RepetitionViewHolder) holder).setHabit(habit, context);
             }
         }
     }
@@ -239,6 +235,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
     public Filter getFilter() {
         return new HabitFilter(this);
     }
+
     private static class HabitFilter extends Filter {
         private final HabitCardAdapter adapter;
 
@@ -282,11 +279,13 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         public void setHabit(Habit habit, Context context) {
             habitTitle.setText(habit.getTitle());
             Tree tree = habit.getTree();
-            if (tree != null) treeImageView.setImageResource(HabitCardAdapter.getTreeAsset(tree, context));
-            else treeImageView.setImageTintList(ColorStateList.valueOf(context.getColor(R.color.redColor)));
+            if (tree != null)
+                treeImageView.setImageResource(HabitCardAdapter.getTreeAsset(tree, context));
+            else
+                treeImageView.setImageTintList(ColorStateList.valueOf(context.getColor(R.color.redColor)));
 
             if (habit.getIsSnoozed()) {
-                completedLabel.setText("Rinviata!");
+                completedLabel.setText(R.string.snoozed);
                 completedLabel.setTextColor(context.getColor(R.color.secondaryColor));
                 treeStatus.setVisibility(View.VISIBLE);
                 treeStatus.setImageResource(R.drawable.tree_status_snoozed);
@@ -294,7 +293,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                 checkButton.setEnabled(false);
 
             } else if (habit.getRepetitions() != 0) {
-                completedLabel.setText("Completata!");
+                completedLabel.setText(R.string.completed);
                 completedLabel.setTextColor(context.getColor(R.color.primaryColor));
                 treeStatus.setVisibility(View.VISIBLE);
                 treeStatus.setImageResource(R.drawable.tree_status_completed);
@@ -332,7 +331,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                 snoozeButton.setVisibility(View.VISIBLE);
                 snoozeButton.setOnClickListener(view1 -> {
                     if (habit.getSnoozesMade() < habit.getMaxSnoozes()) {
-                        habit.getRealm().executeTransaction(realm -> { habit.setIsSnoozed(true); });
+                        habit.getRealm().executeTransaction(realm -> habit.setIsSnoozed(true));
                     } else {
                         Toast.makeText(context, "Non puoi più rinviare l'abitudine!", Toast.LENGTH_SHORT).show();
                     }
@@ -375,10 +374,12 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             this.habitTitle.setText(habit.getTitle());
             this.progressBar.setMax(habit.getMaxRepetitions());
             Tree tree = habit.getTree();
-            if (tree != null) treeImageView.setImageResource(HabitCardAdapter.getTreeAsset(tree, context));
-            else treeImageView.setImageTintList(ColorStateList.valueOf(context.getColor(R.color.redColor)));
+            if (tree != null)
+                treeImageView.setImageResource(HabitCardAdapter.getTreeAsset(tree, context));
+            else
+                treeImageView.setImageTintList(ColorStateList.valueOf(context.getColor(R.color.redColor)));
 
-            String message = "";
+            String message;
             if (habit.getIsSnoozed()) {
                 message = "Abitudine rinviata!";
                 progressBar.setProgress(habit.getMaxRepetitions());
@@ -430,7 +431,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                 snoozeButton.setVisibility(View.VISIBLE);
                 snoozeButton.setOnClickListener(view1 -> {
                     if (habit.getSnoozesMade() < habit.getMaxSnoozes()) {
-                        habit.getRealm().executeTransaction(realm -> { habit.setIsSnoozed(true); });
+                        habit.getRealm().executeTransaction(realm -> habit.setIsSnoozed(true));
                     } else {
                         // you shouldn't be here
                         Toast.makeText(context, "Non puoi più rinviare l'abitudine!", Toast.LENGTH_SHORT).show();
