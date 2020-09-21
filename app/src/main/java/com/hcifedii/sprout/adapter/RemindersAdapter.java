@@ -92,7 +92,7 @@ public class RemindersAdapter
     }
 
     // Provide a reference to the views for each data item
-    public class RemindersViewHolder extends RecyclerView.ViewHolder {
+    class RemindersViewHolder extends RecyclerView.ViewHolder {
 
         private final Context context;
         private final TextView content;

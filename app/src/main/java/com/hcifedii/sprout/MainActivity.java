@@ -95,6 +95,8 @@ public class MainActivity extends SproutApplication {
             startActivity(intent, bundle);
         });
 
+        // TODO: SnackBar con l'opzione per annullare l'ultima azione
+
         //TODO: mostrare gli habit attivi nel giorno corrente, gli altri dopo (con un divider?)
         RecyclerView rv = findViewById(R.id.habitCardRecyclerView);
         TextView emptyMessage = findViewById(R.id.mainEmptyHabitListMessage);

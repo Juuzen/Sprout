@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -27,6 +28,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 import com.hcifedii.sprout.enumerations.GoalType;
 
@@ -42,6 +44,7 @@ import model.Task;
 import model.Tree;
 import utils.HabitRealmManager;
 import model.Streak;
+import utils.TaskManager;
 
 public class HabitStatsActivity extends SproutApplication {
 
@@ -505,6 +508,24 @@ public class HabitStatsActivity extends SproutApplication {
 
                 return true;
             case R.id.deleteStatsMenuItem:
+
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+                builder.setTitle("Sprout");
+                builder.setMessage(R.string.delete_stats_dialog_message);
+                builder.setPositiveButton(R.string.positive_dialog_button, (dialogInterface, i) -> {
+                    if(habitId >= 0) {
+                        TaskManager.deleteHabitTaskHistory(habitId);
+
+                        Toast.makeText(this, R.string.delete_stats_result_message, Toast.LENGTH_SHORT).show();
+
+                        // Refresh the activity
+                        finish();
+                        startActivity(getIntent());
+                    }
+                });
+                builder.setNeutralButton(R.string.neutral_dialog_button, (dialogInterface, i) -> dialogInterface.dismiss());
+
+                builder.show();
 
                 return true;
             default:

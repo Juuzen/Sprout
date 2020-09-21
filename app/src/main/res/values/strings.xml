@@ -86,7 +86,7 @@
     <string name="habit_completed_placeholder">999</string>
     <string name="habit_list_textview">Lista delle abitudini</string>
     <string name="hour_textview">ore</string>
-    <string name="neutral_permission_dialog_button">Annulla</string>
+    <string name="neutral_dialog_button">Annulla</string>
     <string name="positive_permission_dialog_button">Si</string>
     <string name="permission_dialog_message">Vuoi consentire l\'accesso alle statistiche sull\'uso del dispositivo da parte dell\'app?</string>
     <string name="habit_item_title_placeholder">Titolo dell\'abitudine</string>
@@ -98,7 +98,7 @@
     <string name="help_menu_item">Aiuto</string>
     <string name="delete_stats_menu_item">Azzera le statistiche</string>
     <string name="delete_habit_dialog_message">Vuoi eliminare l\'abitudine? Perderai tutti i tuoi progressi!</string>
-    <string name="positive_delete_habit_dialog">Sì, cancella</string>
+    <string name="positive_dialog_button">Sì, cancella</string>
     <string name="title_habit_type_stats">Abitudine:</string>
     <string name="counter">Contatore</string>
     <string name="classic">Classica</string>
@@ -145,4 +145,6 @@
         <item quantity="other">Completata %1$d volte su %2$d</item>
     </plurals>
     <string name="counter_habit_number_picker_dialog">Seleziona quante volte hai completato la tua abitudine oggi:</string>
+    <string name="delete_stats_dialog_message">Vuoi davvero eliminare le statistiche?</string>
+    <string name="delete_stats_result_message">Statistiche eliminate</string>
 </resources>
