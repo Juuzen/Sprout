@@ -62,9 +62,10 @@ public class DBAlarmReceiver extends BroadcastReceiver  {
                                         case HEALTHY:
                                             // only in HEALTHY state, growth state can change
                                             if (isTaskPassed) {
-                                                // While in SPARKLING state, experience is not collected but
-                                                // growth state is preserved
-                                                if (growth != Tree.Growth.SPARKLING) {
+                                                if (growth == Tree.Growth.SPROUT) {
+                                                    tree.setGrowth(TreeManager.getNextGrowthStep(growth));
+                                                    tree.setExperience(0);
+                                                } else if (growth != Tree.Growth.SPARKLING) {
                                                     if (experience >= TreeManager.getRequiredExperience(growth)) {
                                                         tree.setGrowth(TreeManager.getNextGrowthStep(growth));
                                                         tree.setExperience(0);

@@ -32,8 +32,8 @@
             android:id="@+id/classicHabitTreeImageView"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
             android:backgroundTint="@color/whiteColor"
             android:src="@drawable/iv_day_sprout"
 
@@ -45,13 +45,26 @@
             android:id="@+id/classicHabitTreeStatusImageView"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
             android:backgroundTint="@color/whiteColor"
 
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/circleImageView" />
+
+        <utils.TreeArcProgress
+            android:layout_margin="3dp"
+            android:id="@+id/classicHabitTreeProgress"
+            android:layout_width="106dp"
+            android:layout_height="106dp"
+            app:arc_finished_color="@color/primaryColor"
+            app:arc_stroke_width="4dp"
+            app:arc_unfinished_color="#e9e9e9"
+            app:layout_constraintBottom_toBottomOf="@+id/classicHabitTreeImageView"
+            app:layout_constraintEnd_toEndOf="@+id/classicHabitTreeImageView"
+            app:layout_constraintStart_toStartOf="@+id/classicHabitTreeImageView"
+            app:layout_constraintTop_toTopOf="@+id/classicHabitTreeImageView" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/classicHabitCompletedLabel"

@@ -106,9 +106,6 @@ public class TreeManager {
     public static int getRequiredExperience(Tree.Growth growth) {
         int result;
         switch (growth) {
-            case SPROUT:
-                result = 1;
-                break;
             case SMALL:
                 result = 3;
                 break;

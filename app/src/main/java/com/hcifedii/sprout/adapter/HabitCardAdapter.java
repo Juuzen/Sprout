@@ -37,6 +37,8 @@ import io.realm.Realm;
 import io.realm.RealmRecyclerViewAdapter;
 import model.Habit;
 import model.Tree;
+import utils.TreeArcProgress;
+import utils.TreeManager;
 
 public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerView.ViewHolder> implements Filterable {
 
@@ -266,6 +268,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         private CardView view;
         private ShapeableImageView treeImageView;
         private ShapeableImageView treeStatus;
+        private TreeArcProgress treeProgress;
 
         public ClassicViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -277,13 +280,52 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             checkButton = itemView.findViewById(R.id.classicHabitCheckButton);
             treeImageView = itemView.findViewById(R.id.classicHabitTreeImageView);
             treeStatus = itemView.findViewById(R.id.classicHabitTreeStatusImageView);
+            treeProgress = itemView.findViewById(R.id.classicHabitTreeProgress);
         }
 
         public void setHabit(Habit habit, Context context) {
             habitTitle.setText(habit.getTitle());
             Tree tree = habit.getTree();
-            if (tree != null) treeImageView.setImageResource(HabitCardAdapter.getTreeAsset(tree, context));
-            else treeImageView.setImageTintList(ColorStateList.valueOf(context.getColor(R.color.redColor)));
+            if (tree != null) {
+                Tree.Growth growth = tree.getGrowth();
+                treeImageView.setImageResource(HabitCardAdapter.getTreeAsset(tree, context));
+                if (growth == Tree.Growth.SPROUT || growth == Tree.Growth.SPARKLING) {
+                    treeProgress.setVisibility(View.INVISIBLE);
+                } else {
+                    treeProgress.setVisibility(View.VISIBLE);
+                    treeProgress.setMax(TreeManager.getRequiredExperience(growth));
+                    treeProgress.setProgress(tree.getExperience());
+                    treeProgress.setText("");
+                    if (treeProgress.getProgress() == treeProgress.getMax()) {
+                        treeProgress.setArcAngle(360);
+                        treeProgress.setStrokeWidth(10);
+                    } else {
+                        treeProgress.setArcAngle(250);
+                        treeProgress.setStrokeWidth(8);
+                    }
+                    switch (tree.getHealth()) {
+                        case HEALTHY:
+                            if (treeProgress.getProgress() == treeProgress.getMax()) {
+                                treeProgress.setFinishedStrokeColor(context.getColor(R.color.maxExpColor));
+                            } else {
+                                treeProgress.setFinishedStrokeColor(context.getColor(R.color.redColor));
+                            }
+                            break;
+                        case DRYING:
+                            treeProgress.setFinishedStrokeColor(context.getColor(R.color.dryingExpColor));
+                            break;
+                        case WITHERED:
+                            treeProgress.setFinishedStrokeColor(context.getColor(R.color.witheredExpColor));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            else {
+                treeImageView.setImageTintList(ColorStateList.valueOf(context.getColor(R.color.redColor)));
+                treeProgress.setVisibility(View.INVISIBLE);
+            }
 
             if (habit.getIsSnoozed()) {
                 completedLabel.setText("Rinviata!");
@@ -357,6 +399,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         private CardView view;
         private ShapeableImageView treeImageView;
         private ShapeableImageView treeStatus;
+        private TreeArcProgress treeProgress;
 
         public RepetitionViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -369,14 +412,53 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             progressLabel = itemView.findViewById(R.id.counterHabitProgressLabel);
             treeImageView = itemView.findViewById(R.id.counterHabitTreeImageView);
             treeStatus = itemView.findViewById(R.id.counterHabitTreeStatusImageView);
+            treeProgress = itemView.findViewById(R.id.counterHabitTreeProgress);
         }
 
         void setHabit(Habit habit, Context context) {
             this.habitTitle.setText(habit.getTitle());
             this.progressBar.setMax(habit.getMaxRepetitions());
             Tree tree = habit.getTree();
-            if (tree != null) treeImageView.setImageResource(HabitCardAdapter.getTreeAsset(tree, context));
-            else treeImageView.setImageTintList(ColorStateList.valueOf(context.getColor(R.color.redColor)));
+            if (tree != null) {
+                Tree.Growth growth = tree.getGrowth();
+                treeImageView.setImageResource(HabitCardAdapter.getTreeAsset(tree, context));
+                if (growth == Tree.Growth.SPROUT || growth == Tree.Growth.SPARKLING) {
+                    treeProgress.setVisibility(View.INVISIBLE);
+                } else {
+                    treeProgress.setVisibility(View.VISIBLE);
+                    treeProgress.setMax(TreeManager.getRequiredExperience(growth));
+                    treeProgress.setProgress(tree.getExperience());
+                    treeProgress.setText("");
+                    if (treeProgress.getProgress() == treeProgress.getMax()) {
+                        treeProgress.setArcAngle(360);
+                        treeProgress.setStrokeWidth(10);
+                    } else {
+                        treeProgress.setArcAngle(250);
+                        treeProgress.setStrokeWidth(8);
+                    }
+                    switch (tree.getHealth()) {
+                        case HEALTHY:
+                            if (treeProgress.getProgress() == treeProgress.getMax()) {
+                                treeProgress.setFinishedStrokeColor(context.getColor(R.color.maxExpColor));
+                            } else {
+                                treeProgress.setFinishedStrokeColor(context.getColor(R.color.redColor));
+                            }
+                            break;
+                        case DRYING:
+                            treeProgress.setFinishedStrokeColor(context.getColor(R.color.dryingExpColor));
+                            break;
+                        case WITHERED:
+                            treeProgress.setFinishedStrokeColor(context.getColor(R.color.witheredExpColor));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            else {
+                treeImageView.setImageTintList(ColorStateList.valueOf(context.getColor(R.color.redColor)));
+                treeProgress.setVisibility(View.INVISIBLE);
+            }
 
             String message = "";
             if (habit.getIsSnoozed()) {

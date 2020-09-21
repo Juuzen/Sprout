@@ -80,6 +80,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/circleImageView" />
 
+        <utils.TreeArcProgress
+            android:id="@+id/counterHabitTreeProgress"
+            android:layout_width="106dp"
+            android:layout_height="106dp"
+            app:arc_finished_color="@color/primaryColor"
+            app:arc_stroke_width="4dp"
+            app:arc_unfinished_color="#e9e9e9"
+            app:layout_constraintBottom_toBottomOf="@+id/counterHabitTreeImageView"
+            app:layout_constraintEnd_toEndOf="@+id/counterHabitTreeImageView"
+            app:layout_constraintStart_toStartOf="@+id/counterHabitTreeImageView"
+            app:layout_constraintTop_toTopOf="@+id/counterHabitTreeImageView" />
+
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/counterHabitEditButton"
             style="?android:attr/borderlessButtonStyle"
