@@ -170,7 +170,7 @@ public class HabitStatsActivity extends SproutApplication {
         setNoDataAvailableMessage(chart);
 
         if (monthlyActionsMap == null || monthlyActionsMap.size() < 12) {
-            Log.e(this.getClass().getSimpleName(), "Invalid Action map");
+            //Log.e(this.getClass().getSimpleName(), "Invalid Action map");
             return;
         }
 
@@ -367,11 +367,12 @@ public class HabitStatsActivity extends SproutApplication {
     private void extractDataFromTaskHistory(@NonNull List<Task> taskHistory) {
 
         if (streakList == null) {
-            Log.e(this.getClass().getSimpleName(), "Streak list == null");
+            //Log.e(this.getClass().getSimpleName(), "Streak list == null");
             return;
         }
 
         if (taskHistory.size() < 1) {
+            //Log.e(LOGCAT_TAG, "taskHistory == null");
             return;
         }
         //taskHistory.sort((task, t1) -> Long.compare(task.getTaskDate(), t1.getTaskDate()));
@@ -394,6 +395,7 @@ public class HabitStatsActivity extends SproutApplication {
             calendar = Calendar.getInstance();
             calendar.setTimeInMillis(task.getTaskDate());
 
+            //Log.i(LOGCAT_TAG, task.toString());
 
             // Get the month
             currentMonth = calendar.get(Calendar.MONTH);

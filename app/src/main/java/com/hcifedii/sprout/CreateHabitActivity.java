@@ -124,7 +124,7 @@ public class CreateHabitActivity extends SproutApplication {
                 TreeManager.insertTree(tree);
 
                 // Print test Message
-                printHabitInfoOnLog(habit);
+                //printHabitInfoOnLog(habit);
 
                 setUpNotification(habit);
 
