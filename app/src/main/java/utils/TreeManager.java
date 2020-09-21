@@ -29,14 +29,6 @@ public class TreeManager {
         return result;
     }
 
-    public static void insertTree(@NonNull Tree tree) {
-        try (Realm realm = Realm.getDefaultInstance()) {
-            realm.executeTransaction(
-                    realmInstance -> realmInstance.insertOrUpdate(tree)
-            );
-        }
-    }
-
     public static ArrayList<Tree> getAllTrees() {
         Realm realm = null;
         ArrayList<Tree> list = null;
@@ -94,6 +86,14 @@ public class TreeManager {
         }
     }
 
+    public static void insertTree(@NonNull Tree tree) {
+        try (Realm realm = Realm.getDefaultInstance()) {
+            realm.executeTransaction(
+                    realmInstance -> realmInstance.insertOrUpdate(tree)
+            );
+        }
+    }
+
     public static int getNextId() {
         try (Realm realm = Realm.getDefaultInstance()) {
             Number newId = realm.where(Tree.class).max("id");
@@ -101,7 +101,6 @@ public class TreeManager {
                 return newId.intValue() + 1;
             return 0;
         }
-
     }
 
     public static int getRequiredExperience(Tree.Growth growth) {

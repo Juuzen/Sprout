@@ -119,7 +119,7 @@ public class CreateHabitActivity extends SproutApplication {
 
                 //Set the tree field
                 Tree tree = new Tree();
-                tree.setId(habit.getId());
+                tree.setId(TreeManager.getNextId());
                 habit.setTree(tree);
                 TreeManager.insertTree(tree);
 
