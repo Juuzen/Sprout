@@ -64,7 +64,7 @@ public class EditHabitActivity extends SproutApplication {
         ExtendedFloatingActionButton editFab = findViewById(R.id.fabEditButton);
         editFab.setOnClickListener(fabView -> {
             //TODO: Alert for disruptive actions (changing habit type, changing maxRepetitions etc)
-            //TODO: Add error snackbar for missing info
+
             String title = titleFragment.getTitle();
             if (title.length() > 0) {
                 // Clear error message

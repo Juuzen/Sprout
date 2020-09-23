@@ -74,6 +74,10 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
         DateFormat dateFormatter = android.text.format.DateFormat.getDateFormat(context);
         holder.dateTextView.setText(dateFormatter.format(new Date(habit.getHabitCreationDate())));
 
+        if(habit.isArchived()){
+            holder.endDateTextView.setText(dateFormatter.format(new Date(habit.getFinalDate())));
+        }
+
         holder.listener = listener;
 
     }
@@ -105,6 +109,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
         private int habitId;
         private MaterialTextView titleTextView;
         private MaterialTextView dateTextView;
+        private MaterialTextView endDateTextView;
 
         private OnClickListener listener;
 
@@ -113,6 +118,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
 
             titleTextView = itemView.findViewById(R.id.habitItemTitle);
             dateTextView = itemView.findViewById(R.id.habitItemCreationDate);
+            endDateTextView = itemView.findViewById(R.id.habitItemEndDate);
             itemView.setOnClickListener(view -> listener.onClick(habitId));
         }
 
