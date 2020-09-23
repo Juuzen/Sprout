@@ -150,5 +150,7 @@
     <string name="delete_stats_result_message">Statistiche eliminate</string>
     <string name="snoozed">Rinviata!</string>
     <string name="habit_updated_snackbar">Abitudine aggiornata!</string>
-    <string name="habit_cannot_be_snoozed_snackbar">Non puoi più rinviare l\'abitudine</string>
+    <string name="snackbar_snoozed_label">Abitudine rinviata!</string>
+    <string name="habit_cannot_be_snoozed_snackbar">Non puoi più rinviare l\'abitudine!</string>
+    <string name="snackbar_cancel_action">Annulla</string>
 </resources>

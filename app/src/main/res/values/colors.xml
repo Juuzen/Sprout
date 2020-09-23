@@ -43,4 +43,6 @@
     <color name="healthyExpColor">@color/primaryColor</color>
     <color name="dryingExpColor">@color/secondaryColor</color>
     <color name="witheredExpColor">@color/redColor</color>
+
+    <color name="snackbarDefaultColor">#333333</color>
 </resources>

@@ -261,7 +261,7 @@ public class MainActivity extends SproutApplication implements RepetitionHabitNu
                 int finalRepetitions = repetitions;
                 realm.executeTransaction(realm1 -> habit.setRepetitions(finalRepetitions));
             } else {
-                Log.i(TAG, "applyTask: Habit is not present in the DB!");
+                Log.i("MainActivity", "applyTask: Habit is not present in the DB!");
             }
         }
     }
