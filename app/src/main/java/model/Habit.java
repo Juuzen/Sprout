@@ -55,7 +55,20 @@ public class Habit extends RealmObject {
     }
 
     /**
-     * Type of the habit
+     * Boolean that say if the habit is completed for that day.
+     */
+    private boolean isCompleted = false;
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
+    }
+
+    /**
+     * Type of the habit (classic or counter)
      */
     private String habitType = HabitType.CLASSIC.name();
     public HabitType getHabitType() {

@@ -1,33 +1,26 @@
 package com.hcifedii.sprout;
 
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.app.AppCompatDelegate;
-
 import android.app.ActivityOptions;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-
 import android.util.Log;
-
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-
 import android.view.View;
-
-import android.widget.Adapter;
-
 import android.widget.SearchView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment;
@@ -36,30 +29,26 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.hcifedii.sprout.adapter.HabitCardAdapter;
 import com.hcifedii.sprout.fragment.RepetitionHabitNumberPickerFragment;
+import com.hcifedii.sprout.enumerations.Days;
+
 
 import java.util.Calendar;
-import java.util.Locale;
-import java.util.Observable;
-import java.util.Observer;
 
 import io.realm.Case;
 import io.realm.Realm;
-import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import model.Habit;
-import utils.AdapterObservable;
 import utils.DBAlarmReceiver;
 import utils.SproutBottomAppBarCutCornersTopEdge;
 
 
 public class MainActivity extends SproutApplication implements RepetitionHabitNumberPickerFragment.HabitNumberPickerListener {
 
-    //Ciao sono un commento
-    private static final String TAG = "MAINACTIVITY";
     private Realm realm;
-    HabitCardAdapter adapter;
-    RealmResults<Habit> results;
-    String day = Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
+    private HabitCardAdapter adapter;
+    private RealmResults<Habit> results;
+
+    private String day = Days.today(Calendar.getInstance()).name();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,11 +66,11 @@ public class MainActivity extends SproutApplication implements RepetitionHabitNu
         // Add listener to Stats button inside the bottom app bar
         MenuItem statsMenuItem = bottomAppBar.getMenu().findItem(R.id.statsMenuItem);
         statsMenuItem.setOnMenuItemClickListener(item -> {
-            if(item.getItemId() == R.id.statsMenuItem){
-                Intent i = new Intent(getApplicationContext(), StatsActivity.class);
+            if (item.getItemId() == R.id.statsMenuItem) {
+                Intent intent = new Intent(getApplicationContext(), StatsActivity.class);
                 Bundle bundle = ActivityOptions.makeCustomAnimation(this, android.R.anim.fade_in,
                         android.R.anim.fade_out).toBundle();
-                startActivity(i, bundle);
+                startActivity(intent, bundle);
                 return true;
             }
             return false;
@@ -96,9 +85,11 @@ public class MainActivity extends SproutApplication implements RepetitionHabitNu
             startActivity(intent, bundle);
         });
 
-        //TODO: mostrare gli habit attivi nel giorno corrente, gli altri dopo (con un divider?)
-        RecyclerView rv = findViewById(R.id.habitCardRecyclerView);
+        // TODO: aggiungere l'opzione per annullare a qualche Snackbar
+
+        RecyclerView recyclerView = findViewById(R.id.habitCardRecyclerView);
         TextView emptyMessage = findViewById(R.id.mainEmptyHabitListMessage);
+
         realm = Realm.getDefaultInstance();
         results = realm
                 .where(Habit.class)
@@ -108,30 +99,28 @@ public class MainActivity extends SproutApplication implements RepetitionHabitNu
                 .sort("id")
                 .findAll();
 
-        results.addChangeListener(habits -> {
-            if (habits.size() > 0) {
-                rv.setVisibility(View.VISIBLE);
-                emptyMessage.setVisibility(View.GONE);
-            } else {
-                emptyMessage.setVisibility(View.VISIBLE);
-                rv.setVisibility(View.GONE);
-            }
-        });
+        results.addChangeListener(habits -> showEmptyMessage(recyclerView, emptyMessage));
 
         //this is necessarily because it is not changed yet
-        if (results.size() > 0) {
-            rv.setVisibility(View.VISIBLE);
-            emptyMessage.setVisibility(View.GONE);
+        showEmptyMessage(recyclerView, emptyMessage);
 
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new HabitCardAdapter(results, realm, fab);
+        recyclerView.setAdapter(adapter);
+
+    }
+
+
+    private void showEmptyMessage(@NonNull RecyclerView recyclerView, @NonNull TextView emptyMessage) {
+        if (results.size() > 0) {
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyMessage.setVisibility(View.GONE);
         } else {
             emptyMessage.setVisibility(View.VISIBLE);
-            rv.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
         }
-        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        rv.setLayoutManager(layoutManager);
-        adapter = new HabitCardAdapter(results, this, realm);
-        rv.setAdapter(adapter);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -181,7 +170,7 @@ public class MainActivity extends SproutApplication implements RepetitionHabitNu
                 builder.setTitle(getString(R.string.about_us_title));
                 builder.setMessage(getString(R.string.about_us_message));
                 Drawable sproutIcon = ContextCompat.getDrawable(this, R.drawable.ic_sprout_small);
-                if(sproutIcon != null)
+                if (sproutIcon != null)
                     sproutIcon.setTint(getColor(R.color.primaryColor));
                 builder.setIcon(sproutIcon);
                 builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss());
@@ -197,7 +186,7 @@ public class MainActivity extends SproutApplication implements RepetitionHabitNu
                     cal.set(Calendar.SECOND, 0);
                     long millis = cal.getTimeInMillis();
 
-                    Intent mIntent = new Intent (this, DBAlarmReceiver.class);
+                    Intent mIntent = new Intent(this, DBAlarmReceiver.class);
                     mIntent.putExtra("repeat", false);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1000, mIntent, PendingIntent.FLAG_CANCEL_CURRENT);
                     alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC, millis, pendingIntent);
@@ -238,8 +227,8 @@ public class MainActivity extends SproutApplication implements RepetitionHabitNu
     @Override
     protected void onResume() {
         super.onResume();
-        results = realm
-                .where(Habit.class)
+
+        results = realm.where(Habit.class)
                 .equalTo("isArchived", false)
                 .and()
                 .contains("frequencyTest", day, Case.INSENSITIVE)
@@ -248,13 +237,14 @@ public class MainActivity extends SproutApplication implements RepetitionHabitNu
         if (results != null) {
             adapter.updateData(results);
         } else {
-            Log.d(TAG, "What");
+            Log.d(this.getClass().getSimpleName(), "What");
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
         realm.removeAllChangeListeners();
         realm.close();
     }

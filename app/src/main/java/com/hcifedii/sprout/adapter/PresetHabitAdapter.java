@@ -77,7 +77,7 @@ public class PresetHabitAdapter extends RecyclerView.Adapter<PresetHabitAdapter.
         return presetHabitList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         private OnClickListener listener;
 

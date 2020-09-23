@@ -1,5 +1,9 @@
 package model;
 
+import androidx.annotation.NonNull;
+
+import java.util.Calendar;
+
 import io.realm.RealmObject;
 
 public class Task extends RealmObject {
@@ -27,4 +31,17 @@ public class Task extends RealmObject {
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
+
+    @NonNull
+    @Override
+    public String toString() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(taskDate);
+
+        return "Task[" +
+                "taskDate=" +  cal.getTime().toString() +
+                ", taskStatus='" + taskStatus + '\'' +
+                ", id=" + id +
+                ']';
+    }
 }

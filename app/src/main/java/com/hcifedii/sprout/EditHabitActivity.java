@@ -314,7 +314,7 @@ public class EditHabitActivity extends SproutApplication {
 
             builder.setTitle("Sprout");
             builder.setMessage(R.string.delete_habit_dialog_message);
-            builder.setPositiveButton(R.string.positive_delete_habit_dialog, (dialogInterface, i) -> {
+            builder.setPositiveButton(R.string.positive_dialog_button, (dialogInterface, i) -> {
 
                 deleteNotifications(habit);
 

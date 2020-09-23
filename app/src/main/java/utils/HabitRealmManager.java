@@ -56,6 +56,7 @@ public class HabitRealmManager {
                 realm.executeTransaction(realmInstance -> {
                     Habit habit = realmInstance.where(Habit.class).equalTo("id", id).findFirst();
                     if (habit != null) {
+                        habit.getTaskHistory().deleteAllFromRealm();
                         habit.deleteFromRealm();
                     }
                 });

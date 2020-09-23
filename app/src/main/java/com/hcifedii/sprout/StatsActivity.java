@@ -132,7 +132,7 @@ public class StatsActivity extends SproutApplication {
             // Restart the app
             finish();
         });
-        builder.setNeutralButton(R.string.neutral_permission_dialog_button, (dialogInterface, i) -> dialogInterface.dismiss());
+        builder.setNeutralButton(R.string.neutral_dialog_button, (dialogInterface, i) -> dialogInterface.dismiss());
         builder.show();
     }
 

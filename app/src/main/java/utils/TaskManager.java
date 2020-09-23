@@ -5,11 +5,12 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 import model.Habit;
 import model.Task;
 
 public class TaskManager {
-    private static final String TAG = "TaskManager";
+    private static final String LOGCAT_TAG = "TaskManager";
 
     public static void insertTask(@NonNull Task task) {
         try (Realm realm = Realm.getDefaultInstance()) {
@@ -30,20 +31,25 @@ public class TaskManager {
         }
     }
 
-    /* Non sono molto sicuro */
+
     public static void deleteHabitTaskHistory(int habitId) {
         try (Realm realm = Realm.getDefaultInstance()) {
-            Habit habit = realm.where(Habit.class).equalTo("id", habitId).findFirst();
-            if (habit != null) {
-                for (Task task: habit.getTaskHistory()) {
-                    task.deleteFromRealm();
+
+            realm.executeTransaction(realmInstance -> {
+                Habit habit = realmInstance.where(Habit.class).equalTo("id", habitId).findFirst();
+                if (habit != null) {
+                    RealmList<Task> tasks = habit.getTaskHistory();
+                    if (tasks.size() > 0) {
+                        if (!tasks.deleteAllFromRealm())
+                            Log.e(LOGCAT_TAG, "Delete task from Realm returned false");
+
+                    }
                 }
-                habit.setTaskHistory(null);
-            }
+            });
         }
     }
 
-    public static int getNextId () {
+    public static int getNextId() {
         int result;
         try (Realm realm = Realm.getDefaultInstance()) {
             Number maxId = realm.where(Task.class).max("id");

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -27,6 +28,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 import com.hcifedii.sprout.enumerations.GoalType;
 
@@ -39,8 +41,10 @@ import java.util.Map;
 
 import model.Habit;
 import model.Task;
+import model.Tree;
 import utils.HabitRealmManager;
 import model.Streak;
+import utils.TaskManager;
 
 public class HabitStatsActivity extends SproutApplication {
 
@@ -130,7 +134,7 @@ public class HabitStatsActivity extends SproutApplication {
                 drawMonthlyChart();
 
                 //TODO: gestione albero
-
+                drawTree(habit.getTree());
 
             });
 
@@ -169,7 +173,7 @@ public class HabitStatsActivity extends SproutApplication {
         setNoDataAvailableMessage(chart);
 
         if (monthlyActionsMap == null || monthlyActionsMap.size() < 12) {
-            Log.e(this.getClass().getSimpleName(), "Invalid Action map");
+            //Log.e(this.getClass().getSimpleName(), "Invalid Action map");
             return;
         }
 
@@ -335,6 +339,19 @@ public class HabitStatsActivity extends SproutApplication {
         chart.getDescription().setEnabled(false);
     }
 
+
+    private void drawTree(Tree tree) {
+
+        if(tree == null){
+            return;
+        }
+
+        Tree.Growth growth = tree.getGrowth();
+        Tree.Health health = tree.getHealth();
+
+
+    }
+
     private int getHabitIdFromBundles(Bundle savedInstance) {
 
         if (savedInstance != null)
@@ -350,63 +367,15 @@ public class HabitStatsActivity extends SproutApplication {
     /**
      *
      */
-    private void extractDataFromTaskHistory(@NonNull List<Task> tasks) {
-
-        List<Task> taskHistory = new ArrayList<>();
-
-        Task task1 = new Task(), task2 = new Task(), task3 = new Task(), task4 = new Task(), task5 = new Task();
+    private void extractDataFromTaskHistory(@NonNull List<Task> taskHistory) {
 
         if (streakList == null) {
-            Log.e(this.getClass().getSimpleName(), "Streak list == null");
+            //Log.e(this.getClass().getSimpleName(), "Streak list == null");
             return;
         }
 
-        // TODO: sostituire con la vera lista di task
-
-        {   // Da sostituire con i dati veri
-            Calendar calendar = Calendar.getInstance();
-
-            calendar.set(Calendar.DAY_OF_YEAR, 260);
-
-            task1.setTaskDate(calendar.getTimeInMillis());
-            task1.setTaskStatus(Task.Status.PASSED);
-
-            calendar.set(Calendar.DAY_OF_YEAR, 261);
-
-            task2.setTaskDate(calendar.getTimeInMillis());
-            task2.setTaskStatus(Task.Status.SNOOZED);
-
-            calendar.set(Calendar.DAY_OF_YEAR, 262);
-
-            task3.setTaskDate(calendar.getTimeInMillis());
-            task3.setTaskStatus(Task.Status.PASSED);
-
-            calendar.set(Calendar.DAY_OF_YEAR, 263);
-
-            task4.setTaskDate(calendar.getTimeInMillis());
-            task4.setTaskStatus(Task.Status.PASSED);
-
-            calendar.set(Calendar.DAY_OF_YEAR, 200);
-
-            task5.setTaskDate(calendar.getTimeInMillis());
-            task5.setTaskStatus(Task.Status.PASSED);
-
-            calendar.set(Calendar.DAY_OF_YEAR, 201);
-
-            Task task6 = new Task();
-            task6.setTaskDate(calendar.getTimeInMillis());
-            task6.setTaskStatus(Task.Status.FAILED);
-
-            taskHistory.add(task5);
-            taskHistory.add(task6);
-            taskHistory.add(task1);
-            taskHistory.add(task2);
-            taskHistory.add(task3);
-            taskHistory.add(task4);
-
-        }
-
-        if (taskHistory == null || taskHistory.size() < 1) {
+        if (taskHistory.size() < 1) {
+            //Log.e(LOGCAT_TAG, "taskHistory == null");
             return;
         }
         //taskHistory.sort((task, t1) -> Long.compare(task.getTaskDate(), t1.getTaskDate()));
@@ -429,6 +398,7 @@ public class HabitStatsActivity extends SproutApplication {
             calendar = Calendar.getInstance();
             calendar.setTimeInMillis(task.getTaskDate());
 
+            //Log.i(LOGCAT_TAG, task.toString());
 
             // Get the month
             currentMonth = calendar.get(Calendar.MONTH);
@@ -538,6 +508,24 @@ public class HabitStatsActivity extends SproutApplication {
 
                 return true;
             case R.id.deleteStatsMenuItem:
+
+                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+                builder.setTitle("Sprout");
+                builder.setMessage(R.string.delete_stats_dialog_message);
+                builder.setPositiveButton(R.string.positive_dialog_button, (dialogInterface, i) -> {
+                    if(habitId >= 0) {
+                        TaskManager.deleteHabitTaskHistory(habitId);
+
+                        Toast.makeText(this, R.string.delete_stats_result_message, Toast.LENGTH_SHORT).show();
+
+                        // Refresh the activity
+                        finish();
+                        startActivity(getIntent());
+                    }
+                });
+                builder.setNeutralButton(R.string.neutral_dialog_button, (dialogInterface, i) -> dialogInterface.dismiss());
+
+                builder.show();
 
                 return true;
             default:

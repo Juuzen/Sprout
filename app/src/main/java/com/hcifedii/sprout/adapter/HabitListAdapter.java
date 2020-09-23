@@ -100,7 +100,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
         };
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         private int habitId;
         private MaterialTextView titleTextView;

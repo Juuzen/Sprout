@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +22,12 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.core.content.ContextCompat;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
 import com.hcifedii.sprout.EditHabitActivity;
 import com.hcifedii.sprout.HabitStatsActivity;
@@ -44,31 +45,67 @@ import utils.TreeManager;
 
 public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerView.ViewHolder> implements Filterable {
 
-    private static final String TAG = "HABITCARDADAPTER";
-
-    private Context ct;
-    private OrderedRealmCollection<Habit> list;
-    private OrderedRealmCollection<Habit> filteredList; /* mandatory for the filter */
-    private Realm mRealm;
-
     private static final int CLASSIC_TYPE = 1;
     private static final int REPETITION_TYPE = 2;
 
-    public HabitCardAdapter(@Nullable OrderedRealmCollection<Habit> data, Context context, Realm realm) {
+    private Context context;
+
+    private OrderedRealmCollection<Habit> list;
+    private OrderedRealmCollection<Habit> filteredList; /* mandatory for the filter */
+
+    private Realm mRealm;
+
+    // View used by the Snackbar as anchor
+    private View anchorFab;
+
+
+    public HabitCardAdapter(@Nullable OrderedRealmCollection<Habit> data, Realm realm, View anchorFab) {
         super(data, true, true);
-        ct = context;
         list = data;
         filteredList = data;
         mRealm = realm;
+
+        this.anchorFab = anchorFab;
     }
 
-    protected static int getTreeAsset(Tree tree, Context ct) {
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+
+        if (viewType == CLASSIC_TYPE) {
+            View view = inflater.inflate(R.layout.fragment_habit_classic_card, parent, false);
+            return new ClassicViewHolder(view, anchorFab);
+        } else /* REPETITION_TYPE */ {
+            View view = inflater.inflate(R.layout.fragment_habit_counter_card, parent, false);
+            return new RepetitionViewHolder(view, anchorFab);
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
+        final Habit habit = getItem(position);
+        if (habit == null)
+            return;
+
+        final int viewType = getItemViewType(position);
+        if (viewType == CLASSIC_TYPE) {
+            ((ClassicViewHolder) holder).setHabit(habit, context);
+        } else if (viewType == REPETITION_TYPE) {
+            ((RepetitionViewHolder) holder).setHabit(habit, context);
+        }
+
+    }
+
+    protected static int getTreeAsset(Tree tree, Context context) {
         int result = -1;
         Tree.Growth growth = tree.getGrowth();
         Tree.Health health = tree.getHealth();
-        int nightModeFlags =
-                ct.getResources().getConfiguration().uiMode &
-                        Configuration.UI_MODE_NIGHT_MASK;
+        int nightModeFlags = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
         switch (nightModeFlags) {
             case Configuration.UI_MODE_NIGHT_UNDEFINED:
             case Configuration.UI_MODE_NIGHT_NO:
@@ -186,31 +223,6 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         return this.filteredList.size();
     }
 
-    @NonNull
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view;
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        if (viewType == CLASSIC_TYPE) {
-            view = inflater.inflate(R.layout.fragment_habit_classic_card, parent, false);
-            return new ClassicViewHolder(view);
-        } else /* if (viewType == REPETITION_TYPE) */ {
-            view = inflater.inflate(R.layout.fragment_habit_counter_card, parent, false);
-            return new RepetitionViewHolder(view);
-        }
-    }
-
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        final Habit habit = getItem(position);
-        if (habit != null) {
-            final int viewType = getItemViewType(position);
-            if (viewType == CLASSIC_TYPE) {
-                ((ClassicViewHolder) holder).setHabit(habit, ct);
-            } else if (viewType == REPETITION_TYPE) {
-                ((RepetitionViewHolder) holder).setHabit(habit, ct);
-            }
-        }
-    }
 
     @Override
     public int getItemViewType(int position) {
@@ -243,6 +255,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
     public Filter getFilter() {
         return new HabitFilter(this);
     }
+
     private static class HabitFilter extends Filter {
         private final HabitCardAdapter adapter;
 
@@ -261,20 +274,30 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         }
     }
 
+    /**
+     * Classic habit type view holder
+     */
     private static class ClassicViewHolder extends RecyclerView.ViewHolder {
+
+        private final CardView view;
+        private final View anchorFab;
+
         private TextView habitTitle;
         private ImageButton editHabitButton;
         private Button checkButton;
         private Button snoozeButton;
         private MaterialTextView completedLabel;
-        private CardView view;
+
         private ShapeableImageView treeImageView;
         private ShapeableImageView treeStatus;
         private TreeArcProgress treeProgress;
 
-        public ClassicViewHolder(@NonNull View itemView) {
+        public ClassicViewHolder(@NonNull View itemView, @NonNull View anchorFab) {
             super(itemView);
+
             view = (CardView) itemView;
+            this.anchorFab = anchorFab;
+
             habitTitle = itemView.findViewById(R.id.classicHabitCardTitle);
             completedLabel = itemView.findViewById(R.id.classicHabitCompletedLabel);
             editHabitButton = itemView.findViewById(R.id.classicHabitEditButton);
@@ -329,8 +352,9 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                 treeProgress.setVisibility(View.INVISIBLE);
             }
 
+
             if (habit.getIsSnoozed()) {
-                completedLabel.setText("Rinviata!");
+                completedLabel.setText(R.string.snoozed);
                 completedLabel.setTextColor(context.getColor(R.color.secondaryColor));
                 treeStatus.setVisibility(View.VISIBLE);
                 treeStatus.setImageResource(R.drawable.tree_status_snoozed);
@@ -338,7 +362,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                 checkButton.setEnabled(false);
 
             } else if (habit.getRepetitions() != 0) {
-                completedLabel.setText("Completata!");
+                completedLabel.setText(R.string.completed);
                 completedLabel.setTextColor(context.getColor(R.color.primaryColor));
                 treeStatus.setVisibility(View.VISIBLE);
                 treeStatus.setImageResource(R.drawable.tree_status_completed);
@@ -362,7 +386,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
 
             editHabitButton.setOnClickListener(view -> {
                 Intent intent = new Intent(context, EditHabitActivity.class);
-                intent.putExtra("HABIT_ID", habit.getId());
+                intent.putExtra(EditHabitActivity.EXTRA_HABIT_ID, habit.getId());
 
                 Bundle bundle = ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in,
                         android.R.anim.fade_out).toBundle();
@@ -376,9 +400,13 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                 snoozeButton.setVisibility(View.VISIBLE);
                 snoozeButton.setOnClickListener(view1 -> {
                     if (habit.getSnoozesMade() < habit.getMaxSnoozes()) {
-                        habit.getRealm().executeTransaction(realm -> { habit.setIsSnoozed(true); });
+                        habit.getRealm().executeTransaction(realm -> habit.setIsSnoozed(true));
                     } else {
-                        Toast.makeText(context, "Non puoi più rinviare l'abitudine!", Toast.LENGTH_SHORT).show();
+                        Snackbar.make(view, R.string.habit_cannot_be_snoozed_snackbar, Snackbar.LENGTH_SHORT)
+                                .setBackgroundTint(ContextCompat.getColor(context, R.color.primaryColor))
+                                .setTextColor(ContextCompat.getColor(context, R.color.whiteColor))
+                                .setAnchorView(anchorFab)
+                                .show();
                     }
                 });
             }
@@ -386,26 +414,43 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             checkButton.setOnClickListener(view -> {
                 if (habit.getRepetitions() < 1) {
                     habit.getRealm().executeTransaction(realm -> habit.setRepetitions(1));
+
+                    Snackbar.make(view, R.string.habit_updated_snackbar, Snackbar.LENGTH_SHORT)
+                            .setBackgroundTint(ContextCompat.getColor(context, R.color.primaryColor))
+                            .setTextColor(ContextCompat.getColor(context, R.color.whiteColor))
+                            .setAnchorView(anchorFab)
+                            .show();
                 }
             });
         }
     }
 
-    private static class RepetitionViewHolder extends RecyclerView.ViewHolder /*implements RepetitionHabitNumberPickerFragment.HabitNumberPickerListener*/ {
+
+    /**
+     * Counter habit type view holder
+     */
+    private static class RepetitionViewHolder extends RecyclerView.ViewHolder {
+
+        private final CardView view;
+        private final View anchorFab;
+
         private TextView habitTitle;
         private ProgressBar progressBar;
         private TextView progressLabel;
         private ImageButton editHabitButton;
         private Button checkButton;
         private Button snoozeButton;
-        private CardView view;
+
         private ShapeableImageView treeImageView;
         private ShapeableImageView treeStatus;
         private TreeArcProgress treeProgress;
 
-        public RepetitionViewHolder(@NonNull View itemView) {
+        public RepetitionViewHolder(@NonNull View itemView, @NonNull View anchorFab) {
             super(itemView);
+
             view = (CardView) itemView;
+            this.anchorFab = anchorFab;
+
             habitTitle = itemView.findViewById(R.id.counterHabitCardTitle);
             editHabitButton = itemView.findViewById(R.id.counterHabitEditButton);
             progressBar = itemView.findViewById(R.id.counterHabitProgressBar);
@@ -421,6 +466,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             this.habitTitle.setText(habit.getTitle());
             this.progressBar.setMax(habit.getMaxRepetitions());
             Tree tree = habit.getTree();
+
             if (tree != null) {
                 Tree.Growth growth = tree.getGrowth();
                 treeImageView.setImageResource(HabitCardAdapter.getTreeAsset(tree, context));
@@ -462,7 +508,8 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                 treeProgress.setVisibility(View.INVISIBLE);
             }
 
-            String message = "";
+
+            String message;
             if (habit.getIsSnoozed()) {
                 message = "Abitudine rinviata!";
                 progressBar.setProgress(habit.getMaxRepetitions());
@@ -500,7 +547,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
 
             editHabitButton.setOnClickListener(view -> {
                 Intent intent = new Intent(context, EditHabitActivity.class);
-                intent.putExtra("HABIT_ID", habit.getId());
+                intent.putExtra(EditHabitActivity.EXTRA_HABIT_ID, habit.getId());
 
                 Bundle bundle = ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in,
                         android.R.anim.fade_out).toBundle();
@@ -514,10 +561,14 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                 snoozeButton.setVisibility(View.VISIBLE);
                 snoozeButton.setOnClickListener(view1 -> {
                     if (habit.getSnoozesMade() < habit.getMaxSnoozes()) {
-                        habit.getRealm().executeTransaction(realm -> { habit.setIsSnoozed(true); });
+                        habit.getRealm().executeTransaction(realm -> habit.setIsSnoozed(true));
                     } else {
-                        // you shouldn't be here
-                        Toast.makeText(context, "Non puoi più rinviare l'abitudine!", Toast.LENGTH_SHORT).show();
+
+                        Snackbar.make(view, R.string.habit_cannot_be_snoozed_snackbar, Snackbar.LENGTH_SHORT)
+                                .setBackgroundTint(ContextCompat.getColor(context, R.color.primaryColor))
+                                .setTextColor(ContextCompat.getColor(context, R.color.whiteColor))
+                                .setAnchorView(anchorFab)
+                                .show();
                     }
                 });
             }
@@ -531,39 +582,32 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             });
 
             checkButton.setOnClickListener(view -> {
-                int habitId = habit.getId();
-                int newRepValue = habit.getRepetitions() + 1;
+
+                int newValue = habit.getRepetitions() + 1;
                 int maxReps = habit.getMaxRepetitions();
-                Log.d("Testing", newRepValue + " - " + maxReps);
-                if (newRepValue <= habit.getMaxRepetitions()) {
+
+                //Log.d("Testing", newRepValue + " - " + maxReps);
+
+                if (newValue <= maxReps) {
                     habit.getRealm().executeTransaction(realm -> {
-                        Habit result = realm.where(Habit.class).equalTo("id", habitId).findFirst();
+                        Habit result = realm.where(Habit.class)
+                                .equalTo("id", habit.getId())
+                                .findFirst();
                         if (result != null) {
-                            result.setRepetitions(newRepValue);
+                            result.setRepetitions(newValue);
                             String newLabel = context.getResources().getQuantityString(R.plurals.counterHabitRepetitionsLabel, habit.getRepetitions(), habit.getRepetitions(), habit.getMaxRepetitions());
+
                             progressLabel.setText(newLabel);
                         }
                     });
+
+                    Snackbar.make(view, R.string.habit_updated_snackbar, Snackbar.LENGTH_SHORT)
+                            .setBackgroundTint(ContextCompat.getColor(context, R.color.primaryColor))
+                            .setTextColor(ContextCompat.getColor(context, R.color.whiteColor))
+                            .setAnchorView(anchorFab)
+                            .show();
                 }
             });
         }
-
-        /*
-        @Override
-        public void applyTask(int value, int habitId) {
-            try (Realm realm = Realm.getDefaultInstance()) {
-                Habit habit = realm.where(Habit.class).equalTo("id", habitId).findFirst();
-                if (habit != null) {
-                    int repetitions = habit.getRepetitions() + value;
-                    if (repetitions > habit.getMaxRepetitions()) {
-                        repetitions = habit.getMaxRepetitions();
-                    }
-                    habit.setRepetitions(repetitions);
-                } else {
-                    Log.i(TAG, "applyTask: Habit is not present in the DB!");
-                }
-            }
-        }
-         */
     }
 }
