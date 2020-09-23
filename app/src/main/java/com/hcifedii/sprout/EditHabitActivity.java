@@ -63,6 +63,8 @@ public class EditHabitActivity extends SproutApplication {
         // FAB - Floating Action Button
         ExtendedFloatingActionButton editFab = findViewById(R.id.fabEditButton);
         editFab.setOnClickListener(fabView -> {
+            //TODO: Alert for disruptive actions (changing habit type, changing maxRepetitions etc)
+            //TODO: Add error snackbar for missing info
             String title = titleFragment.getTitle();
             if (title.length() > 0) {
                 // Clear error message
@@ -97,10 +99,8 @@ public class EditHabitActivity extends SproutApplication {
 
                 long goalLongValue = 0;
                 int goalIntValue = 0;
-
                 if (goalType == GoalType.DEADLINE) {
                     goalLongValue = goalFragment.getLong();
-
                     if (goalLongValue < 0) {
                         //showErrorSnackbar(saveFab, R.string.error_deadline_is_empty);
                         return;
@@ -112,11 +112,15 @@ public class EditHabitActivity extends SproutApplication {
                 // Set the habit fields. There is no need to create a new object. Just use the old
                 // one and set each fields.
                 habit.setTitle(title);
-                habit.setHabitType(habitType);
                 habit.setMaxRepetitions(maxRepetitions);
-                if (maxRepetitions < habit.getRepetitions()) {
-                    habit.setRepetitions(maxRepetitions);
+                if (habitType != habit.getHabitType()) {
+                    habit.setRepetitions(0);
+                } else {
+                    if (maxRepetitions < habit.getRepetitions()) {
+                        habit.setRepetitions(maxRepetitions);
+                    }
                 }
+                habit.setHabitType(habitType);
                 habit.setFrequencyTest(frequency);
                 habit.setFrequency(frequency);
                 habit.setReminders(reminders);

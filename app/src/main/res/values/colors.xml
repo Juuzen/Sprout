@@ -39,4 +39,8 @@
     <color name="redColor">@color/design_default_color_error</color>
     <color name="onRedColor">@color/whiteColor</color>
 
+    <color name="maxExpColor">#03cafc</color>
+    <color name="healthyExpColor">@color/primaryColor</color>
+    <color name="dryingExpColor">@color/secondaryColor</color>
+    <color name="witheredExpColor">@color/redColor</color>
 </resources>

@@ -47,4 +47,5 @@ dependencies {
     implementation 'com.applandeo:material-calendar-view:1.7.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation "androidx.work:work-runtime:2.4.0"
+    implementation 'com.github.lzyzsd:circleprogress:1.2.1'
 }

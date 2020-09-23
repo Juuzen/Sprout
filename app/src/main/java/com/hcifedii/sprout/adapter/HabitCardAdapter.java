@@ -20,7 +20,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.core.content.ContextCompat;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.imageview.ShapeableImageView;
@@ -29,6 +32,7 @@ import com.google.android.material.textview.MaterialTextView;
 import com.hcifedii.sprout.EditHabitActivity;
 import com.hcifedii.sprout.HabitStatsActivity;
 import com.hcifedii.sprout.R;
+import com.hcifedii.sprout.fragment.RepetitionHabitNumberPickerFragment;
 
 import io.realm.Case;
 import io.realm.OrderedRealmCollection;
@@ -36,6 +40,8 @@ import io.realm.Realm;
 import io.realm.RealmRecyclerViewAdapter;
 import model.Habit;
 import model.Tree;
+import utils.TreeArcProgress;
+import utils.TreeManager;
 
 public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerView.ViewHolder> implements Filterable {
 
@@ -284,6 +290,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
 
         private ShapeableImageView treeImageView;
         private ShapeableImageView treeStatus;
+        private TreeArcProgress treeProgress;
 
         public ClassicViewHolder(@NonNull View itemView, @NonNull View anchorFab) {
             super(itemView);
@@ -298,15 +305,53 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             checkButton = itemView.findViewById(R.id.classicHabitCheckButton);
             treeImageView = itemView.findViewById(R.id.classicHabitTreeImageView);
             treeStatus = itemView.findViewById(R.id.classicHabitTreeStatusImageView);
+            treeProgress = itemView.findViewById(R.id.classicHabitTreeProgress);
         }
 
         public void setHabit(Habit habit, Context context) {
             habitTitle.setText(habit.getTitle());
             Tree tree = habit.getTree();
-            if (tree != null)
+            if (tree != null) {
+                Tree.Growth growth = tree.getGrowth();
                 treeImageView.setImageResource(HabitCardAdapter.getTreeAsset(tree, context));
-            else
+                if (growth == Tree.Growth.SPROUT || growth == Tree.Growth.SPARKLING) {
+                    treeProgress.setVisibility(View.INVISIBLE);
+                } else {
+                    treeProgress.setVisibility(View.VISIBLE);
+                    treeProgress.setMax(TreeManager.getRequiredExperience(growth));
+                    treeProgress.setProgress(tree.getExperience());
+                    treeProgress.setText("");
+                    if (treeProgress.getProgress() == treeProgress.getMax()) {
+                        treeProgress.setArcAngle(360);
+                        treeProgress.setStrokeWidth(10);
+                    } else {
+                        treeProgress.setArcAngle(250);
+                        treeProgress.setStrokeWidth(8);
+                    }
+                    switch (tree.getHealth()) {
+                        case HEALTHY:
+                            if (treeProgress.getProgress() == treeProgress.getMax()) {
+                                treeProgress.setFinishedStrokeColor(context.getColor(R.color.maxExpColor));
+                            } else {
+                                treeProgress.setFinishedStrokeColor(context.getColor(R.color.redColor));
+                            }
+                            break;
+                        case DRYING:
+                            treeProgress.setFinishedStrokeColor(context.getColor(R.color.dryingExpColor));
+                            break;
+                        case WITHERED:
+                            treeProgress.setFinishedStrokeColor(context.getColor(R.color.witheredExpColor));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            else {
                 treeImageView.setImageTintList(ColorStateList.valueOf(context.getColor(R.color.redColor)));
+                treeProgress.setVisibility(View.INVISIBLE);
+            }
+
 
             if (habit.getIsSnoozed()) {
                 completedLabel.setText(R.string.snoozed);
@@ -380,6 +425,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         }
     }
 
+
     /**
      * Counter habit type view holder
      */
@@ -397,6 +443,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
 
         private ShapeableImageView treeImageView;
         private ShapeableImageView treeStatus;
+        private TreeArcProgress treeProgress;
 
         public RepetitionViewHolder(@NonNull View itemView, @NonNull View anchorFab) {
             super(itemView);
@@ -412,16 +459,55 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             progressLabel = itemView.findViewById(R.id.counterHabitProgressLabel);
             treeImageView = itemView.findViewById(R.id.counterHabitTreeImageView);
             treeStatus = itemView.findViewById(R.id.counterHabitTreeStatusImageView);
+            treeProgress = itemView.findViewById(R.id.counterHabitTreeProgress);
         }
 
         void setHabit(Habit habit, Context context) {
             this.habitTitle.setText(habit.getTitle());
             this.progressBar.setMax(habit.getMaxRepetitions());
             Tree tree = habit.getTree();
-            if (tree != null)
+
+            if (tree != null) {
+                Tree.Growth growth = tree.getGrowth();
                 treeImageView.setImageResource(HabitCardAdapter.getTreeAsset(tree, context));
-            else
+                if (growth == Tree.Growth.SPROUT || growth == Tree.Growth.SPARKLING) {
+                    treeProgress.setVisibility(View.INVISIBLE);
+                } else {
+                    treeProgress.setVisibility(View.VISIBLE);
+                    treeProgress.setMax(TreeManager.getRequiredExperience(growth));
+                    treeProgress.setProgress(tree.getExperience());
+                    treeProgress.setText("");
+                    if (treeProgress.getProgress() == treeProgress.getMax()) {
+                        treeProgress.setArcAngle(360);
+                        treeProgress.setStrokeWidth(10);
+                    } else {
+                        treeProgress.setArcAngle(250);
+                        treeProgress.setStrokeWidth(8);
+                    }
+                    switch (tree.getHealth()) {
+                        case HEALTHY:
+                            if (treeProgress.getProgress() == treeProgress.getMax()) {
+                                treeProgress.setFinishedStrokeColor(context.getColor(R.color.maxExpColor));
+                            } else {
+                                treeProgress.setFinishedStrokeColor(context.getColor(R.color.redColor));
+                            }
+                            break;
+                        case DRYING:
+                            treeProgress.setFinishedStrokeColor(context.getColor(R.color.dryingExpColor));
+                            break;
+                        case WITHERED:
+                            treeProgress.setFinishedStrokeColor(context.getColor(R.color.witheredExpColor));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            else {
                 treeImageView.setImageTintList(ColorStateList.valueOf(context.getColor(R.color.redColor)));
+                treeProgress.setVisibility(View.INVISIBLE);
+            }
+
 
             String message;
             if (habit.getIsSnoozed()) {
@@ -488,7 +574,10 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             }
 
             checkButton.setOnLongClickListener(view1 -> {
-                Toast.makeText(context, "Context", Toast.LENGTH_SHORT).show();
+                int missingTasks = habit.getMaxRepetitions() - habit.getRepetitions();
+                FragmentManager fragmentManager = ((FragmentActivity) view1.getContext()).getSupportFragmentManager();
+                RepetitionHabitNumberPickerFragment picker = new RepetitionHabitNumberPickerFragment(missingTasks, habit.getId());
+                picker.show(fragmentManager, "numberPicker");
                 return true;
             });
 
@@ -506,7 +595,8 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                                 .findFirst();
                         if (result != null) {
                             result.setRepetitions(newValue);
-                            String newLabel = "Completata " + newValue + " volte su " + maxReps;
+                            String newLabel = context.getResources().getQuantityString(R.plurals.counterHabitRepetitionsLabel, habit.getRepetitions(), habit.getRepetitions(), habit.getMaxRepetitions());
+
                             progressLabel.setText(newLabel);
                         }
                     });
