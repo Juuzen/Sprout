@@ -1,5 +1,7 @@
 package utils;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -30,8 +32,24 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 
             // Boot detected. Recreate the alarms for today
             habitsAlarmsSetUp(context);
-            // Do other stuff here
 
+            // Do other stuff here
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            if (alarmManager != null) {
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.HOUR_OF_DAY, 0);
+                cal.set(Calendar.MINUTE, 0);
+                cal.set(Calendar.SECOND, 0);
+                cal.set(Calendar.DAY_OF_YEAR, cal.get(Calendar.DAY_OF_YEAR) + 1);
+                long millis = cal.getTimeInMillis();
+
+                Intent mIntent = new Intent(context, DBAlarmReceiver.class);
+                mIntent.putExtra("repeat", false);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1000, mIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC, millis, pendingIntent);
+            } else {
+                Log.e("AlarmManager", "Non sono riuscito a creare l'alarm.");
+            }
         }
     }
 

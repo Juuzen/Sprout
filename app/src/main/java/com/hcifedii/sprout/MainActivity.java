@@ -85,8 +85,6 @@ public class MainActivity extends SproutApplication implements RepetitionHabitNu
             startActivity(intent, bundle);
         });
 
-        // TODO: aggiungere l'opzione per annullare a qualche Snackbar
-
         RecyclerView recyclerView = findViewById(R.id.habitCardRecyclerView);
         TextView emptyMessage = findViewById(R.id.mainEmptyHabitListMessage);
 
@@ -108,6 +106,23 @@ public class MainActivity extends SproutApplication implements RepetitionHabitNu
         adapter = new HabitCardAdapter(results, realm, fab);
         recyclerView.setAdapter(adapter);
 
+        //FIXME: valutare se tenere o meno l'alarm anche qui
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        if (alarmManager != null) {
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.DAY_OF_YEAR, cal.get(Calendar.DAY_OF_YEAR) + 1);
+            long millis = cal.getTimeInMillis();
+
+            Intent mIntent = new Intent(this, DBAlarmReceiver.class);
+            mIntent.putExtra("repeat", false);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1000, mIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC, millis, pendingIntent);
+        } else {
+            Log.e("AlarmManager", "Non sono riuscito a creare l'alarm.");
+        }
     }
 
 
@@ -244,7 +259,6 @@ public class MainActivity extends SproutApplication implements RepetitionHabitNu
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         realm.removeAllChangeListeners();
         realm.close();
     }
