@@ -401,15 +401,19 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                     if (habit.getSnoozesMade() < habit.getMaxSnoozes()) {
                         habit.getRealm().executeTransaction(realm -> habit.setIsSnoozed(true));
 
-                        Snackbar.make(view, R.string.habit_cannot_be_snoozed_snackbar, Snackbar.LENGTH_LONG)
-                                .setBackgroundTint(ContextCompat.getColor(context, R.color.snackbarDefaultColor))
+                        Snackbar.make(view, R.string.snackbar_snoozed_label, Snackbar.LENGTH_LONG)
+                                .setBackgroundTint(ContextCompat.getColor(context, R.color.primaryColor))
                                 .setTextColor(ContextCompat.getColor(context, R.color.whiteColor))
                                 .setAction(R.string.snackbar_cancel_action, view -> habit.getRealm().executeTransaction(realm -> habit.setIsSnoozed(false)))
                                 .setActionTextColor(ContextCompat.getColor(context, R.color.secondaryColor))
                                 .setAnchorView(anchorFab)
                                 .show();
                     } else {
-                        Toast.makeText(context, R.string.habit_cannot_be_snoozed_snackbar, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(view, R.string.habit_cannot_be_snoozed_snackbar, Snackbar.LENGTH_SHORT)
+                                .setBackgroundTint(ContextCompat.getColor(context, R.color.snackbarDefaultColor))
+                                .setTextColor(ContextCompat.getColor(context, R.color.whiteColor))
+                                .setAnchorView(anchorFab)
+                                .show();
                     }
                 });
             }
@@ -419,7 +423,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                     habit.getRealm().executeTransaction(realm -> habit.setRepetitions(1));
 
                     Snackbar.make(view, R.string.habit_updated_snackbar, Snackbar.LENGTH_LONG)
-                            .setBackgroundTint(ContextCompat.getColor(context, R.color.snackbarDefaultColor))
+                            .setBackgroundTint(ContextCompat.getColor(context, R.color.primaryColor))
                             .setTextColor(ContextCompat.getColor(context, R.color.whiteColor))
                             .setAction(R.string.snackbar_cancel_action, view1 -> habit.getRealm().executeTransaction(realm -> habit.setRepetitions(0)))
                             .setActionTextColor(ContextCompat.getColor(context, R.color.secondaryColor))
@@ -569,14 +573,18 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                         habit.getRealm().executeTransaction(realm -> habit.setIsSnoozed(true));
 
                         Snackbar.make(view, R.string.snackbar_snoozed_label, Snackbar.LENGTH_LONG)
-                                .setBackgroundTint(ContextCompat.getColor(context, R.color.snackbarDefaultColor))
+                                .setBackgroundTint(ContextCompat.getColor(context, R.color.primaryColor))
                                 .setTextColor(ContextCompat.getColor(context, R.color.whiteColor))
                                 .setAction(R.string.snackbar_cancel_action, view -> habit.getRealm().executeTransaction(realm -> habit.setIsSnoozed(false)))
                                 .setActionTextColor(ContextCompat.getColor(context, R.color.secondaryColor))
                                 .setAnchorView(anchorFab)
                                 .show();
                     } else {
-                        Toast.makeText(context, R.string.habit_cannot_be_snoozed_snackbar, Toast.LENGTH_SHORT).show();
+                        Snackbar.make(view, R.string.habit_cannot_be_snoozed_snackbar, Snackbar.LENGTH_SHORT)
+                                .setBackgroundTint(ContextCompat.getColor(context, R.color.snackbarDefaultColor))
+                                .setTextColor(ContextCompat.getColor(context, R.color.whiteColor))
+                                .setAnchorView(anchorFab)
+                                .show();
                     }
                 });
             }
@@ -596,7 +604,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                     habit.getRealm().executeTransaction(realm ->  habit.setRepetitions(currRep + 1) );
 
                     Snackbar.make(view, R.string.habit_updated_snackbar, Snackbar.LENGTH_LONG)
-                            .setBackgroundTint(ContextCompat.getColor(context, R.color.snackbarDefaultColor))
+                            .setBackgroundTint(ContextCompat.getColor(context, R.color.primaryColor))
                             .setTextColor(ContextCompat.getColor(context, R.color.whiteColor))
                             .setAction(R.string.snackbar_cancel_action, view1 -> habit.getRealm().executeTransaction(realm -> habit.setRepetitions(currRep)))
                             .setActionTextColor(ContextCompat.getColor(context, R.color.secondaryColor))
