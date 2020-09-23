@@ -144,5 +144,6 @@
         <item quantity="one">Completata %1$d volta su %2$d</item>
         <item quantity="other">Completata %1$d volte su %2$d</item>
     </plurals>
+    <string name="counter_habit_picker_title">Completamento multiplo</string>
     <string name="counter_habit_number_picker_dialog">Seleziona quante volte hai completato la tua abitudine oggi:</string>
 </resources>

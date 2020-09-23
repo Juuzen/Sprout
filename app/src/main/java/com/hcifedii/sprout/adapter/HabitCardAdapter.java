@@ -22,6 +22,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +31,7 @@ import com.google.android.material.textview.MaterialTextView;
 import com.hcifedii.sprout.EditHabitActivity;
 import com.hcifedii.sprout.HabitStatsActivity;
 import com.hcifedii.sprout.R;
+import com.hcifedii.sprout.fragment.RepetitionHabitNumberPickerFragment;
 
 import io.realm.Case;
 import io.realm.OrderedRealmCollection;
@@ -389,7 +391,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         }
     }
 
-    private static class RepetitionViewHolder extends RecyclerView.ViewHolder {
+    private static class RepetitionViewHolder extends RecyclerView.ViewHolder /*implements RepetitionHabitNumberPickerFragment.HabitNumberPickerListener*/ {
         private TextView habitTitle;
         private ProgressBar progressBar;
         private TextView progressLabel;
@@ -521,7 +523,10 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             }
 
             checkButton.setOnLongClickListener(view1 -> {
-                Toast.makeText(context, "Context", Toast.LENGTH_SHORT).show();
+                int missingTasks = habit.getMaxRepetitions() - habit.getRepetitions();
+                FragmentManager fragmentManager = ((FragmentActivity) view1.getContext()).getSupportFragmentManager();
+                RepetitionHabitNumberPickerFragment picker = new RepetitionHabitNumberPickerFragment(missingTasks, habit.getId());
+                picker.show(fragmentManager, "numberPicker");
                 return true;
             });
 
@@ -542,5 +547,23 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                 }
             });
         }
+
+        /*
+        @Override
+        public void applyTask(int value, int habitId) {
+            try (Realm realm = Realm.getDefaultInstance()) {
+                Habit habit = realm.where(Habit.class).equalTo("id", habitId).findFirst();
+                if (habit != null) {
+                    int repetitions = habit.getRepetitions() + value;
+                    if (repetitions > habit.getMaxRepetitions()) {
+                        repetitions = habit.getMaxRepetitions();
+                    }
+                    habit.setRepetitions(repetitions);
+                } else {
+                    Log.i(TAG, "applyTask: Habit is not present in the DB!");
+                }
+            }
+        }
+         */
     }
 }

@@ -35,6 +35,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.hcifedii.sprout.adapter.HabitCardAdapter;
+import com.hcifedii.sprout.fragment.RepetitionHabitNumberPickerFragment;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -51,7 +52,7 @@ import utils.DBAlarmReceiver;
 import utils.SproutBottomAppBarCutCornersTopEdge;
 
 
-public class MainActivity extends SproutApplication {
+public class MainActivity extends SproutApplication implements RepetitionHabitNumberPickerFragment.HabitNumberPickerListener {
 
     //Ciao sono un commento
     private static final String TAG = "MAINACTIVITY";
@@ -256,5 +257,22 @@ public class MainActivity extends SproutApplication {
         super.onDestroy();
         realm.removeAllChangeListeners();
         realm.close();
+    }
+
+    @Override
+    public void applyTask(int value, int habitId) {
+        try (Realm realm = Realm.getDefaultInstance()) {
+            Habit habit = realm.where(Habit.class).equalTo("id", habitId).findFirst();
+            if (habit != null) {
+                int repetitions = habit.getRepetitions() + value;
+                if (repetitions > habit.getMaxRepetitions()) {
+                    repetitions = habit.getMaxRepetitions();
+                }
+                int finalRepetitions = repetitions;
+                realm.executeTransaction(realm1 -> habit.setRepetitions(finalRepetitions));
+            } else {
+                Log.i(TAG, "applyTask: Habit is not present in the DB!");
+            }
+        }
     }
 }
