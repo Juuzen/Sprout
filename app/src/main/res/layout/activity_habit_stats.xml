@@ -180,15 +180,15 @@
         <!-- posso inserire foreground e background contemporaneamente -->
         <ImageView
             android:id="@+id/treeImageView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="300dp"
-            android:contentDescription="@string/tree_content_description"
-            android:fadingEdge="horizontal"
-            android:paddingTop="16dp"
-            android:requiresFadingEdge="horizontal"
-            android:src="@drawable/svg_tree_full_mature"
-            android:background="@drawable/dried_out_sky"
 
+
+            android:scaleType="fitCenter"
+            android:contentDescription="@string/tree_content_description"
+            android:paddingTop="16dp"
+            android:adjustViewBounds="true"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/monthlyActionsView" />
 

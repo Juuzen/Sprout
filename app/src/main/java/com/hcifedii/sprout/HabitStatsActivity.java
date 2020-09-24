@@ -354,7 +354,10 @@ public class HabitStatsActivity extends SproutApplication {
         ImageView treeImageView = findViewById(R.id.treeImageView);
 
         int treeImageResId = TreeManager.getTreeImageResourceId(tree);
+        int skyImageResId = TreeManager.getSkyResourceId(tree.getHealth());
 
+        treeImageView.setImageDrawable(ContextCompat.getDrawable(this, treeImageResId));
+        treeImageView.setBackground(ContextCompat.getDrawable(this, skyImageResId));
 
 
     }

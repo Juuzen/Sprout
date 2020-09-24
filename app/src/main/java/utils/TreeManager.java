@@ -4,13 +4,12 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.hcifedii.sprout.BuildConfig;
+import com.hcifedii.sprout.R;
 
 import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
-import model.Task;
 import model.Tree;
 
 public class TreeManager {
@@ -149,35 +148,44 @@ public class TreeManager {
 
         switch (tree.getGrowth()) {
             default:
-                return 0;
+                return R.drawable.svg_tree_sprout;
             case SMALL:
                 if (health == Tree.Health.HEALTHY)
-                    return 0;
+                    return R.drawable.svg_tree_small;
                 else if (health == Tree.Health.WITHERED)
-                    return 0;
+                    return R.drawable.svg_tree_small_withered;
                 else
-                    return 0;
+                    return R.drawable.svg_tree_small_drying;
 
             case MEDIUM:
                 if (health == Tree.Health.HEALTHY)
-                    return 0;
+                    return R.drawable.svg_tree_medium;
                 else if (health == Tree.Health.WITHERED)
-                    return 0;
+                    return R.drawable.svg_tree_medium_withered;
                 else
-                    return 0;
+                    return R.drawable.svg_tree_medium_drying;
 
             case MATURE:
                 if (health == Tree.Health.HEALTHY)
-                    return 0;
+                    return R.drawable.svg_tree_full_mature;
                 else if (health == Tree.Health.WITHERED)
-                    return 0;
+                    return R.drawable.svg_tree_full_mature_withered;
                 else
-                    return 0;
+                    return R.drawable.svg_tree_full_mature_drying;
 
             case SPARKLING:
                 return 0;
 
         }
+    }
+
+    public static int getSkyResourceId(@NonNull Tree.Health health) {
+        if (health == Tree.Health.HEALTHY)
+            return R.drawable.sky;
+        else if (health == Tree.Health.WITHERED)
+            return R.drawable.dried_out_sky;
+        else
+            return R.drawable.drying_sky;
     }
 
 }
