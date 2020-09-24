@@ -104,6 +104,7 @@ public class DBAlarmReceiver extends BroadcastReceiver  {
                                                 habit.setGoalValue(habit.getGoalValue() + 1);
                                                 if (habit.getGoalValue() >= habit.getMaxAction()) {
                                                     habit.setArchived(true);
+                                                    habit.setFinalDate(Calendar.getInstance().getTimeInMillis());
                                                 }
                                             }
                                             break;
@@ -112,6 +113,7 @@ public class DBAlarmReceiver extends BroadcastReceiver  {
                                                 habit.setGoalValue(habit.getGoalValue() + 1);
                                                 if (habit.getGoalValue() >= habit.getMaxStreakValue()) {
                                                     habit.setArchived(true);
+                                                    habit.setFinalDate(Calendar.getInstance().getTimeInMillis());
                                                 }
                                             } else {
                                                 habit.setGoalValue(0);

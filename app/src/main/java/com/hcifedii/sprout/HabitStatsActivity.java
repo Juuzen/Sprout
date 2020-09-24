@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,6 +46,7 @@ import model.Tree;
 import utils.HabitRealmManager;
 import model.Streak;
 import utils.TaskManager;
+import utils.TreeManager;
 
 public class HabitStatsActivity extends SproutApplication {
 
@@ -120,8 +122,7 @@ public class HabitStatsActivity extends SproutApplication {
                 // Mark creation date inside the calendar
                 markCreationDate(habit.getHabitCreationDate());
                 // Mark end date inside the calendar
-                if (habit.getGoalType() == GoalType.DEADLINE)
-                    markEndDate(habit.getFinalDate());
+                markEndDate(habit.getFinalDate());
 
                 extractDataFromTaskHistory(habit.getTaskHistory());
 
@@ -146,21 +147,25 @@ public class HabitStatsActivity extends SproutApplication {
 
 
     private void markCreationDate(long habitCreationDate) {
-        Calendar startDate = Calendar.getInstance();
-        startDate.setTimeInMillis(habitCreationDate);
-        calendarView.setMinimumDate(startDate);
+        if(habitCreationDate > 0) {
+            Calendar startDate = Calendar.getInstance();
+            startDate.setTimeInMillis(habitCreationDate);
+            calendarView.setMinimumDate(startDate);
 
-        Drawable startIcon = getIcon(R.drawable.ic_add_24, R.color.primaryColor);
-        events.add(new EventDay(startDate, startIcon));
+            Drawable startIcon = getIcon(R.drawable.ic_add_24, R.color.primaryColor);
+            events.add(new EventDay(startDate, startIcon));
+        }
     }
 
     private void markEndDate(long finalDate) {
-        Calendar endDate = Calendar.getInstance();
-        endDate.setTimeInMillis(finalDate);
-        calendarView.setMaximumDate(endDate);
+        if(finalDate > 0) {
+            Calendar endDate = Calendar.getInstance();
+            endDate.setTimeInMillis(finalDate);
+            calendarView.setMaximumDate(endDate);
 
-        Drawable endIcon = getIcon(R.drawable.ic_archive_24, R.color.primaryColor);
-        events.add(new EventDay(endDate, endIcon));
+            Drawable endIcon = getIcon(R.drawable.ic_archive_24, R.color.primaryColor);
+            events.add(new EventDay(endDate, endIcon));
+        }
     }
 
     /**
@@ -346,8 +351,10 @@ public class HabitStatsActivity extends SproutApplication {
             return;
         }
 
-        Tree.Growth growth = tree.getGrowth();
-        Tree.Health health = tree.getHealth();
+        ImageView treeImageView = findViewById(R.id.treeImageView);
+
+        int treeImageResId = TreeManager.getTreeImageResourceId(tree);
+
 
 
     }

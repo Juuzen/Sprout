@@ -141,4 +141,43 @@ public class TreeManager {
         }
         return result;
     }
+
+
+    public static int getTreeImageResourceId(@NonNull Tree tree) {
+        // TODO
+        Tree.Health health = tree.getHealth();
+
+        switch (tree.getGrowth()) {
+            default:
+                return 0;
+            case SMALL:
+                if (health == Tree.Health.HEALTHY)
+                    return 0;
+                else if (health == Tree.Health.WITHERED)
+                    return 0;
+                else
+                    return 0;
+
+            case MEDIUM:
+                if (health == Tree.Health.HEALTHY)
+                    return 0;
+                else if (health == Tree.Health.WITHERED)
+                    return 0;
+                else
+                    return 0;
+
+            case MATURE:
+                if (health == Tree.Health.HEALTHY)
+                    return 0;
+                else if (health == Tree.Health.WITHERED)
+                    return 0;
+                else
+                    return 0;
+
+            case SPARKLING:
+                return 0;
+
+        }
+    }
+
 }
