@@ -95,7 +95,6 @@
     <string name="habit_item_end_content_description">Archiviato in data</string>
     <string name="no_item_message">Non ci sono elementi da visualizzare.</string>
     <string name="no_item_found_message">Nessun elemento trovato</string>
-    <string name="help_menu_item">Aiuto</string>
     <string name="delete_stats_menu_item">Azzera le statistiche</string>
     <string name="delete_habit_dialog_message">Vuoi eliminare l\'abitudine? Perderai tutti i tuoi progressi!</string>
     <string name="positive_dialog_button">Sì, cancella</string>
@@ -120,7 +119,6 @@
     <string name="main_activity_habit_counter_placeholder">Completata 0 volte su 5</string>
     <string name="new_habit_success_message">Nuova abitudine creata con successo!</string>
     <string name="completed">Completata!</string>
-    <string name="n_times">volte su</string>
     <string name="channel_name">Notifica dell\'abitudine</string>
     <string name="channel_description">Le notifiche decise dall\'utente.</string>
     <string name="delete_habit_dialog_confirmation_toast">Abitudine eliminata!</string>
@@ -153,4 +151,5 @@
     <string name="snackbar_snoozed_label">Abitudine rinviata!</string>
     <string name="habit_cannot_be_snoozed_snackbar">Non puoi più rinviare l\'abitudine!</string>
     <string name="snackbar_cancel_action">Annulla</string>
+    <string name="sky_content_description">Cielo</string>
 </resources>

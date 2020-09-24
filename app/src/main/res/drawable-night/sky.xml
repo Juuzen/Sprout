@@ -18,4 +18,18 @@
       </gradient>
     </aapt:attr>
   </path>
+  <path
+      android:pathData="M0,77.5C4.6909,76.8935 8.0453,76.9698 11.0599,77.2604C11.8727,77.3388 12.6575,77.4276 13.4349,77.5156C15.5463,77.7547 17.6039,77.9877 20.0242,77.9877C22.2817,77.9877 24.0709,77.8623 26.1425,77.7172C27.1176,77.6489 28.1552,77.5762 29.3338,77.5101C33.0077,77.3041 38.0129,77.1659 46.6808,77.4349C54.4849,77.6771 58.2211,77.4556 61.6902,77.25C62.0647,77.2278 62.436,77.2058 62.8091,77.1846C66.6525,76.9659 70.6423,76.8963 79.9804,77.5V97H0V77.5Z">
+    <aapt:attr name="android:fillColor">
+      <gradient 
+          android:startY="94.5309"
+          android:startX="39.4621"
+          android:endY="77.2469"
+          android:endX="39.4621"
+          android:type="linear">
+        <item android:offset="0" android:color="#FF4E7C21"/>
+        <item android:offset="1" android:color="#FF87E32D"/>
+      </gradient>
+    </aapt:attr>
+  </path>
 </vector>

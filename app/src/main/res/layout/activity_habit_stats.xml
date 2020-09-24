@@ -177,20 +177,37 @@
 
         <!-- Tree drawable -->
 
-        <!-- posso inserire foreground e background contemporaneamente -->
-        <ImageView
-            android:id="@+id/treeImageView"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/treeContainer"
+            android:layout_width="match_parent"
             android:layout_height="300dp"
-
-
-            android:scaleType="fitCenter"
-            android:contentDescription="@string/tree_content_description"
-            android:paddingTop="16dp"
-            android:adjustViewBounds="true"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/monthlyActionsView" />
+            app:layout_constraintTop_toBottomOf="@id/monthlyActionsView">
+
+            <ImageView
+                android:id="@+id/skyImageView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/sky_content_description" />
+
+            <ImageView
+                android:id="@+id/treeImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/tree_content_description"
+                android:paddingTop="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

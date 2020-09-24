@@ -143,7 +143,7 @@ public class TreeManager {
 
 
     public static int getTreeImageResourceId(@NonNull Tree tree) {
-        // TODO
+
         Tree.Health health = tree.getHealth();
 
         switch (tree.getGrowth()) {
@@ -174,7 +174,7 @@ public class TreeManager {
                     return R.drawable.svg_tree_full_mature_drying;
 
             case SPARKLING:
-                return 0;
+                return R.drawable.svg_tree_full_mature_sparkle;
 
         }
     }
@@ -183,9 +183,9 @@ public class TreeManager {
         if (health == Tree.Health.HEALTHY)
             return R.drawable.sky;
         else if (health == Tree.Health.WITHERED)
-            return R.drawable.dried_out_sky;
+            return R.drawable.sky_withered;
         else
-            return R.drawable.drying_sky;
+            return R.drawable.sky_drying;
     }
 
 }

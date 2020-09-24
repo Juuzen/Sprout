@@ -405,7 +405,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                                 .setBackgroundTint(ContextCompat.getColor(context, R.color.primaryColor))
                                 .setTextColor(ContextCompat.getColor(context, R.color.whiteColor))
                                 .setAction(R.string.snackbar_cancel_action, view -> habit.getRealm().executeTransaction(realm -> habit.setIsSnoozed(false)))
-                                .setActionTextColor(ContextCompat.getColor(context, R.color.secondaryColor))
+                                .setActionTextColor(ContextCompat.getColor(context, R.color.whiteColor))
                                 .setAnchorView(anchorFab)
                                 .show();
                     } else {
@@ -426,7 +426,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                             .setBackgroundTint(ContextCompat.getColor(context, R.color.primaryColor))
                             .setTextColor(ContextCompat.getColor(context, R.color.whiteColor))
                             .setAction(R.string.snackbar_cancel_action, view1 -> habit.getRealm().executeTransaction(realm -> habit.setRepetitions(0)))
-                            .setActionTextColor(ContextCompat.getColor(context, R.color.secondaryColor))
+                            .setActionTextColor(ContextCompat.getColor(context, R.color.whiteColor))
                             .setAnchorView(anchorFab)
                             .show();
                 }
@@ -576,7 +576,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                                 .setBackgroundTint(ContextCompat.getColor(context, R.color.primaryColor))
                                 .setTextColor(ContextCompat.getColor(context, R.color.whiteColor))
                                 .setAction(R.string.snackbar_cancel_action, view -> habit.getRealm().executeTransaction(realm -> habit.setIsSnoozed(false)))
-                                .setActionTextColor(ContextCompat.getColor(context, R.color.secondaryColor))
+                                .setActionTextColor(ContextCompat.getColor(context, R.color.whiteColor))
                                 .setAnchorView(anchorFab)
                                 .show();
                     } else {
@@ -607,7 +607,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                             .setBackgroundTint(ContextCompat.getColor(context, R.color.primaryColor))
                             .setTextColor(ContextCompat.getColor(context, R.color.whiteColor))
                             .setAction(R.string.snackbar_cancel_action, view1 -> habit.getRealm().executeTransaction(realm -> habit.setRepetitions(currRep)))
-                            .setActionTextColor(ContextCompat.getColor(context, R.color.secondaryColor))
+                            .setActionTextColor(ContextCompat.getColor(context, R.color.whiteColor))
                             .setAnchorView(anchorFab)
                             .show();
                 }

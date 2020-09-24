@@ -8,10 +8,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import com.applandeo.materialcalendarview.CalendarView;
@@ -31,7 +33,6 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
-import com.hcifedii.sprout.enumerations.GoalType;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -134,7 +135,6 @@ public class HabitStatsActivity extends SproutApplication {
                 drawStreakChart();
                 drawMonthlyChart();
 
-                //TODO: gestione albero
                 drawTree(habit.getTree());
 
             });
@@ -147,7 +147,7 @@ public class HabitStatsActivity extends SproutApplication {
 
 
     private void markCreationDate(long habitCreationDate) {
-        if(habitCreationDate > 0) {
+        if (habitCreationDate > 0) {
             Calendar startDate = Calendar.getInstance();
             startDate.setTimeInMillis(habitCreationDate);
             calendarView.setMinimumDate(startDate);
@@ -158,7 +158,7 @@ public class HabitStatsActivity extends SproutApplication {
     }
 
     private void markEndDate(long finalDate) {
-        if(finalDate > 0) {
+        if (finalDate > 0) {
             Calendar endDate = Calendar.getInstance();
             endDate.setTimeInMillis(finalDate);
             calendarView.setMaximumDate(endDate);
@@ -347,18 +347,45 @@ public class HabitStatsActivity extends SproutApplication {
 
     private void drawTree(Tree tree) {
 
-        if(tree == null){
+        if (tree == null) {
             return;
         }
 
         ImageView treeImageView = findViewById(R.id.treeImageView);
+        ImageView skyImageView = findViewById(R.id.skyImageView);
 
         int treeImageResId = TreeManager.getTreeImageResourceId(tree);
         int skyImageResId = TreeManager.getSkyResourceId(tree.getHealth());
 
         treeImageView.setImageDrawable(ContextCompat.getDrawable(this, treeImageResId));
-        treeImageView.setBackground(ContextCompat.getDrawable(this, skyImageResId));
+        skyImageView.setImageDrawable(ContextCompat.getDrawable(this, skyImageResId));
 
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) treeImageView.getLayoutParams();
+
+        // Move the tree's image up or down by a fixed offset
+        float offset = 0;
+
+        switch (tree.getGrowth()) {
+            case SPARKLING:
+                offset = 50;
+                break;
+            case MEDIUM:
+                offset = -70;
+                break;
+            case SMALL:
+                offset = -180;
+                break;
+            case SPROUT:
+                offset = -190;
+                break;
+        }
+
+        // Set the margin bottom in "dp"
+        float dpRatio = getResources().getDisplayMetrics().density;
+
+        params.bottomMargin = (int) (offset * dpRatio);
+
+        treeImageView.setLayoutParams(params);
 
     }
 
@@ -523,7 +550,7 @@ public class HabitStatsActivity extends SproutApplication {
                 builder.setTitle("Sprout");
                 builder.setMessage(R.string.delete_stats_dialog_message);
                 builder.setPositiveButton(R.string.positive_dialog_button, (dialogInterface, i) -> {
-                    if(habitId >= 0) {
+                    if (habitId >= 0) {
                         TaskManager.deleteHabitTaskHistory(habitId);
 
                         Toast.makeText(this, R.string.delete_stats_result_message, Toast.LENGTH_SHORT).show();
