@@ -1,10 +1,13 @@
 package com.hcifedii.sprout;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -60,7 +63,13 @@ public class SettingsActivity extends SproutApplication {
 
             ListPreference themeSelector = findPreference("theme");
 
-            SharedPreferences preferences = getActivity().getSharedPreferences(SHARED_PREFS_FILE, MODE_PRIVATE);
+            FragmentActivity activity = getActivity();
+            if(activity == null){
+                Log.e(LOGCAT_TAG, "Setting activity, getActivity returned null");
+                return;
+            }
+
+            SharedPreferences preferences = activity.getSharedPreferences(SHARED_PREFS_FILE, MODE_PRIVATE);
 
             int pref = preferences.getInt(SHARED_PREFS_DARK_MODE, AppCompatDelegate.MODE_NIGHT_NO);
 

@@ -38,8 +38,6 @@ import utils.NotificationAlarmManager.NotificationAlarm;
 
 public class EditHabitActivity extends SproutApplication {
 
-    private static final String logcatTag = "Sprout - EditHabitActivity";
-
     private static final String IS_ALREADY_SHOWED = "alreadyShowed";
     public static final String EXTRA_HABIT_ID = "HABIT_ID";
 
@@ -206,7 +204,7 @@ public class EditHabitActivity extends SproutApplication {
     /**
      * Retrieve the habit id from the intent / saved instance state
      *
-     * @param savedInstanceState
+     * @param savedInstanceState Bundle used to save the state of this fragment
      * @return Habit id
      */
     private int getHabitIdFromBundles(Bundle savedInstanceState) {

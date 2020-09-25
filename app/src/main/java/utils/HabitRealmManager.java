@@ -1,14 +1,9 @@
 package utils;
 
-import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.hcifedii.sprout.enumerations.GoalType;
-
-import java.util.Calendar;
 import java.util.List;
 
 import io.realm.Realm;
@@ -16,8 +11,6 @@ import io.realm.RealmList;
 import io.realm.RealmResults;
 import model.Habit;
 
-import model.Task;
-import model.Tree;
 import model.Reminder;
 
 

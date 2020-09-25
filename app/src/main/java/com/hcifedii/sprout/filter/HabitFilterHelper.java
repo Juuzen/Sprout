@@ -11,7 +11,7 @@ import model.Habit;
 
 public abstract class HabitFilterHelper extends Filter {
 
-    private List<Habit> originalList;
+    private final List<Habit> originalList;
 
     protected HabitFilterHelper(@NonNull List<Habit> originalList) {
         this.originalList = originalList;

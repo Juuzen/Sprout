@@ -71,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Da completare"
+            android:text="@string/classic_habit_card_label"
             android:textColor="@color/redColor"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/classicHabitTreeImageView"

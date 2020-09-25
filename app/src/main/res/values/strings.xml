@@ -152,4 +152,5 @@
     <string name="habit_cannot_be_snoozed_snackbar">Non puoi più rinviare l\'abitudine!</string>
     <string name="snackbar_cancel_action">Annulla</string>
     <string name="sky_content_description">Cielo</string>
+    <string name="classic_habit_card_label">Da completare</string>
 </resources>

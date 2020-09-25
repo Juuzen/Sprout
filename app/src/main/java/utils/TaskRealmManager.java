@@ -9,7 +9,7 @@ import io.realm.RealmList;
 import model.Habit;
 import model.Task;
 
-public class TaskManager {
+public class TaskRealmManager {
     private static final String LOGCAT_TAG = "TaskManager";
 
     public static void insertTask(@NonNull Task task) {

@@ -110,8 +110,8 @@ public class Reminder extends RealmObject implements Serializable {
     }
 
     /**
-     * @param otherHours
-     * @param otherMinutes
+     * @param otherHours The other hour that has to be checked
+     * @param otherMinutes The other minute that has to be checked
      * @return Return true if this reminder is in the past.
      */
     public boolean isInThePast(int otherHours, int otherMinutes) {

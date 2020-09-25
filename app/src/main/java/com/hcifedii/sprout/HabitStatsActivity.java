@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import com.applandeo.materialcalendarview.CalendarView;
@@ -46,8 +45,8 @@ import model.Task;
 import model.Tree;
 import utils.HabitRealmManager;
 import model.Streak;
-import utils.TaskManager;
-import utils.TreeManager;
+import utils.TaskRealmManager;
+import utils.TreeRealmManager;
 
 public class HabitStatsActivity extends SproutApplication {
 
@@ -354,8 +353,8 @@ public class HabitStatsActivity extends SproutApplication {
         ImageView treeImageView = findViewById(R.id.treeImageView);
         ImageView skyImageView = findViewById(R.id.skyImageView);
 
-        int treeImageResId = TreeManager.getTreeImageResourceId(tree);
-        int skyImageResId = TreeManager.getSkyResourceId(tree.getHealth());
+        int treeImageResId = TreeRealmManager.getTreeImageResourceId(tree);
+        int skyImageResId = TreeRealmManager.getSkyResourceId(tree.getHealth());
 
         treeImageView.setImageDrawable(ContextCompat.getDrawable(this, treeImageResId));
         skyImageView.setImageDrawable(ContextCompat.getDrawable(this, skyImageResId));
@@ -551,7 +550,7 @@ public class HabitStatsActivity extends SproutApplication {
                 builder.setMessage(R.string.delete_stats_dialog_message);
                 builder.setPositiveButton(R.string.positive_dialog_button, (dialogInterface, i) -> {
                     if (habitId >= 0) {
-                        TaskManager.deleteHabitTaskHistory(habitId);
+                        TaskRealmManager.deleteHabitTaskHistory(habitId);
 
                         Toast.makeText(this, R.string.delete_stats_result_message, Toast.LENGTH_SHORT).show();
 

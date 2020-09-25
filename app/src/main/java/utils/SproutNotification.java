@@ -35,6 +35,7 @@ public class SproutNotification {
         builder.setAutoCancel(true);
     }
 
+    @SuppressWarnings("SameParameterValue")
     @RequiresApi(api = Build.VERSION_CODES.O)
     private SproutNotification(Context context, final String CHANNEL_ID) {
 

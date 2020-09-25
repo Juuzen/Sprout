@@ -34,8 +34,7 @@ import model.Reminder;
 
 public class PresetFragment extends Fragment {
 
-    Context context;
-    PresetHabitAdapter adapter;
+    private PresetHabitAdapter adapter;
 
     public PresetFragment() {
     }
@@ -55,7 +54,7 @@ public class PresetFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_preset_list, container, false);
 
-        context = view.getContext();
+        Context context = view.getContext();
 
         RecyclerView presetHabitRecyclerView = view.findViewById(R.id.presetHabitRecyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
@@ -79,7 +78,7 @@ public class PresetFragment extends Fragment {
     // Implementation of the listeners
     private static class ShowMoreButtonListener implements View.OnClickListener {
 
-        View view;
+        private final View view;
 
         ShowMoreButtonListener(View view) {
             this.view = view;

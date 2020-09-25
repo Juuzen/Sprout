@@ -37,7 +37,7 @@ public class HabitListAdapter extends RecyclerView.Adapter<HabitListAdapter.View
     /**
      * Original unmodified List
      */
-    private List<Habit> originalList;
+    private final List<Habit> originalList;
 
     private Context context;
 

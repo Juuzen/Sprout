@@ -31,14 +31,12 @@ import model.Reminder;
 import model.Tree;
 import utils.HabitRealmManager;
 
-import utils.TreeManager;
+import utils.TreeRealmManager;
 
 import utils.NotificationAlarmManager;
 
 
 public class CreateHabitActivity extends SproutApplication {
-
-    private static final String logcatTag = "Sprout - CreateHabitActivity";
 
     // Fragments of this activity
     PresetFragment presetFragment;
@@ -119,9 +117,9 @@ public class CreateHabitActivity extends SproutApplication {
 
                 //Set the tree field
                 Tree tree = new Tree();
-                tree.setId(TreeManager.getNextId());
+                tree.setId(TreeRealmManager.getNextId());
                 habit.setTree(tree);
-                TreeManager.insertTree(tree);
+                TreeRealmManager.insertTree(tree);
 
                 // Print test Message
                 //printHabitInfoOnLog(habit);

@@ -12,35 +12,27 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import model.Tree;
 
-public class TreeManager {
+public class TreeRealmManager {
     private static final String TAG = "TreeManager";
 
     public static Tree getTree(int treeId) {
-        Tree result = null;
+
         if (treeId >= 0) {
             try (Realm realm = Realm.getDefaultInstance()) {
                 Tree check = realm.where(Tree.class).equalTo("id", treeId).findFirst();
                 if (check != null) {
-                    result = realm.copyFromRealm(check);
+                    return realm.copyFromRealm(check);
                 }
             }
         }
-        return result;
+        return null;
     }
 
     public static ArrayList<Tree> getAllTrees() {
-        Realm realm = null;
-        ArrayList<Tree> list = null;
-        try {
-            realm = Realm.getDefaultInstance();
+        try (Realm realm = Realm.getDefaultInstance()) {
             RealmResults<Tree> trees = realm.where(Tree.class).findAll();
-            list = new ArrayList<>(trees);
-        } finally {
-            if (realm != null) {
-                realm.close();
-            }
+            return new ArrayList<>(trees);
         }
-        return list;
     }
 
     public static void setTreeGrowth(Tree tree, Tree.Growth growth) {
@@ -87,9 +79,7 @@ public class TreeManager {
 
     public static void insertTree(@NonNull Tree tree) {
         try (Realm realm = Realm.getDefaultInstance()) {
-            realm.executeTransaction(
-                    realmInstance -> realmInstance.insertOrUpdate(tree)
-            );
+            realm.executeTransaction(realmInstance -> realmInstance.insertOrUpdate(tree));
         }
     }
 

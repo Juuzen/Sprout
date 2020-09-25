@@ -5,7 +5,9 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
 import com.hcifedii.sprout.enumerations.GoalType;
+
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -16,14 +18,15 @@ import model.Habit;
 import model.Task;
 import model.Tree;
 
-public class DBAlarmReceiver extends BroadcastReceiver  {
+public class DBAlarmReceiver extends BroadcastReceiver {
     private static final String TAG = "Broadcastreceiver";
     //TODO: should include this value inside Habit?
     private final int snoozesDayLimit = 7;
     String debugDay = Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.US);
     String day = Calendar.getInstance().getDisplayName(Calendar.DAY_OF_WEEK - 1, Calendar.LONG, Locale.US);
 
-    public DBAlarmReceiver(){}
+    public DBAlarmReceiver() {
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -36,7 +39,7 @@ public class DBAlarmReceiver extends BroadcastReceiver  {
                         .contains("frequencyTest", debugDay, Case.INSENSITIVE)
                         .sort("id")
                         .findAll();
-                for (Habit habit: habitList) {
+                for (Habit habit : habitList) {
                     realm.executeTransaction(
                             realmInstance -> {
                                 boolean isTaskPassed = habit.getRepetitions() == habit.getMaxRepetitions();
@@ -49,7 +52,7 @@ public class DBAlarmReceiver extends BroadcastReceiver  {
 
                                 /* Task creation */
                                 Task task = new Task();
-                                task.setId(TaskManager.getNextId());
+                                task.setId(TaskRealmManager.getNextId());
                                 if (isTaskSnoozed) task.setTaskStatus(Task.Status.SNOOZED);
                                 else if (isTaskPassed) task.setTaskStatus(Task.Status.PASSED);
                                 else task.setTaskStatus(Task.Status.FAILED);
@@ -63,23 +66,24 @@ public class DBAlarmReceiver extends BroadcastReceiver  {
                                             // only in HEALTHY state, growth state can change
                                             if (isTaskPassed) {
                                                 if (growth == Tree.Growth.SPROUT) {
-                                                    tree.setGrowth(TreeManager.getNextGrowthStep(growth));
+                                                    tree.setGrowth(TreeRealmManager.getNextGrowthStep(growth));
                                                     tree.setExperience(0);
                                                 } else if (growth != Tree.Growth.SPARKLING) {
-                                                    if (experience >= TreeManager.getRequiredExperience(growth)) {
-                                                        tree.setGrowth(TreeManager.getNextGrowthStep(growth));
+                                                    if (experience >= TreeRealmManager.getRequiredExperience(growth)) {
+                                                        tree.setGrowth(TreeRealmManager.getNextGrowthStep(growth));
                                                         tree.setExperience(0);
                                                     } else {
                                                         tree.setExperience(experience + 1);
                                                     }
                                                 }
-                                            }
-                                            else {
+                                            } else {
                                                 // While in SPARKLING growth state, health state cannot change
                                                 // but growth state will be reverted to MATURE state
-                                                if (growth == Tree.Growth.SPARKLING) tree.setGrowth(Tree.Growth.MATURE);
+                                                if (growth == Tree.Growth.SPARKLING)
+                                                    tree.setGrowth(Tree.Growth.MATURE);
                                                     // While in SPROUT growth state, health state cannot change
-                                                else if (growth != Tree.Growth.SPROUT) tree.setHealth(Tree.Health.DRYING);
+                                                else if (growth != Tree.Growth.SPROUT)
+                                                    tree.setHealth(Tree.Health.DRYING);
                                             }
                                             break;
                                         case DRYING:
@@ -161,7 +165,7 @@ public class DBAlarmReceiver extends BroadcastReceiver  {
                 cal.set(Calendar.SECOND, 0);
                 cal.set(Calendar.DAY_OF_YEAR, cal.get(Calendar.DAY_OF_YEAR) + 1);
                 long millis = cal.getTimeInMillis();
-                Intent mIntent = new Intent (context, DBAlarmReceiver.class);
+                Intent mIntent = new Intent(context, DBAlarmReceiver.class);
                 mIntent.putExtra("repeat", false);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1000, mIntent, PendingIntent.FLAG_CANCEL_CURRENT);
                 alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC, millis, pendingIntent);

@@ -15,7 +15,6 @@ import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,7 +40,7 @@ import io.realm.RealmRecyclerViewAdapter;
 import model.Habit;
 import model.Tree;
 import utils.TreeArcProgress;
-import utils.TreeManager;
+import utils.TreeRealmManager;
 
 public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerView.ViewHolder> implements Filterable {
 
@@ -317,7 +316,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                     treeProgress.setVisibility(View.INVISIBLE);
                 } else {
                     treeProgress.setVisibility(View.VISIBLE);
-                    treeProgress.setMax(TreeManager.getRequiredExperience(growth));
+                    treeProgress.setMax(TreeRealmManager.getRequiredExperience(growth));
                     treeProgress.setProgress(tree.getExperience());
                     treeProgress.setText("");
                     if (treeProgress.getProgress() == treeProgress.getMax()) {
@@ -483,7 +482,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                     treeProgress.setVisibility(View.INVISIBLE);
                 } else {
                     treeProgress.setVisibility(View.VISIBLE);
-                    treeProgress.setMax(TreeManager.getRequiredExperience(growth));
+                    treeProgress.setMax(TreeRealmManager.getRequiredExperience(growth));
                     treeProgress.setProgress(tree.getExperience());
                     treeProgress.setText("");
                     if (treeProgress.getProgress() == treeProgress.getMax()) {
