@@ -281,7 +281,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         private final View anchorFab;
 
         private TextView habitTitle;
-        private ImageButton editHabitButton;
+        private ImageButton statsHabitButton;
         private Button checkButton;
         private Button snoozeButton;
         private MaterialTextView completedLabel;
@@ -298,7 +298,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
 
             habitTitle = itemView.findViewById(R.id.classicHabitCardTitle);
             completedLabel = itemView.findViewById(R.id.classicHabitCompletedLabel);
-            editHabitButton = itemView.findViewById(R.id.classicHabitEditButton);
+            statsHabitButton = itemView.findViewById(R.id.classicHabitStatstButton);
             snoozeButton = itemView.findViewById(R.id.classicHabitSnoozeButton);
             checkButton = itemView.findViewById(R.id.classicHabitCheckButton);
             treeImageView = itemView.findViewById(R.id.classicHabitTreeImageView);
@@ -372,8 +372,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                 treeStatus.setVisibility(View.INVISIBLE);
             }
 
-            view.setOnClickListener(view -> {
-                // When the card is clicked, go to the habit's stats
+            statsHabitButton.setOnClickListener(view -> {
                 Intent intent = new Intent(context, HabitStatsActivity.class);
                 intent.putExtra(HabitStatsActivity.EXTRA_HABIT_ID, habit.getId());
 
@@ -382,7 +381,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                 context.startActivity(intent, bundle);
             });
 
-            editHabitButton.setOnClickListener(view -> {
+            view.setOnClickListener(view -> {
                 Intent intent = new Intent(context, EditHabitActivity.class);
                 intent.putExtra(EditHabitActivity.EXTRA_HABIT_ID, habit.getId());
 
@@ -445,7 +444,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
         private TextView habitTitle;
         private ProgressBar progressBar;
         private TextView progressLabel;
-        private ImageButton editHabitButton;
+        private ImageButton statsHabitButton;
         private Button checkButton;
         private Button snoozeButton;
 
@@ -460,7 +459,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             this.anchorFab = anchorFab;
 
             habitTitle = itemView.findViewById(R.id.counterHabitCardTitle);
-            editHabitButton = itemView.findViewById(R.id.counterHabitEditButton);
+            statsHabitButton = itemView.findViewById(R.id.counterHabitStatsButton);
             progressBar = itemView.findViewById(R.id.counterHabitProgressBar);
             checkButton = itemView.findViewById(R.id.counterHabitCheckButton);
             snoozeButton = itemView.findViewById(R.id.counterHabitSnoozeButton);
@@ -544,18 +543,18 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
             this.progressLabel.setText(message);
 
             view.setOnClickListener(view -> {
-                // When the card is clicked, go to the habit's stats
-                Intent intent = new Intent(context, HabitStatsActivity.class);
-                intent.putExtra(HabitStatsActivity.EXTRA_HABIT_ID, habit.getId());
+                // When the card is clicked, go to EditHabitActivity
+                Intent intent = new Intent(context, EditHabitActivity.class);
+                intent.putExtra(EditHabitActivity.EXTRA_HABIT_ID, habit.getId());
 
                 Bundle bundle = ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in,
                         android.R.anim.fade_out).toBundle();
                 context.startActivity(intent, bundle);
             });
 
-            editHabitButton.setOnClickListener(view -> {
-                Intent intent = new Intent(context, EditHabitActivity.class);
-                intent.putExtra(EditHabitActivity.EXTRA_HABIT_ID, habit.getId());
+            statsHabitButton.setOnClickListener(view -> {
+                Intent intent = new Intent(context, HabitStatsActivity.class);
+                intent.putExtra(HabitStatsActivity.EXTRA_HABIT_ID, habit.getId());
 
                 Bundle bundle = ActivityOptions.makeCustomAnimation(context, android.R.anim.fade_in,
                         android.R.anim.fade_out).toBundle();
@@ -588,7 +587,7 @@ public class HabitCardAdapter extends RealmRecyclerViewAdapter<Habit, RecyclerVi
                 });
             }
 
-            checkButton.setOnLongClickListener(view1 -> {
+            view.setOnLongClickListener(view1 -> {
                 int missingTasks = habit.getMaxRepetitions() - habit.getRepetitions();
                 FragmentManager fragmentManager = ((FragmentActivity) view1.getContext()).getSupportFragmentManager();
                 RepetitionHabitNumberPickerFragment picker = new RepetitionHabitNumberPickerFragment(missingTasks, habit.getId());

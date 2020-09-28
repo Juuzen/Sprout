@@ -93,12 +93,12 @@
             app:layout_constraintTop_toTopOf="@+id/counterHabitTreeImageView" />
 
         <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/counterHabitEditButton"
+            android:id="@+id/counterHabitStatsButton"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:backgroundTint="@color/whiteColor"
-            android:src="@drawable/ic_edit_24"
+            android:src="@drawable/ic_chart_alternative_24"
             android:tint="#757575"
 
             app:layout_constraintBottom_toBottomOf="parent"
