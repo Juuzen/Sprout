@@ -14,62 +14,45 @@
 
 
 <!-- ABOUT THE PROJECT -->
-## About The Project
-There are many great README templates available on GitHub, however, I didn't find one that really suit my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need.
+## Sul progetto
+Applicazione per il tracciamento delle abitudini di un utente. 
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should element DRY principles to the rest of your life :smile:
-
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue.
-
-A list of commonly used resources that I find helpful are listed in the acknowledgements.
+Lo scopo principale di questa applicazione è quello di fornire all’utente un supporto  per il consolidamento di nuove abitudini, mostrando i progressi compiuti ed incoraggiando quest’ultimo a continuare, grazie anche all’utilizzo dei promemoria.
 
 
+### Prerequisiti
 
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-```sh
-npm install npm@latest -g
-```
-
-
-
-
-
+È necessario Android 7.1 come versione minima per provare questa applicazione.
 
 
 
 <!-- LICENSE -->
-## License
+## Licenza
 
 Distributed under the MIT License.
 
 
 <!-- CONTACT -->
-## Contact
+## Contatti
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Michele Rega - [@Juuzen](https://github.com/Juuzen) - michele.rega64@gmail.com
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+Salvatore Cuomo - [@httpsal](https://github.com/httpsal) - salvatore.cuomo4@gmail.com
 
 
 
 <!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Img Shields](https://shields.io)
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Pages](https://pages.github.com)
-* [Animate.css](https://daneden.github.io/animate.css)
-* [Loaders.css](https://connoratherton.com/loaders)
-* [Slick Carousel](https://kenwheeler.github.io/slick)
-* [Smooth Scroll](https://github.com/cferdinandi/smooth-scroll)
-* [Sticky Kit](http://leafo.net/sticky-kit)
-* [JVectorMap](http://jvectormap.com)
-* [Font Awesome](https://fontawesome.com)
+## Riconoscimenti
 
+* [Android Material Design](https://material.io/develop/android)
+
+* [ShawnLin013/NumberPicker](https://github.com/ShawnLin013/NumberPicker)
+
+* [Realm](https://realm.io/blog/realm-for-android)
+
+* [Stetho](https://facebook.github.io/stetho)
+
+* [Material Calendar View](https://github.com/Applandeo/Material-Calendar-View)
+
+* [PhilJay/MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)
 
