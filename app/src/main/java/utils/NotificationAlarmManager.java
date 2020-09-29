@@ -116,7 +116,6 @@ public class NotificationAlarmManager {
 
                 cancelAlarm(context, requestCode);
             }
-
         }
 
         public static void cancelAlarm(@NonNull Context context, int requestCode) {
