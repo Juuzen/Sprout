@@ -52,7 +52,9 @@ Salvatore Cuomo - [@httpsal](https://github.com/httpsal) - salvatore.cuomo4@gmai
 
 * [Stetho](https://facebook.github.io/stetho)
 
-* [Material Calendar View](https://github.com/Applandeo/Material-Calendar-View)
+* [Applandeo/Material Calendar View](https://github.com/Applandeo/Material-Calendar-View)
 
 * [PhilJay/MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)
+
+* [lzyzsd/CircleProgress](https://github.com/lzyzsd/CircleProgress)
 
