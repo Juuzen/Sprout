@@ -153,4 +153,5 @@
     <string name="snackbar_cancel_action">Annulla</string>
     <string name="sky_content_description">Cielo</string>
     <string name="classic_habit_card_label">Da completare</string>
+    <string name="notification_content_text_base">Completa la tua abitudine!</string>
 </resources>

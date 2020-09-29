@@ -111,7 +111,7 @@ public class NotificationAlarmManager {
                     notification.setTitle(habitTitle);
                 else
                     notification.setTitle(context.getString(R.string.app_name));
-
+                notification.setContent(context.getString(R.string.notification_content_text_base));
                 notification.showNotification(habitId);
 
                 cancelAlarm(context, requestCode);
