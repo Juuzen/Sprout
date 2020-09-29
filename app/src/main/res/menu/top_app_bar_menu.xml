@@ -21,9 +21,4 @@
         android:title="@string/aboutMenuString"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/debugMenuItemButton1"
-        android:title="Store test"
-        app:showAsAction="never" />
-
 </menu>

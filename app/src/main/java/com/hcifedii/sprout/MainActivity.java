@@ -192,6 +192,7 @@ public class MainActivity extends SproutApplication implements RepetitionHabitNu
                 builder.show();
                 return true;
 
+                /*
             case R.id.debugMenuItemButton1:
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 if (alarmManager != null) {
@@ -209,6 +210,8 @@ public class MainActivity extends SproutApplication implements RepetitionHabitNu
                     Log.e("AlarmManager", "Non sono riuscito a creare l'alarm.");
                 }
                 return true;
+
+                 */
             default:
                 return super.onOptionsItemSelected(item);
         }
