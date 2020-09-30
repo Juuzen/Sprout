@@ -1,15 +1,8 @@
-<!-- PROJECT LOGO -->
-<br />
-<p align="center">
-    <img src="icon.png" alt="logo" width="80" height="80">
-  </a>
 
   <h3 align="center">Sprout</h3>
   <p align="center">
     Habit tracker
   </p>
-  
-</p>
 
 
 
