@@ -8,9 +8,12 @@ import androidx.fragment.app.FragmentManager;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -306,14 +309,17 @@ public class EditHabitActivity extends SproutApplication {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.top_app_bar_edit_habit, menu);
-
+        /*
         // Make the delete habit button's text red
         MenuItem deleteHabitButton = menu.getItem(0);
 
         SpannableString s = new SpannableString(getString(R.string.edit_habit_delete_button));
-        s.setSpan(new ForegroundColorSpan(Color.RED), 0, s.length(), 0);
-        deleteHabitButton.setTitle(s);
+        s.setSpan(new ForegroundColorSpan(Color.WHITE), 0, s.length(), 0);
+        s.setSpan(new BackgroundColorSpan(getColor(R.color.redColor)), 0, s.length(), 0);
+        s.setSpan(new StyleSpan(Typeface.BOLD), 0, s.length(), 0);
 
+        deleteHabitButton.setTitle(s);
+         */
         return true;
     }
 
