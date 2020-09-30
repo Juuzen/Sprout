@@ -1,8 +1,10 @@
-
-  <h3 align="center">Sprout</h3>
-  <p align="center">
+<p align="center">
+    <img src="app_icon.png" alt="logo" width="160" height="160">
+ </p>
+ <h2 align="center">Sprout</h3>
+ <h4 align="center">
     Habit tracker
-  </p>
+ </h4>
 
 
 
@@ -10,13 +12,12 @@
 ## Sul progetto
 Applicazione per il tracciamento delle abitudini di un utente. 
 
-Lo scopo principale di questa applicazione è quello di fornire all’utente un supporto  per il consolidamento di nuove abitudini, mostrando i progressi compiuti ed incoraggiando quest’ultimo a continuare, grazie anche all’utilizzo dei promemoria.
+Lo scopo principale di questa applicazione è quello di fornire all’utente un supporto per il consolidamento di nuove abitudini, incoraggiandolo a continuare grazie anche all’utilizzo di elementi grafici, statistiche sui progressi effettuati e di promemoria.
 
 
 ### Prerequisiti
 
 È necessario Android 7.1 come versione minima per provare questa applicazione.
-
 
 
 <!-- LICENSE -->
