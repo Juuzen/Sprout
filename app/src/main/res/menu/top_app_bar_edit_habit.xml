@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/deleteHabitButton"
-        android:icon="@drawable/ic_trash"
+        android:icon="@drawable/ic_trash_white"
         android:title="@string/edit_habit_delete_button"
         app:showAsAction="always|withText" />
 </menu>
